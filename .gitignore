@@ -1,0 +1,30 @@
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors / IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# Node (future-proof; if you add tooling later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Builds / caches (future-proof)
+dist/
+build/
+.cache/
+.tmp/
+
+# Hosting/CLI state
+.vercel/
+.netlify/
+
+# Local env (if you add APIs later)
+.env
+.env.*
