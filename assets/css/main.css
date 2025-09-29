@@ -1,0 +1,230 @@
+/* ───────────────────────────────────────────────────────────
+   Bluekiosktech — Theme (header fixe + logo indépendant)
+   ─────────────────────────────────────────────────────────── */
+
+/* ========== 1) Variables ========== */
+:root{
+  --bg:#0f172a;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --card:#111827;
+  --brand:#60a5fa;
+  --brand2:#22d3ee;
+  --bd:#1f2937;
+  --shadow:0 10px 20px rgba(0,0,0,.25);
+
+  /* Header */
+  --header-h: 100px;          /* desktop */
+  --header-h-mobile: 78px;    /* mobile */
+
+  /* Logo (taille indépendante du header) */
+  --logo-h: 220px;            /* ajuste selon ton rendu désiré */
+  --logo-h-mobile: 170px;
+
+  /* Switch langue (couleur pastille active) */
+  --lang-active:#10b981;
+}
+
+/* ========== 2) Reset / Base ========== */
+*{ box-sizing:border-box }
+html,body{ margin:0; padding:0 }
+body{
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:var(--bg); color:var(--text); line-height:1.6;
+}
+a{ color:var(--brand); text-decoration:none }
+.muted{ color:var(--muted) }
+
+/* Accessibilité */
+.sr-only{
+  position:absolute !important; width:1px; height:1px;
+  padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0);
+  white-space:nowrap; border:0;
+}
+
+/* ========== 3) Layout Utils ========== */
+.container{ max-width:1100px; margin:0 auto; padding:0 16px }
+.row{ display:flex; gap:12px }
+.between{ justify-content:space-between }
+.center{ align-items:center }
+.grid{ display:grid; gap:16px }
+.cards{ grid-template-columns:repeat(auto-fill,minmax(260px,1fr)) }
+.only-mobile{ display:none }
+.wrap{ flex-wrap:wrap }
+.gap{ gap:12px }
+
+/* Inputs génériques */
+.input, .textarea, select{
+  width:100%;
+  background:#0b1222;
+  border:1px solid var(--bd);
+  border-radius:12px;
+  padding:10px 12px;
+  color:var(--text);
+}
+.textarea{ min-height:140px; resize:vertical }
+
+/* ========== 4) Header (logo à gauche, nav à droite, actions à l’extrême droite) ========== */
+.site-header{
+  position:sticky; top:0;
+  height:var(--header-h);
+  padding:0;
+  display:block;
+  background:rgba(11,18,34,.88);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--bd);
+  z-index:50;
+  overflow:visible;
+}
+
+/* Aligner le contenu du header */
+.site-header .container{
+  height:100%;
+  display:flex; align-items:center; justify-content:flex-start !important;
+  position:relative; gap:16px;
+}
+
+/* LOGO : absolu à gauche, centré verticalement */
+.logo{
+  position:absolute; left:24px; top:50%;
+  transform:translateY(-50%);
+  display:flex; align-items:center; gap:10px;
+}
+.logo img{
+  height:var(--logo-h) !important;
+  width:auto !important;
+  display:block; background:transparent;
+}
+
+/* NAV poussée à droite */
+.nav{
+  margin-left:auto;
+  display:flex; gap:16px;
+}
+.nav a{
+  padding:10px 14px;
+  color:#d1d5db; font-size:1.1rem;
+}
+.nav a.active{ color:#fff; border-bottom:2px solid var(--brand) }
+
+/* ACTIONS (ex. thème) : absolu à droite */
+.site-header .actions{
+  position:absolute; right:-25px; top:50%;
+  transform:translateY(-50%);
+}
+
+/* ========== 5) Switch FR/EN (style .ca) placé SOUS le header, à droite ========== */
+.lang-switch.lang--header{
+  position:absolute;
+  right:24px;
+  top:calc(100% + 10px);      /* ← juste SOUS le header */
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:4px;
+  background:rgba(11,18,34,.88);
+  border:1px solid var(--bd);
+  border-radius:999px;
+  backdrop-filter:blur(6px);
+  box-shadow:0 6px 16px rgba(0,0,0,.25);
+  z-index:80;
+  pointer-events:auto;
+}
+.lang-switch.lang--header button{
+  border:0; background:transparent; color:#e5e7eb;
+  padding:8px 14px; border-radius:999px; font-weight:700; line-height:1;
+  cursor:pointer;
+}
+.lang-switch.lang--header button.is-active{
+  background:var(--lang-active); color:#0b1222;
+}
+.lang-switch.lang--header button:hover{ filter:brightness(1.08) }
+
+/* ========== 6) Hero ========== */
+.hero{
+  position:relative;
+  padding:56px 0;
+  background:
+    radial-gradient(1200px 400px at 10% -10%,rgba(96,165,250,.25),transparent),
+    radial-gradient(1200px 600px at 90% -20%,rgba(34,211,238,.2),transparent);
+}
+.hero h1{ font-size:40px; margin:0 0 6px }
+.hero p{ color:var(--muted); margin:0 0 18px }
+
+/* ========== 7) Boutons ========== */
+.btn{
+  display:inline-block; padding:10px 16px;
+  border-radius:12px; border:1px solid var(--bd); box-shadow:var(--shadow);
+}
+.btn.primary{
+  background:linear-gradient(90deg,var(--brand),var(--brand2));
+  color:#0b1222; border:0; font-weight:700;
+}
+.btn.ghost{ color:#e5e7eb; background:#0b1222 }
+
+/* ========== 8) Cartes / Chips ========== */
+.card{
+  background:var(--card); border:1px solid var(--bd);
+  border-radius:16px; padding:18px;
+}
+.card .meta{ font-size:12px; color:var(--muted) }
+.card h3{ margin:6px 0 8px; font-size:18px }
+.chips{ list-style:none; padding:0; display:flex; gap:10px; flex-wrap:wrap }
+.chip{ background:#0b1222; border:1px solid var(--bd); border-radius:999px; padding:6px 12px }
+
+/* ========== 9) Pagination (placeholder simple) ========== */
+.pagination{ display:flex; gap:8px; justify-content:center; margin:18px 0 }
+.pagination a{ padding:8px 12px; border:1px solid var(--bd); border-radius:10px; color:var(--text) }
+.pagination a.active{ background:#0b1222 }
+
+/* ========== 10) Footer ========== */
+.site-footer{
+  border-top:1px solid var(--bd);
+  margin-top:56px; padding:18px 0; color:var(--muted);
+}
+
+/* ========== 11) Responsive (mobile) ========== */
+@media (max-width:760px){
+  .only-mobile{ display:inline-flex }
+
+  .site-header{ height:var(--header-h-mobile) }
+
+  .logo{ left:12px }
+  .logo img{ height:var(--logo-h-mobile) !important }
+
+  .site-header .actions{ right:12px }
+
+  /* nav cachée par défaut */
+  .nav{
+    display:none !important;
+    margin-left:0;
+  }
+
+  /* nav ouverte : OVERLAY au-dessus de tout (fixe) */
+  .nav.open{
+    display:flex !important;
+    flex-direction:column;
+
+    position:fixed !important;         /* overlay robuste */
+    right:12px;
+    top:calc(var(--header-h-mobile) + 8px);
+
+    background:#0b1222;
+    padding:8px 12px;
+    border-radius:12px;
+    border:1px solid var(--bd);
+    box-shadow:0 12px 28px rgba(0,0,0,.4);
+
+    min-width:200px;
+    z-index:999 !important;            /* passe devant hero/switch */
+  }
+  .nav.open a{
+    padding:10px 8px;
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .nav.open a:last-child{ border-bottom:0 }
+
+  /* Switch langue compact */
+  .lang-switch.lang--header{ right:12px; top:calc(100% + 8px); z-index:80; }
+  .lang-switch.lang--header button{ padding:6px 10px }
+}

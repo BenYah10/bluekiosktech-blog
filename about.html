@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title data-i18n="nav_about">À propos — Bluekiosktech</title>
+  <meta name="description" content="À propos de Bluekiosktech : hygiène clean-tech, désinfection 99,99% en < 2 min, libre-service 24/7 pour gyms, bureaux et campus." />
+  <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body class="theme-light">
+  <header class="site-header">
+    <div class="container row between center">
+      <!-- Logo -->
+      <a class="logo" href="index.html">
+        <img src="assets/images/logo-blog.svg" alt="Bluekiosktech" />
+        <span class="sr-only">Bluekiosktech.blog</span>
+      </a>
+
+      <!-- Nav -->
+      <nav id="nav" class="nav">
+        <a href="index.html" data-i18n="nav_home">Accueil</a>
+        <a href="blog.html" data-i18n="nav_blog">Articles</a>
+        <a href="about.html" class="active" data-i18n="nav_about">À propos</a>
+        <a href="contact.html" data-i18n="nav_contact">Contact</a>
+      </nav>
+ 
+      <!-- Actions -->
+      <div class="actions">
+        <button id="themeToggle" aria-label="Basculer le thème">🌓</button>
+        <button id="menuToggle" class="only-mobile" aria-label="Menu">☰</button>
+      </div>
+
+       <!-- SWITCH LANG sous le header -->
+       <div class="lang-switch lang--header" aria-label="Language switch">
+        <button id="lang-fr" class="is-active" aria-pressed="true">FR</button>
+        <button id="lang-en" aria-pressed="false">EN</button>
+       </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Mission -->
+    <section class="card" style="margin-top:18px">
+      <h1 data-i18n="about_mission_title">Notre mission</h1>
+      <p data-i18n="about_mission_text">
+        Permettre une <strong>hygiène sans friction</strong> grâce à une désinfection de gourdes
+        <strong>99,99%</strong> en <strong>&lt; 2 minutes</strong>, accessible en libre-service <strong>24/7</strong>.
+        Nous concevons des solutions clean-tech simples à opérer pour les <em>gyms</em>, les bureaux et les campus.
+      </p>
+    </section>
+
+    <!-- 3 colonnes -->
+    <section class="grid cards" style="margin-top:16px">
+      <article class="card">
+        <h3 data-i18n="about_value_title">Ce que nous apportons</h3>
+        <ul>
+          <li data-i18n="about_value_1">Cycle court &amp; reproductible pour une hygiène fiable.</li>
+          <li data-i18n="about_value_2">Expérience utilisateur claire → adoption naturelle.</li>
+          <li data-i18n="about_value_3">Suivi opérationnel simple pour les gestionnaires.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3 data-i18n="about_who_title">À qui cela s’adresse</h3>
+        <ul>
+          <li data-i18n="about_who_1">Gestionnaires de salles de sport et studios.</li>
+          <li data-i18n="about_who_2">Responsables d’installations en entreprises.</li>
+          <li data-i18n="about_who_3">Administrations de campus et résidences étudiantes.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3 data-i18n="about_principles_title">Nos principes</h3>
+        <ul>
+          <li data-i18n="about_principles_1"><strong>Simplicité</strong> : 3 secondes pour comprendre.</li>
+          <li data-i18n="about_principles_2"><strong>Fiabilité</strong> : protocole mesurable.</li>
+          <li data-i18n="about_principles_3"><strong>Durabilité</strong> : réutiliser sans risque.</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- CTA pilote -->
+    <section class="card" style="margin-top:16px">
+      <h2 data-i18n="cta_pilot_title">Devenir site pilote</h2>
+      <p data-i18n="about_pilot_text">Intéressé par un déploiement dans votre site ?</p>
+      <p>
+        <a class="btn primary" href="https://bluekiosktech.ca/?utm_source=blog&utm_medium=about&utm_campaign=waitlist" data-i18n="cta_waitlist">Rejoindre la liste d’attente</a>
+        <a class="btn ghost" href="https://www.bluekiosk.tech/?utm_source=blog&utm_medium=about&utm_campaign=feedback" data-i18n="cta_feedback">Donner votre avis</a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+  <div class="container row between">
+    <p>© <span id="year"></span> Bluekiosktech.
+      <span data-i18n="footer_copy">Tous droits réservés.</span>
+    </p>
+
+    <p>
+      <a href="privacy.html" data-i18n="footer_privacy">Politique de confidentialité</a>
+    </p>
+  </div>
+</footer>
+
+
+  <!-- JS -->
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/render.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <!-- i18n init (au cas où main.js ne l’a pas déjà fait) -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function(){
+    if (typeof applyI18N==='function') applyI18N();
+  });
+</script>
+
+</body>
+</html>

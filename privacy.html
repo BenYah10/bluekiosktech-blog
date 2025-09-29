@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Politique de confidentialité — Bluekiosktech.blog</title>
+  <link rel="canonical" href="https://bluekiosktech.blog/privacy.html" />
+
+  <!-- Style du blog -->
+  <link rel="stylesheet" href="assets/css/main.css" />
+
+  <!-- SEO de base -->
+  <meta name="robots" content="index,follow" />
+  <meta name="description" content="Comment nous collectons, utilisons et protégeons vos données sur Bluekiosktech.blog." />
+  <meta name="theme-color" content="#0b1220" />
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Bluekiosktech.blog" />
+  <meta property="og:title" content="Politique de confidentialité — Bluekiosktech.blog" />
+  <meta property="og:description" content="Comment nous collectons, utilisons et protégeons vos données." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://bluekiosktech.blog/privacy.html" />
+
+  <!-- (Optionnel) Image OG -->
+  <!-- <meta property="og:image" content="https://bluekiosktech.blog/assets/images/og.jpg" /> -->
+</head>
+
+<body>
+  <!-- Header identique aux autres pages -->
+  <header class="site-header">
+    <div class="container row between center">
+      <!-- LOGO -->
+      <a class="logo" href="index.html" aria-label="Accueil Bluekiosktech">
+        <img src="assets/images/logo-blog.svg" alt="Bluekiosktech" />
+        <span class="sr-only">Bluekiosktech.blog</span>
+      </a>
+
+      <!-- NAV -->
+      <nav id="nav" class="nav">
+        <a href="index.html" data-i18n="nav_home">Accueil</a>
+        <a href="blog.html" data-i18n="nav_blog">Articles</a>
+        <a href="about.html" data-i18n="nav_about">À propos</a>
+        <a href="contact.html" data-i18n="nav_contact">Contact</a>
+      </nav>
+
+      <!-- ACTIONS -->
+      <div class="actions">
+        <button id="themeToggle" aria-label="Basculer le thème">🌓</button>
+        <button id="menuToggle" class="only-mobile" aria-label="Menu" type="button">☰</button>
+      </div>
+
+      <!-- Switch langue (même style que le site) -->
+      <div class="lang-switch lang--header" aria-label="Language switch">
+        <button id="lang-fr" class="is-active" aria-pressed="true">FR</button>
+        <button id="lang-en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenu -->
+  <main class="container" style="padding:32px 0 56px">
+    <h1 class="headline" data-priv="title">Politique de confidentialité</h1>
+    <p class="subtitle" data-priv="updated">Dernière mise à jour : 5 sept. 2025</p>
+
+    <section class="card" style="margin-top:18px">
+      <p data-priv-html="intro">
+        Chez <strong>Bluekiosktech.blog</strong>, nous accordons une grande importance à la protection de vos données
+        personnelles. Cette politique explique quelles informations nous collectons, comment nous les utilisons,
+        combien de temps nous les conservons et quels sont vos droits.
+      </p>
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <h2 data-priv="controller.title">1. Responsable du traitement</h2>
+      <p data-priv-html="controller.body">
+        Le responsable du traitement est : <strong>BlueKioskTech</strong>.<br />
+        Contact : <a href="mailto:admin@bluekiosk.tech">admin@bluekiosk.tech</a>
+      </p>
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <h2 data-priv="data.title">2. Données collectées</h2>
+      <ul>
+        <li data-priv="data.li1">Réponses aux formulaires (contact / liste d’attente) et feedback.</li>
+        <li data-priv="data.li2">Adresse e-mail (optionnelle).</li>
+        <li data-priv="data.li3">Métadonnées techniques minimales (ex. journaux d’accès côté hébergeur).</li>
+        <li data-priv="data.li4">Préférence de langue (stockée localement sur votre appareil).</li>
+      </ul>
+      <p class="kpi-l" data-priv="data.note">
+        Nous ne collectons que les données que vous nous fournissez volontairement.
+      </p>
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <h2 data-priv="usage.title">3. Finalités d’utilisation</h2>
+      <ul>
+        <li data-priv="usage.li1">Gérer la liste d’attente et vous contacter lors du lancement.</li>
+        <li data-priv="usage.li2">Analyser vos retours pour améliorer nos services et produits.</li>
+        <li data-priv="usage.li3">Mesurer l’intérêt (statistiques agrégées/anonymisées).</li>
+      </ul>
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <h2 data-priv="basis.title">4. Base légale</h2>
+      <ul>
+        <li data-priv="basis.li1">Votre consentement (opt-in volontaire, feedback).</li>
+        <li data-priv="basis.li2">Intérêt légitime (sécurité, prévention des abus).</li>
+      </ul>
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <h2 data-priv="share.title">5. Sous-traitants & hébergement</h2>
+      <ul>
+        <li data-priv-html="share.li1"><strong>Hébergement :</strong> Vercel/Netlify (journaux d’accès standard).</li>
+        <li data-priv-html="share.li2"><strong>Envoi d’e-mails :</strong> SendGrid/EmailJS (selon la page de contact).</li>
+        <li data-priv-html="share.li3"><strong>Stockage :</strong> Google Workspace/Sheets (données de formulaire).</li>
+      </ul>
+      <p class="kpi-l" data-priv="share.note">
+        Ces prestataires traitent les données pour notre compte et selon nos instructions, avec des garanties de sécurité appropriées.
+      </p>
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <h2 data-priv="retention.title">6. Durée de conservation</h2>
+      <p data-priv="retention.body">
+        Nous conservons vos données jusqu’à 24 mois après la collecte, sauf demande de suppression antérieure
+        ou obligation légale différente.
+      </p>
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <h2 data-priv="rights.title">7. Vos droits</h2>
+      <ul>
+        <li data-priv="rights.li1">Accès, rectification, effacement.</li>
+        <li data-priv="rights.li2">Retrait du consentement à tout moment.</li>
+        <li data-priv="rights.li3">Limitation/opposition (selon votre juridiction).</li>
+        <li data-priv="rights.li4">Plainte auprès de votre autorité de protection des données.</li>
+      </ul>
+      <p data-priv-html="rights.note">
+        Pour exercer vos droits : <a href="mailto:admin@bluekiosk.tech">admin@bluekiosk.tech</a>
+      </p>
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <h2 data-priv="contact.title">8. Contact</h2>
+      <p data-priv-html="contact.body">
+        Pour toute question relative à cette politique : <a href="mailto:admin@bluekiosk.tech">admin@bluekiosk.tech</a>.
+      </p>
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <p class="kpi-l" data-priv="disclaimer">
+        Cette politique peut être mise à jour. La date en tête de page indique la dernière révision.
+      </p>
+    </section>
+  </main>
+
+  <!-- Footer (même style que le blog) -->
+  <footer class="site-footer">
+    <div class="container row between">
+    <p>© <span id="year"></span> Bluekiosktech.
+      <span data-i18n="footer_copy">Tous droits réservés.</span>
+    </p>
+
+    <p>
+      <a href="privacy.html" data-i18n="footer_privacy">Politique de confidentialité</a>
+    </p>
+  </div>
+  </footer>
+
+  <!-- Scripts globaux -->
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <!-- Script de cette page (i18n local) -->
+  <script src="assets/js/privacy.js" defer></script>
+
+  <!-- Init : appliquer la i18n globale puis la i18n locale -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof applyI18N === 'function') applyI18N(); // nav, footer, etc.
+    });
+  </script>
+</body>
+</html>

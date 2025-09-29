@@ -1,0 +1,18 @@
+{
+  "redirects": [
+    { "source": "/blog", "destination": "/blog.html", "permanent": false },
+    { "source": "/about", "destination": "/about.html", "permanent": false },
+    { "source": "/contact", "destination": "/contact.html", "permanent": false },
+    { "source": "/privacy", "destination": "/privacy.html", "permanent": false },
+    { "source": "/post", "destination": "/post.html", "permanent": false },
+    { "source": "/success", "destination": "/success.html", "permanent": false }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)\\.(css|js|png|jpg|jpeg|svg|webp)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ]
+}

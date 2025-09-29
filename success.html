@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title data-i18n="contact_success_title">Message envoyé — Bluekiosktech</title>
+  <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container row between center">
+      <a class="logo" href="index.html">
+        <img src="assets/images/logo-blog.svg" alt="Bluekiosktech" />
+        <span class="sr-only">Bluekiosktech.blog</span>
+      </a>
+      <nav id="nav" class="nav">
+        <a href="index.html" data-i18n="nav_home">Accueil</a>
+        <a href="blog.html" data-i18n="nav_blog">Articles</a>
+        <a href="about.html" data-i18n="nav_about">À propos</a>
+        <a href="contact.html" data-i18n="nav_contact">Contact</a>
+      </nav>
+      <div class="actions">
+        <button id="langToggle" class="lang-switch" aria-label="Language">FR</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card" style="margin-top:18px">
+      <h1 data-i18n="contact_success_title">Merci, votre message a été envoyé ✅</h1>
+      <p data-i18n="contact_success_text">Nous revenons vers vous très vite. En attendant, découvrez nos derniers articles.</p>
+      <p><a class="btn primary" href="blog.html" data-i18n="cta_read">Lire les articles</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container row between">
+      <p>© <span id="year"></span> Bluekiosktech. <span data-i18n="footer_copy">Tous droits réservés.</span></p>
+    </div>
+  </footer>
+
+  <script src="assets/js/i18n.js"></script>
+  <script>
+    // init simple
+    document.addEventListener('DOMContentLoaded', ()=>{
+      if(typeof applyI18N==='function') applyI18N();
+      const btn=document.getElementById('langToggle');
+      btn && btn.addEventListener('click', ()=>{ Lang.set(Lang.get()==='fr'?'en':'fr'); applyI18N(); btn.textContent = Lang.get().toUpperCase(); });
+      const y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title data-i18n="nav_contact">Contact — Bluekiosktech</title>
+  <meta name="description" content="Contactez Bluekiosktech pour une démo, devenir site pilote ou toute question presse/partenariats." />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    .form{display:grid;gap:12px}
+    .input,.textarea,select{width:100%;background:#0b1222;border:1px solid var(--bd);border-radius:12px;padding:12px;color:var(--text)}
+    .textarea{min-height:140px;resize:vertical}
+    .two{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+    @media(max-width:760px){.two{grid-template-columns:1fr}}
+    .hidden{position:absolute !important; left:-9999px; opacity:0}
+  </style>
+</head>
+<body class="theme-light">
+  <header class="site-header">
+    <div class="container row between center">
+      <a class="logo" href="index.html">
+        <img src="assets/images/logo-blog.svg" alt="Bluekiosktech" />
+        <span class="sr-only">Bluekiosktech.blog</span>
+      </a>
+      <nav id="nav" class="nav">
+        <a href="index.html" data-i18n="nav_home">Accueil</a>
+        <a href="blog.html" data-i18n="nav_blog">Articles</a>
+        <a href="about.html" data-i18n="nav_about">À propos</a>
+        <a href="contact.html" class="active" data-i18n="nav_contact">Contact</a>
+      </nav>
+      <div class="actions">
+        <button id="themeToggle" aria-label="Basculer le thème">🌓</button>
+        <button id="menuToggle" class="only-mobile" aria-label="Menu" type="button">☰</button>
+      </div>
+
+       <!-- SWITCH LANG sous le header -->
+       <div class="lang-switch lang--header" aria-label="Language switch">
+        <button id="lang-fr" class="is-active" aria-pressed="true">FR</button>
+        <button id="lang-en" aria-pressed="false">EN</button>
+       </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card" style="margin-top:18px">
+      <h1 data-i18n="contact_title">Nous écrire</h1>
+      <p data-i18n="contact_intro">Besoin d’une démo, d’informations pour un pilote ou d’un contact presse/partenariat ? Laissez-nous un message.</p>
+
+      <!-- Netlify Forms -->
+      <form class="form" name="contact" method="POST" action="/success.html"
+            data-netlify="true" netlify-honeypot="bot-field">
+        <!-- Hidden form-name (obligatoire) -->
+        <input type="hidden" name="form-name" value="contact" />
+        <!-- Honeypot -->
+        <p class="hidden">
+          <label>Don’t fill this out if you’re human:
+            <input name="bot-field" />
+          </label>
+        </p>
+
+        <div class="two">
+          <div>
+            <label for="fullname" data-i18n="contact_fullname_label">Nom complet</label><br>
+            <input id="fullname" name="Nom" class="input" type="text" required data-i18n-ph="contact_fullname_ph" />
+          </div>
+          <div>
+            <label for="email" data-i18n="contact_email_label">Email</label><br>
+            <input id="email" name="Email" class="input" type="email" required data-i18n-ph="contact_email_ph" />
+          </div>
+        </div>
+
+        <div class="two">
+          <div>
+            <label for="org" data-i18n="contact_org_label">Organisation (facultatif)</label><br>
+            <input id="org" name="Organisation" class="input" type="text" data-i18n-ph="contact_org_ph" />
+          </div>
+          <div>
+            <label for="subject" data-i18n="contact_subject_label">Sujet</label><br>
+            <input id="subject" name="Sujet" class="input" type="text" required data-i18n-ph="contact_subject_ph" />
+          </div>
+        </div>
+
+        <!-- Type de demande (démo, pilote, support) -->
+        <div>
+          <label for="reqtype" data-i18n="contact_type_label">Type de demande</label><br>
+          <select id="reqtype" name="Type" class="input" required>
+            <option value="" data-i18n="contact_type_placeholder">— Sélectionner —</option>
+            <option value="demo" data-i18n="contact_type_demo">Démo</option>
+            <option value="pilot" data-i18n="contact_type_pilot">Site pilote</option>
+            <option value="support" data-i18n="contact_type_support">Support</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="message" data-i18n="contact_message_label">Message</label><br>
+          <textarea id="message" name="Message" class="textarea" required data-i18n-ph="contact_message_ph"></textarea>
+        </div>
+
+        <!-- reCAPTCHA Netlify (activer dans le Dashboard Netlify) -->
+        <div data-netlify-recaptcha="true"></div>
+
+        <div>
+          <button class="btn primary" type="submit" data-i18n="contact_send">Envoyer</button>
+          <button class="btn ghost" type="reset" style="margin-left:8px" data-i18n="contact_clear">Effacer</button>
+        </div>
+      </form>
+
+      <p class="muted" style="margin-top:8px" data-i18n="contact_hint">
+        Astuce : si vous ne voyez pas de page de succès, vérifiez que le site est bien déployé sur Netlify et que le formulaire “contact” apparaît dans Forms.
+      </p>
+    </section>
+
+    <section class="grid cards" style="margin-top:16px">
+      <article class="card">
+        <h3 data-i18n="cta_pilot_title">Devenir site pilote</h3>
+        <p data-i18n="cta_pilot_desc">Vous gérez un gym, un campus ou un bureau ? Testez BlueKiosk en avant-première.</p>
+        <p>
+          <a class="btn primary" href="https://bluekiosktech.ca/?utm_source=blog&utm_medium=contact&utm_campaign=waitlist" data-i18n="cta_waitlist">Rejoindre la liste d’attente</a>
+          <a class="btn ghost" href="https://www.bluekiosk.tech/?utm_source=blog&utm_medium=contact&utm_campaign=feedback" data-i18n="cta_feedback">Donner votre avis</a>
+        </p>
+      </article>
+      <article class="card">
+        <h3 data-i18n="contact_social_title">Réseaux & support</h3>
+        <p data-i18n="contact_social_text">Pour toute demande rapide, n’hésitez pas à nous écrire ou à passer par les réseaux sociaux.</p>
+        <ul>
+          <li>Email : <a href="mailto:info@bluekiosktech.ca">info@bluekiosktech.ca</a></li>
+          <li>Site : <a href="https://bluekiosktech.ca/">bluekiosktech.ca</a></li>
+          <li>Feedback : <a href="https://www.bluekiosk.tech/">bluekiosk.tech</a></li>
+        </ul>
+      </article>
+    </section>
+  </main>
+
+<footer class="site-footer">
+  <div class="container row between">
+    <p>© <span id="year"></span> Bluekiosktech.
+      <span data-i18n="footer_copy">Tous droits réservés.</span>
+    </p>
+
+    <p>
+      <a href="privacy.html" data-i18n="footer_privacy">Politique de confidentialité</a>
+    </p>
+  </div>
+</footer>
+
+
+  <!-- JS -->
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/render.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <!-- i18n placeholders -->
+ <!-- i18n + placeholders (sans #langToggle) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      if (typeof applyI18N === 'function') applyI18N();
+
+      const setPH = (id, key) => {
+        const el = document.getElementById(id);
+        if (el && typeof Lang !== 'undefined') el.placeholder = Lang.t(key);
+      };
+      setPH('fullname','contact_fullname_ph');
+      setPH('email','contact_email_ph');
+      setPH('org','contact_org_ph');
+      setPH('subject','contact_subject_ph');
+      setPH('message','contact_message_ph');
+
+      
+    });
+  </script>
+</body>
+</html>

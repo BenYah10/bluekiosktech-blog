@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title id="postTitleTag">Article — Bluekiosktech</title>
+  <meta name="description" id="postDescTag" content="Article du blog Bluekiosktech." />
+  <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body class="theme-light">
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container row between center">
+      <a class="logo" href="index.html">
+        <img src="assets/images/logo-blog.svg" alt="Bluekiosktech" />
+        <span class="sr-only">Bluekiosktech.blog</span>
+      </a>
+
+      <nav id="nav" class="nav">
+        <a href="index.html" data-i18n="nav_home">Accueil</a>
+        <a href="blog.html" class="active" data-i18n="nav_blog">Articles</a>
+        <a href="about.html" data-i18n="nav_about">À propos</a>
+        <a href="contact.html" data-i18n="nav_contact">Contact</a>
+      </nav>
+
+      <div class="actions">
+        <button id="themeToggle" aria-label="Basculer le thème">🌓</button>
+        <button id="menuToggle" class="only-mobile" aria-label="Menu" type="button">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="container">
+    <!-- Contenu de l’article -->
+    <article id="article" class="article card">
+      <div class="meta" id="postMeta"></div>
+
+      <!-- >>> Ajout demandé : titre + contenu rendus par render.js -->
+      <h1 id="postTitle"></h1>
+      <div id="postContent"></div>
+      <!-- <<< -->
+    </article>
+
+    <!-- Aside -->
+    <aside class="post-aside">
+      <div class="card">
+        <h3 data-i18n="related_posts">Articles connexes</h3>
+        <div id="related"></div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <h3 data-i18n="cta_pilot_title">Devenir site pilote</h3>
+        <p data-i18n="cta_pilot_desc">Cycle <strong>&lt; 2 minutes</strong>, interface claire, 24/7.</p>
+        <p>
+          <a class="btn primary"
+             href="https://bluekiosktech.ca/?utm_source=blog&utm_medium=sidebar&utm_campaign=waitlist"
+             data-i18n="cta_waitlist">Rejoindre la liste d’attente</a>
+        </p>
+        <p>
+          <a class="btn ghost"
+             href="https://www.bluekiosk.tech/?utm_source=blog&utm_medium=sidebar&utm_campaign=feedback"
+             data-i18n="cta_feedback">Donner votre avis</a>
+        </p>
+      </div>
+    </aside>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+  <div class="container row between">
+    <p>© <span id="year"></span> Bluekiosktech.
+      <span data-i18n="footer_copy">Tous droits réservés.</span>
+    </p>
+
+    <p>
+      <a href="privacy.html" data-i18n="footer_privacy">Politique de confidentialité</a>
+    </p>
+  </div>
+</footer>
+
+
+  <!-- Scripts (ordre important) -->
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/render.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

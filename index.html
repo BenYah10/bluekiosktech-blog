@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bluekiosktech — Blog</title>
+  <meta name="description" content="Hygiène clean-tech sans friction : désinfection de gourdes 99,99% en < 2 min. Guides, cas d’usage et avancées produit pour gyms, bureaux et campus." />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <meta property="og:title" content="Bluekiosktech — Blog" />
+  <meta property="og:description" content="Désinfection 99,99% en < 2 min, libre-service 24/7. Contenus pour gestionnaires de gyms, bureaux et campus." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="/" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Bluekiosktech Blog",
+    "url": "/",
+    "description": "Hygiène clean-tech, études de cas et roadmap produit.",
+    "publisher": { "@type": "Organization", "name": "Bluekiosktech" }
+  }
+  </script>
+</head>
+<body class="theme-light">
+  <header class="site-header">
+    <div class="container row between center">
+
+      <!-- LOGO -->
+      <a class="logo" href="index.html">
+        <img src="assets/images/logo-blog.svg" alt="Bluekiosktech" />
+        <span class="sr-only">Bluekiosktech.blog</span>
+      </a>
+
+      <!-- NAV avec data-i18n -->
+      <nav id="nav" class="nav">
+        <a href="index.html" data-i18n="nav_home">Accueil</a>
+        <a href="blog.html" data-i18n="nav_blog">Articles</a>
+        <a href="about.html" data-i18n="nav_about">À propos</a>
+        <a href="contact.html" data-i18n="nav_contact">Contact</a>
+      </nav>
+
+      <!-- ACTIONS : switch langue + thème + burger -->
+      <div class="actions">
+        <button id="themeToggle" aria-label="Basculer le thème">🌓</button>
+        <button id="menuToggle" class="only-mobile" aria-label="Menu" type="button">☰</button>
+      </div>
+
+      <!-- SWITCH LANG sous "Contact" (collé au bord droit) -->
+      <div class="lang-switch lang--header" aria-label="Language switch">
+        <button id="lang-fr" class="is-active" aria-pressed="true">FR</button>
+        <button id="lang-en" aria-pressed="false">EN</button>
+      </div>
+
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+       
+      <div class="container">
+        <h1 data-i18n="hero_title">Hygiène clean-tech, sans friction</h1>
+        <p data-i18n="hero_sub">
+          Désinfection de gourdes <strong>99,99%</strong> en <strong>&lt; 2 min</strong>, libre-service <strong>24/7</strong>.
+          Guides, études de cas et avancées produit pour gyms, bureaux et campus.
+        </p>
+        <div class="hero-cta">
+          <a class="btn primary" href="blog.html" data-i18n="cta_read">Lire les articles</a>
+          <a class="btn ghost" href="https://bluekiosktech.ca/?utm_source=blog&utm_medium=hero&utm_campaign=waitlist" data-i18n="cta_waitlist">Rejoindre la liste d’attente</a>
+          <a class="btn ghost" href="https://www.bluekiosk.tech/?utm_source=blog&utm_medium=hero&utm_campaign=feedback" data-i18n="cta_feedback">Donner votre avis</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- DERNIERS ARTICLES -->
+    <section class="container">
+      <h2 data-i18n="latest_posts">Derniers articles</h2>
+      <div id="latestGrid" class="grid cards"></div>
+    </section>
+
+    <!-- CATÉGORIES -->
+    <section class="container">
+      <h2 data-i18n="categories">Catégories</h2>
+      <ul class="chips">
+        <li><a href="blog.html?cat=hygiene" class="chip" data-i18n="cat_hygiene">Hygiène &amp; Clean-Tech</a></li>
+        <li><a href="blog.html?cat=pilotes" class="chip" data-i18n="cat_pilotes">Cas d’usage &amp; Pilotes</a></li>
+        <li><a href="blog.html?cat=produit" class="chip" data-i18n="cat_produit">Produit &amp; Roadmap</a></li>
+        <li><a href="blog.html?cat=ops" class="chip" data-i18n="cat_ops">Opérations pour gyms</a></li>
+        <li><a href="blog.html?cat=durabilite" class="chip" data-i18n="cat_durabilite">Durabilité &amp; Impact</a></li>
+        <li><a href="blog.html?cat=actus" class="chip" data-i18n="cat_actus">Communauté &amp; Actus</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container row between">
+    <p>© <span id="year"></span> Bluekiosktech.
+      <span data-i18n="footer_copy">Tous droits réservés.</span>
+    </p>
+
+    <p>
+      <a href="privacy.html" data-i18n="footer_privacy">Politique de confidentialité</a>
+    </p>
+  </div>
+</footer>
+
+    <div class="container">
+      <div class="card" style="margin-top:12px">
+        <h3 data-i18n="cta_pilot_title">Devenir site pilote</h3>
+        <p data-i18n="cta_pilot_desc">Vous gérez un gym, un campus ou un bureau ? Testez BlueKiosk en avant-première.</p>
+        <p>
+          <a class="btn primary" href="https://bluekiosktech.ca/?utm_source=blog&utm_medium=footer&utm_campaign=waitlist" data-i18n="cta_waitlist">Rejoindre la liste d’attente</a>
+          <a class="btn ghost" href="https://www.bluekiosk.tech/?utm_source=blog&utm_medium=footer&utm_campaign=feedback" data-i18n="cta_feedback">Donner votre avis</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/render.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <!-- Initialisation i18n minimale (au cas où main.js ne l’inclut pas déjà) -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function(){
+    if (typeof applyI18N==='function') applyI18N();
+    if (typeof refreshPosts==='function') refreshPosts();
+    if (typeof renderHome==='function') renderHome();
+  });
+</script>
+</body>
+</html>

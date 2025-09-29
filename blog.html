@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Articles — Bluekiosktech</title>
+  <meta name="description" content="Tous les articles : hygiène clean-tech, cas d’usage, produit & roadmap, opérations pour gyms, durabilité et communauté." />
+  <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body class="theme-light">
+  <header class="site-header">
+    <div class="container row between center">
+      <!-- LOGO -->
+      <a class="logo" href="index.html">
+        <img src="assets/images/logo-blog.svg" alt="Bluekiosktech" />
+        <span class="sr-only">Bluekiosktech.blog</span>
+      </a>
+
+      <!-- NAV (libellés i18n) -->
+      <nav id="nav" class="nav">
+        <a href="index.html" data-i18n="nav_home">Accueil</a>
+        <a href="blog.html" class="active" data-i18n="nav_blog">Articles</a>
+        <a href="about.html" data-i18n="nav_about">À propos</a>
+        <a href="contact.html" data-i18n="nav_contact">Contact</a>
+      </nav>
+
+      <!-- ACTIONS -->
+      <div class="actions">
+        <button id="themeToggle" aria-label="Basculer le thème">🌓</button>
+        <button id="menuToggle" class="only-mobile" aria-label="Menu" type="button">☰</button>
+      </div>
+
+      <!-- SWITCH LANG -->
+      <div class="lang-switch lang--header" aria-label="Language switch">
+        <button id="lang-fr" class="is-active" aria-pressed="true">FR</button>
+        <button id="lang-en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 data-i18n="nav_blog">Articles</h1>
+
+    <div class="toolbar row wrap gap">
+      <input id="searchInput" class="input" type="search" placeholder="Rechercher un article…" />
+
+      <!-- Catégories (value=all pour ne pas filtrer) -->
+      <select id="categoryFilter" class="input">
+        <option value="all" data-i18n="all_categories">Toutes catégories</option>
+        <option value="hygiene" data-i18n="cat_hygiene">Hygiène &amp; Clean-Tech</option>
+        <option value="pilotes" data-i18n="cat_pilotes">Cas d’usage &amp; Pilotes</option>
+        <option value="produit" data-i18n="cat_produit">Produit &amp; Roadmap</option>
+        <option value="ops" data-i18n="cat_ops">Opérations pour gyms</option>
+        <option value="durabilite" data-i18n="cat_durabilite">Durabilité &amp; Impact</option>
+        <option value="actus" data-i18n="cat_actus">Communauté &amp; Actus</option>
+      </select>
+
+      <!-- Tri (valeurs alignées avec render.js : newest/oldest) -->
+      <select id="sortSelect" class="input">
+        <option value="newest" data-i18n="sort_recent">Plus récents</option>
+        <option value="oldest" data-i18n="sort_oldest">Plus anciens</option>
+      </select>
+    </div>
+
+    <!-- ⚠️ ID aligné avec render.js -->
+    <div id="postsList" class="grid cards"></div>
+    <div id="pagination" class="pagination"></div>
+  </main>
+
+  <footer class="site-footer">
+  <div class="container row between">
+    <p>© <span id="year"></span> Bluekiosktech.
+      <span data-i18n="footer_copy">Tous droits réservés.</span>
+    </p>
+
+    <p>
+      <a href="privacy.html" data-i18n="footer_privacy">Politique de confidentialité</a>
+    </p>
+  </div>
+</footer>
+
+
+  <!-- JS -->
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/render.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <!-- Init -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // i18n (libellés statiques)
+      if (typeof applyI18N === 'function') applyI18N();
+
+      // placeholder du champ de recherche selon la langue courante
+      const PH = { fr: "Rechercher un article…", en: "Search an article…" };
+      const input = document.getElementById('searchInput');
+      if (input && typeof Lang !== 'undefined') {
+        input.placeholder = Lang.get() === 'en' ? PH.en : PH.fr;
+      }
+
+      // affichage des articles
+      if (typeof refreshPosts === 'function') refreshPosts();
+      if (typeof renderList === 'function') renderList();
+    });
+  </script>
+</body>
+</html>
