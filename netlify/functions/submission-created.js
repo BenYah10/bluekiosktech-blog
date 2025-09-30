@@ -1,43 +1,38 @@
 // netlify/functions/submission-created.js
-exports.handler = async (event) => {
+'use strict';
+
+module.exports.handler = async (event) => {
   try {
-    // 1) GET = ping de santé
-    if (event.httpMethod === "GET") {
+    // 1) ping santé
+    if (event.httpMethod === 'GET') {
       return {
         statusCode: 200,
-        headers: { "Content-Type": "text/plain" },
-        body: "OK - submission-created is running",
+        headers: { 'Content-Type': 'text/plain' },
+        body: 'OK - submission-created is running',
       };
     }
 
-    // 2) POST = (on traitera l’envoi email après)
-    if (event.httpMethod !== "POST") {
-      return { statusCode: 405, body: "Method Not Allowed" };
+    // 2) on n’accepte que POST sinon 405
+    if (event.httpMethod !== 'POST') {
+      return { statusCode: 405, body: 'Method Not Allowed' };
     }
 
-    // Log complet pour contrôle
-    console.log("Incoming POST", {
-      headers: event.headers,
-      body: event.body,
-    });
-
-    // parse JSON attendu { payload: { data: {...} } } comme Netlify Forms
+    // 3) parse JSON
     let payload = {};
     try {
-      payload = JSON.parse(event.body || "{}");
+      payload = JSON.parse(event.body || '{}');
     } catch (e) {
-      console.error("JSON parse error:", e);
-      return { statusCode: 400, body: "Bad JSON" };
+      return { statusCode: 400, body: 'Bad JSON' };
     }
 
-    // Simule un traitement OK
+    // 4) renvoi simple (pas d’email pour l’instant)
     return {
       statusCode: 200,
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ok: true, received: payload }),
     };
   } catch (err) {
-    console.error("UNHANDLED ERROR:", err.stack || err);
-    return { statusCode: 500, body: "Internal Server Error" };
+    // si plantage inattendu
+    return { statusCode: 500, body: 'Internal Server Error' };
   }
 };
