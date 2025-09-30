@@ -1,29 +1,31 @@
 <!doctype html>
-<meta charset="utf-8" />
-<button id="btn">Tester</button>
-<script>
-const url = "https://bucolic-dusk-b5278c.netlify.app/.netlify/functions/submission-created";
-document.getElementById('btn').onclick = async () => {
-  const payload = {
-    payload: { data: {
-      Nom: "Test bouton",
-      Email: "demo@bluekiosk.tech",
-      Organisation: "BlueKioskTech",
-      Subject: "Démo",
-      Type: "demo",
-      Message: "Test depuis page hébergée"
-    }}
-  };
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type':'application/json' },
-      body: JSON.stringify(payload),
-    });
-    console.log('status', res.status);
-    console.log(await res.text());
-  } catch (e) {
-    console.error(e);
-  }
-};
-</script>
+<html lang="fr">
+  <meta charset="utf-8" />
+  <title>Test Function</title>
+  <button id="btn">Tester</button>
+  <script>
+    document.getElementById('btn').onclick = async () => {
+      const payload = {
+        payload: {
+          data: {
+            Nom: "Testeur",
+            Email: "test@example.com",
+            Organisation: "Bluekiosk",
+            Sujet: "Test direct",
+            Message: "Message de test",
+            type: "demo"
+          }
+        }
+      };
+
+      const res = await fetch("/.netlify/functions/submission-created", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(payload)
+      });
+
+      console.log("status:", res.status);
+      console.log("text:", await res.text());
+    };
+  </script>
+</html>
