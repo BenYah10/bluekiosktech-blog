@@ -11,8 +11,8 @@
     .input,.textarea,select{width:100%;background:#0b1222;border:1px solid var(--bd);border-radius:12px;padding:12px;color:var(--text)}
     .textarea{min-height:140px;resize:vertical}
     .two{display:grid;gap:12px;grid-template-columns:1fr 1fr}
-    @media(max-width:760px){.two{grid-template-columns:1fr}}
-    .hidden{position:absolute !important; left:-9999px; opacity:0}
+    @media (max-width:760px){.two{grid-template-columns:1fr}}
+    .hidden{position:absolute !important;left:-9999px;opacity:0}
   </style>
 </head>
 <body class="theme-light">
@@ -22,40 +22,51 @@
         <img src="assets/images/logo-blog.svg" alt="Bluekiosktech" />
         <span class="sr-only">Bluekiosktech.blog</span>
       </a>
+
       <nav id="nav" class="nav">
         <a href="index.html" data-i18n="nav_home">Accueil</a>
         <a href="blog.html" data-i18n="nav_blog">Articles</a>
         <a href="about.html" data-i18n="nav_about">À propos</a>
         <a href="contact.html" class="active" data-i18n="nav_contact">Contact</a>
       </nav>
+
       <div class="actions">
         <button id="themeToggle" aria-label="Basculer le thème">🌓</button>
         <button id="menuToggle" class="only-mobile" aria-label="Menu" type="button">☰</button>
       </div>
 
-       <!-- SWITCH LANG sous le header -->
-       <div class="lang-switch lang--header" aria-label="Language switch">
+      <!-- SWITCH LANG -->
+      <div class="lang-switch lang--header" aria-label="Language switch">
         <button id="lang-fr" class="is-active" aria-pressed="true">FR</button>
         <button id="lang-en" aria-pressed="false">EN</button>
-       </div>
+      </div>
     </div>
   </header>
 
   <main class="container">
     <section class="card" style="margin-top:18px">
       <h1 data-i18n="contact_title">Nous écrire</h1>
-      <p data-i18n="contact_intro">Besoin d’une démo, d’informations pour un pilote ou d’un contact presse/partenariat ? Laissez-nous un message.</p>
+      <p data-i18n="contact_intro">
+        Besoin d’une démo, d’informations pour un pilote ou d’un contact presse/partenariat ?
+        Laissez-nous un message.
+      </p>
 
-      <!-- Netlify Forms -->
-      <form class="form" name="contact" method="POST" action="/success.html"
-            data-netlify="true" netlify-honeypot="bot-field">
-        <!-- Hidden form-name (obligatoire) -->
+      <!-- ***************************************
+           NETLIFY FORMS (déclenche la Function)
+           *************************************** -->
+      <form
+        class="form"
+        name="contact"
+        method="POST"
+        action="/success.html"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+      >
+        <!-- requis par Netlify Forms -->
         <input type="hidden" name="form-name" value="contact" />
-        <!-- Honeypot -->
+        <!-- honeypot anti-spam -->
         <p class="hidden">
-          <label>Don’t fill this out if you’re human:
-            <input name="bot-field" />
-          </label>
+          <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
         </p>
 
         <div class="two">
@@ -80,13 +91,12 @@
           </div>
         </div>
 
-        <!-- Type de demande (démo, pilote, support) -->
         <div>
           <label for="reqtype" data-i18n="contact_type_label">Type de demande</label><br>
           <select id="reqtype" name="Type" class="input" required>
             <option value="" data-i18n="contact_type_placeholder">— Sélectionner —</option>
-            <option value="demo" data-i18n="contact_type_demo">Démo</option>
-            <option value="pilot" data-i18n="contact_type_pilot">Site pilote</option>
+            <option value="demo"   data-i18n="contact_type_demo">Démo</option>
+            <option value="pilot"  data-i18n="contact_type_pilot">Site pilote</option>
             <option value="support" data-i18n="contact_type_support">Support</option>
           </select>
         </div>
@@ -96,7 +106,7 @@
           <textarea id="message" name="Message" class="textarea" required data-i18n-ph="contact_message_ph"></textarea>
         </div>
 
-        <!-- reCAPTCHA Netlify (activer dans le Dashboard Netlify) -->
+        <!-- reCAPTCHA Netlify (activer dans Netlify > Forms si souhaité) -->
         <div data-netlify-recaptcha="true"></div>
 
         <div>
@@ -106,7 +116,8 @@
       </form>
 
       <p class="muted" style="margin-top:8px" data-i18n="contact_hint">
-        Astuce : si vous ne voyez pas de page de succès, vérifiez que le site est bien déployé sur Netlify et que le formulaire “contact” apparaît dans Forms.
+        Astuce : si vous ne voyez pas de page de succès, vérifiez que le site est bien déployé sur Netlify
+        et que le formulaire “contact” apparaît dans l’onglet Forms.
       </p>
     </section>
 
@@ -119,6 +130,7 @@
           <a class="btn ghost" href="https://www.bluekiosk.tech/?utm_source=blog&utm_medium=contact&utm_campaign=feedback" data-i18n="cta_feedback">Donner votre avis</a>
         </p>
       </article>
+
       <article class="card">
         <h3 data-i18n="contact_social_title">Réseaux & support</h3>
         <p data-i18n="contact_social_text">Pour toute demande rapide, n’hésitez pas à nous écrire ou à passer par les réseaux sociaux.</p>
@@ -131,18 +143,12 @@
     </section>
   </main>
 
-<footer class="site-footer">
-  <div class="container row between">
-    <p>© <span id="year"></span> Bluekiosktech.
-      <span data-i18n="footer_copy">Tous droits réservés.</span>
-    </p>
-
-    <p>
-      <a href="privacy.html" data-i18n="footer_privacy">Politique de confidentialité</a>
-    </p>
-  </div>
-</footer>
-
+  <footer class="site-footer">
+    <div class="container row between">
+      <p>© <span id="year"></span> Bluekiosktech. <span data-i18n="footer_copy">Tous droits réservés.</span></p>
+      <p><a href="privacy.html" data-i18n="footer_privacy">Politique de confidentialité</a></p>
+    </div>
+  </footer>
 
   <!-- JS -->
   <script src="assets/js/i18n.js"></script>
@@ -151,11 +157,9 @@
   <script src="assets/js/main.js"></script>
 
   <!-- i18n placeholders -->
- <!-- i18n + placeholders (sans #langToggle) -->
   <script>
     document.addEventListener('DOMContentLoaded', function(){
       if (typeof applyI18N === 'function') applyI18N();
-
       const setPH = (id, key) => {
         const el = document.getElementById(id);
         if (el && typeof Lang !== 'undefined') el.placeholder = Lang.t(key);
@@ -165,8 +169,6 @@
       setPH('org','contact_org_ph');
       setPH('subject','contact_subject_ph');
       setPH('message','contact_message_ph');
-
-      
     });
   </script>
 </body>
