@@ -1,9 +1,7 @@
 [build]
   publish = "."
+  command = "echo build"
 
 [functions]
   directory = "netlify/functions"
-  node_bundler = "zisi"   # <-- au lieu de esbuild
-
-[dev]
-  functions = "netlify/functions"
+  node_bundler = "esbuild"
