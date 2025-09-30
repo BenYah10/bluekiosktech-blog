@@ -97,12 +97,22 @@ ${message}
     };
 
     const res = await fetch(SENDGRID_API, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(sgBody),
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${API_KEY}`,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(sgBody),
+});
+
+if (!res.ok) {
+  const body = await res.text();
+  console.error("SendGrid error:", res.status, body);
+  return { statusCode: 500, body: "SendGrid error" };
+}
+
+console.log("SendGrid OK 202 for", toEmail, "subject:", mailSubject);
+
     });
 
     const headers = allowOrigin ? { "Access-Control-Allow-Origin": allowOrigin } : {};
@@ -122,3 +132,4 @@ ${message}
 function escapeHtml(str = "") {
   return str.toString().replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
+
