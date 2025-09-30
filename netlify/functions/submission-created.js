@@ -1,55 +1,65 @@
 // netlify/functions/submission-created.js
-// Router d'emails selon le champ "Type" d'un formulaire Netlify Forms
-// Envoi via SendGrid API (sans dépendance)
-
-// --- Config SendGrid ---
+// Accept both: Netlify Forms webhook payload OR direct JSON from the browser
 const SENDGRID_API = "https://api.sendgrid.com/v3/mail/send";
 
+const ALLOWED = (process.env.ALLOWED_ORIGIN || "").split(",").map(s => s.trim()).filter(Boolean);
+const ORIGIN_FALLBACK = "*"; // en dev uniquement; en prod on utilisera ALLOWED
+
 exports.handler = async (event) => {
+  const origin = event.headers.origin || "";
+  const allowOrigin = ALLOWED.includes(origin) ? origin : (process.env.NODE_ENV === "development" ? ORIGIN_FALLBACK : "");
+
+  // Préflight CORS
+  if (event.httpMethod === "OPTIONS") {
+    return {
+      statusCode: 204,
+      headers: {
+        "Access-Control-Allow-Origin": allowOrigin,
+        "Access-Control-Allow-Methods": "POST,OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type,Authorization",
+        "Access-Control-Max-Age": "86400",
+      },
+    };
+  }
+
+  if (event.httpMethod !== "POST") {
+    return { statusCode: 405, body: "Method Not Allowed" };
+  }
+
   try {
-    // L'événement "submission-created" arrive en JSON { payload: {...} }
     const body = JSON.parse(event.body || "{}");
-    const payload = body.payload || {};
-    const data = payload.data || {}; // champs du formulaire
+
+    // 1) Cas Netlify Forms: { payload: { data: {...}, form_name: "contact" } }
+    // 2) Cas appel direct:  { data: {...}, form_name: "contact" }
+    const payload = body.payload || body || {};
+    const data = payload.data || {};
     const formName = payload.form_name || payload.formName || "contact";
 
-    // Champs attendus (adaptés à ton contact.html)
     const fullName = data.Nom || data.name || data.fullname || "(Sans nom)";
-    const email = data.Email || data.email || "";
-    const org = data.Organisation || data.org || "";
-    const subject = data.Sujet || data.subject || "(Sans sujet)";
-    const type = (data.Type || "").toString().trim().toLowerCase(); // demo|pilot|support
-    const message = data.Message || data.message || "";
+    const email    = data.Email || data.email || "";
+    const org      = data.Organisation || data.org || "";
+    const subject  = data.Sujet || data.subject || "(Sans sujet)";
+    const type     = (data.Type || "").toString().trim().toLowerCase(); // demo|pilot|support
+    const message  = data.Message || data.message || "";
 
-    // ---- Routage : on regarde d'abord MAIL_TO_*, puis ROUTE_* (fallback) ----
     const ROUTE = {
-      demo:   process.env.MAIL_TO_DEMO   || process.env.ROUTE_DEMO,
-      pilot:  process.env.MAIL_TO_PILOT  || process.env.ROUTE_PILOT,
-      support:process.env.MAIL_TO_SUPPORT|| process.env.ROUTE_SUPPORT,
+      demo:    process.env.MAIL_TO_DEMO    || process.env.ROUTE_DEMO,
+      pilot:   process.env.MAIL_TO_PILOT   || process.env.ROUTE_PILOT,
+      support: process.env.MAIL_TO_SUPPORT || process.env.ROUTE_SUPPORT,
     };
-    const toEmail =
-      ROUTE[type] ||
-      process.env.MAIL_TO_DEFAULT || process.env.ROUTE_DEFAULT || "info@bluekiosktech.ca"; // fallback
+    const toEmail = ROUTE[type] || process.env.MAIL_TO_DEFAULT || process.env.ROUTE_DEFAULT || "info@bluekiosktech.ca";
 
-    // ---- Paramètres d'envoi ----
     const FROM_EMAIL = process.env.MAIL_FROM || "no-reply@bluekiosktech.ca";
     const FROM_NAME  = process.env.MAIL_FROM_NAME || "BlueKioskTech Blog";
-    const BCC_EMAIL  = process.env.MAIL_BCC || process.env.EMAIL_BCC || null; // optionnel
+    const BCC_EMAIL  = process.env.MAIL_BCC || process.env.EMAIL_BCC || null;
     const API_KEY    = process.env.SENDGRID_API_KEY;
 
-    if (!API_KEY) {
-      console.error("SENDGRID_API_KEY manquant.");
-      return { statusCode: 500, body: "Missing SENDGRID_API_KEY" };
-    }
+    if (!API_KEY) return { statusCode: 500, body: "Missing SENDGRID_API_KEY" };
 
-    // Sujet horodaté + Type
     const date = new Date().toLocaleString("fr-CA", { hour12: false });
     const mailSubject = `[${formName.toUpperCase()} · ${type || "unspecified"}] ${subject} — ${fullName} (${date})`;
 
-    // Corps texte
     const text = `
-Nouvelle soumission du formulaire "${formName}"
-
 Type : ${type || "(non renseigné)"}
 Nom  : ${fullName}
 Email: ${email}
@@ -58,13 +68,10 @@ Sujet: ${subject}
 
 Message:
 ${message}
+`.trim();
 
-— Fin du message —
-    `.trim();
-
-    // Variante HTML
     const html = `
-      <h2>Nouvelle soumission &ldquo;${formName}&rdquo;</h2>
+      <h2>Nouvelle soumission “${formName}”</h2>
       <ul>
         <li><strong>Type :</strong> ${type || "(non renseigné)"}</li>
         <li><strong>Nom :</strong> ${fullName}</li>
@@ -74,11 +81,8 @@ ${message}
       </ul>
       <h3>Message</h3>
       <pre style="white-space:pre-wrap">${escapeHtml(message)}</pre>
-      <hr>
-      <p style="color:#666">© BlueKioskTech — ${new Date().getFullYear()}</p>
     `;
 
-    // Construction de la requête SendGrid
     const personalization = { to: [{ email: toEmail }], subject: mailSubject };
     if (BCC_EMAIL) personalization.bcc = [{ email: BCC_EMAIL }];
 
@@ -101,25 +105,20 @@ ${message}
       body: JSON.stringify(sgBody),
     });
 
+    const headers = allowOrigin ? { "Access-Control-Allow-Origin": allowOrigin } : {};
     if (!res.ok) {
       const errText = await res.text();
       console.error("SendGrid error:", res.status, errText);
-      return { statusCode: 502, body: "SendGrid delivery failed" };
+      return { statusCode: 502, headers, body: "SendGrid delivery failed" };
     }
 
-    console.log(`Routé vers ${toEmail} (type=${type})`);
-    return { statusCode: 200, body: "OK" };
+    return { statusCode: 200, headers, body: "OK" };
   } catch (e) {
     console.error("Function error:", e);
     return { statusCode: 500, body: "Function error" };
   }
 };
 
-// utilitaire simple pour échapper le HTML dans le <pre>
 function escapeHtml(str = "") {
-  return str
-    .toString()
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+  return str.toString().replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
