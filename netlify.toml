@@ -3,13 +3,7 @@
 
 [functions]
   directory = "netlify/functions"
-  node_bundler = "esbuild"   # safe par défaut
+  node_bundler = "zisi"   # <-- au lieu de esbuild
 
 [dev]
   functions = "netlify/functions"
-
-# (Optionnel) Activer la page de succès côté préprod si besoin
-# [[redirects]]
-#   from = "/success"
-#   to = "/success.html"
-#   status = 200
