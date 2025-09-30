@@ -1,13 +1,8 @@
-# netlify.toml (minimal et sûr)
 [build]
-  publish = "."              # où se trouvent tes fichiers HTML (index.html, contact.html, success.html…)
-  functions = "netlify/functions"  # dossier des Netlify Functions
+  publish = "."
+  functions = "netlify/functions"
 
-[functions]
-  node_bundler = "esbuild"   # bundling fiable (même pour .cjs, esbuild gère)
-  external_node_modules = [] # rien de spécial
-
-# Optionnel: forcer la version Node côté build (au cas où)
-[build.environment]
-  NODE_VERSION = "18"
-  AWS_LAMBDA_JS_RUNTIME = "nodejs18.x"
+[[redirects]]
+  from = "/success"
+  to = "/success.html"
+  status = 200
