@@ -1,3 +1,35 @@
+// ---- CORS helpers ----
+const ALLOWED_ORIGIN = '*'; // ou mets ton domaine Netlify/Vercel si tu veux restreindre
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS'
+};
+
+exports.handler = async (event, context) => {
+  // Répondre au preflight CORS
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 204, headers: CORS_HEADERS };
+  }
+
+  try {
+    // …ton code existant (parsing, routage, envoi SendGrid)…
+    // A la fin, renvoie les headers CORS aussi :
+    return {
+      statusCode: 200,
+      headers: CORS_HEADERS,
+      body: JSON.stringify({ ok: true })
+    };
+  } catch (err) {
+    console.error('Function error', err);
+    return {
+      statusCode: 500,
+      headers: CORS_HEADERS,
+      body: JSON.stringify({ ok: false, error: err.message })
+    };
+  }
+};
+
 // netlify/functions/submission-created.js
 // Reçoit l’événement submission-created de Netlify Forms et envoie l'email via SendGrid
 
@@ -112,3 +144,4 @@ exports.handler = async (event) => {
     };
   }
 };
+
