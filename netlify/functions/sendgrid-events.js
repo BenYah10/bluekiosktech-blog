@@ -67,9 +67,29 @@ exports.handler = async (event) => {
       });
     }
 
+    // Notif Slack sur incidents
+const slackUrl = process.env.SLACK_WEBHOOK_URL;
+const INCIDENTS = new Set(["bounced", "dropped", "spamreport"]);
+for (const e of events) {
+  if (!slackUrl || !INCIDENTS.has(e.event)) continue;
+  const txt =
+    `✉️ *${e.event.toUpperCase()}* — ${e.email}\n` +
+    `• message_id: ${e.sg_message_id}\n` +
+    (e.reason ? `• reason: ${e.reason}\n` : "") +
+    (e.category ? `• categories: ${JSON.stringify(e.category)}\n` : "") +
+    (e.custom_args ? `• custom_args: ${JSON.stringify(e.custom_args)}\n` : "");
+  await fetch(slackUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text: txt })
+  });
+}
+
+
     return { statusCode: 200, body: "ok" }; // important: 2xx évite les retries
   } catch (err) {
     console.error("Webhook error:", err);
     return { statusCode: 400, body: "bad payload" };
   }
 };
+
