@@ -1,12 +1,14 @@
 // netlify/functions/sendgrid-events.js
-// Vérification Ed25519 des Event Webhook SendGrid (signature signée)
+// Vérification SIGNED Event Webhook SendGrid (ECDSA P-256, signature DER)
 
-const nacl = require("tweetnacl");
+const crypto = require("crypto");
 
-// base64url -> Uint8Array (robuste: gère -, _, padding)
-function b64urlToUint8(s = "") {
-  const b64 = s.replace(/-/g, "+").replace(/_/g, "/") + "===".slice((s.length + 3) % 4);
-  return new Uint8Array(Buffer.from(b64, "base64"));
+// Construit un PEM SPKI à partir de la clé publique base64 affichée par SendGrid
+function buildPemFromBase64Spki(b64) {
+  // optionnel: wrap en lignes de 64 chars pour la lisibilité
+  const body = (b64 || "").replace(/\s+/g, "");
+  const wrapped = body.replace(/(.{64})/g, "$1\n");
+  return `-----BEGIN PUBLIC KEY-----\n${wrapped}\n-----END PUBLIC KEY-----\n`;
 }
 
 exports.handler = async (event) => {
@@ -20,45 +22,39 @@ exports.handler = async (event) => {
       console.error("Missing SENDGRID_EVENT_PUBLIC_KEY");
       return { statusCode: 500, body: "Server misconfigured" };
     }
+    const pubKeyPem = buildPemFromBase64Spki(pubKeyB64);
 
-    // Netlify met les headers en minuscules
-    const h = event.headers || {};
-    const sigHeader = h["x-twilio-email-event-webhook-signature"]; // base64url
-    const tsHeader  = h["x-twilio-email-event-webhook-timestamp"];
+    // Headers (Netlify → lowercase)
+    const sigHeader = event.headers["x-twilio-email-event-webhook-signature"]; // base64 DER (variable length ~70-72)
+    const tsHeader  = event.headers["x-twilio-email-event-webhook-timestamp"];
 
     if (!sigHeader || !tsHeader) {
       console.warn("Missing signature headers", { hasSig: !!sigHeader, hasTs: !!tsHeader });
       return { statusCode: 401, body: "unauthorized" };
     }
 
-    // Corps brut EXACT (attention à isBase64Encoded)
+    // Corps brut EXACT (ne pas re-JSONifier)
     const rawBody = event.isBase64Encoded
-      ? Buffer.from(event.body || "", "base64").toString("utf8")
-      : (event.body || "");
+      ? Buffer.from(event.body || "", "base64")
+      : Buffer.from(event.body || "", "utf8");
 
-    // Concat timestamp + body puis vérifie la signature
-    const msgBytes = new TextEncoder().encode(tsHeader + rawBody);
-    const sigBytes = b64urlToUint8(sigHeader);          // <= base64url safe
-    const keyBytes = b64urlToUint8(pubKeyB64);          // clé publique base64 fournie par SendGrid
+    // Concat timestamp (ASCII) + body bytes, puis vérifie ECDSA (SHA-256)
+    const verify = crypto.createVerify("sha256");
+    verify.update(Buffer.from(tsHeader, "utf8"));
+    verify.update(rawBody);
+    verify.end();
 
-    // Garde-fous utiles en debug
-    if (sigBytes.length !== nacl.sign.signatureLength) {
-      console.warn("Bad signature length", sigBytes.length, "(expected 64)");
-      return { statusCode: 401, body: "invalid signature" };
-    }
-    if (keyBytes.length !== nacl.sign.publicKeyLength) {
-      console.warn("Bad public key length", keyBytes.length, "(expected 32) — check SENDGRID_EVENT_PUBLIC_KEY");
-      return { statusCode: 401, body: "invalid public key" };
-    }
+    const signatureDer = Buffer.from(sigHeader, "base64"); // DER variable length
+    const ok = verify.verify(pubKeyPem, signatureDer);
 
-    const ok = nacl.sign.detached.verify(msgBytes, sigBytes, keyBytes);
     if (!ok) {
       console.warn("Signature verification failed");
       return { statusCode: 401, body: "invalid signature" };
     }
 
-    // Signature OK → parse et log
-    const events = JSON.parse(rawBody || "[]");
+    // Signature OK → parser et log
+    let events = [];
+    try { events = JSON.parse(rawBody.toString("utf8") || "[]"); } catch {}
     for (const e of events) {
       console.log("sg_event", {
         event: e.event,
@@ -71,7 +67,7 @@ exports.handler = async (event) => {
       });
     }
 
-    return { statusCode: 200, body: "ok" };
+    return { statusCode: 200, body: "ok" }; // important: 2xx évite les retries
   } catch (err) {
     console.error("Webhook error:", err);
     return { statusCode: 400, body: "bad payload" };
