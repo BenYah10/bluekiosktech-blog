@@ -1,18 +1,18 @@
 // netlify/functions/submission-created.js
-// Route les emails selon "Type" depuis un formulaire Netlify Forms
-// Envoi via SendGrid API (sans dépendance externe)
+// Envoi via SendGrid + enregistrement du lead dans Netlify Blobs
+
+const { getStore } = require("@netlify/blobs");
+const crypto = require("crypto");
 
 const SENDGRID_API = "https://api.sendgrid.com/v3/mail/send";
 
 exports.handler = async (event) => {
   try {
-    // L’événement arrive en JSON { payload: {...} }
     const body    = JSON.parse(event.body || "{}");
     const payload = body.payload || {};
     const data    = payload.data || {};
     const formName = payload.form_name || payload.formName || "contact";
 
-    // Champs attendus (alignés avec contact.html)
     const fullName = data.Nom           || data.name      || data.fullname || "(Sans nom)";
     const email    = data.Email         || data.email     || "";
     const org      = data.Organisation  || data.org       || "";
@@ -20,7 +20,6 @@ exports.handler = async (event) => {
     const type     = (data.Type || "").toString().trim().toLowerCase(); // demo|pilot|support
     const message  = data.Message       || data.message   || "";
 
-    // --- Routage : MAIL_TO_* prioritaire, sinon ROUTE_* (fallback) ---
     const ROUTE = {
       demo:    process.env.MAIL_TO_DEMO    || process.env.ROUTE_DEMO,
       pilot:   process.env.MAIL_TO_PILOT   || process.env.ROUTE_PILOT,
@@ -30,12 +29,11 @@ exports.handler = async (event) => {
       ROUTE[type] ||
       process.env.MAIL_TO_DEFAULT ||
       process.env.ROUTE_DEFAULT ||
-      "info@bluekiosktech.ca"; // dernier recours
+      "info@bluekiosktech.ca";
 
-    // --- Paramètres d’envoi ---
     const FROM_EMAIL = process.env.MAIL_FROM || "do-not-reply@bluekiosk.tech";
     const FROM_NAME  = process.env.MAIL_FROM_NAME || "BlueKioskTech Blog";
-    const BCC_EMAIL  = process.env.MAIL_BCC || process.env.EMAIL_BCC || null; // optionnel
+    const BCC_EMAIL  = process.env.MAIL_BCC || process.env.EMAIL_BCC || null;
     const API_KEY    = process.env.SENDGRID_API_KEY;
 
     if (!API_KEY) {
@@ -43,7 +41,6 @@ exports.handler = async (event) => {
       return { statusCode: 500, body: "SENDGRID_API_KEY manquant" };
     }
 
-    // --- Sujet + contenus ---
     const dateISO = new Date();
     const dateStr = dateISO.toLocaleString("fr-CA", { hour12: false });
     const mailSubject = `[${(formName || "form").toUpperCase()} · ${type || "unspecified"}] ${subject} — ${fullName} (${dateStr})`;
@@ -78,18 +75,15 @@ ${message}
       <p style="color:#666">© BlueKioskTech — ${new Date().getFullYear()}</p>
     `;
 
-    // --- reply_to : l'adresse de la personne qui a rempli le formulaire (si valide) ---
     const isEmail = (s) => typeof s === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
     const REPLY_TO = isEmail(email) ? { email, name: fullName } : undefined;
 
-    // === PAYLOAD SENDGRID (avec tracking + tags) ===
     const sgBody = {
       personalizations: [
         {
           to: [{ email: TO_EMAIL }],
           ...(BCC_EMAIL ? { bcc: [{ email: BCC_EMAIL }] } : {}),
           subject: mailSubject,
-          // custom_args ici s'applique à cette personnalisation (optionnel)
         },
       ],
       from:     { email: FROM_EMAIL, name: FROM_NAME },
@@ -98,21 +92,14 @@ ${message}
         { type: "text/plain", value: plainText },
         { type: "text/html",  value: html },
       ],
-
-      // --- Ajouts recommandés pour enrichir l’Activity ---
       tracking_settings: {
         click_tracking: { enable: true },
         open_tracking:  { enable: true },
       },
       categories: ["bluekiosktech-blog", "contact-form"],
-      custom_args: {
-        form: formName,
-        type,
-        routed_to: TO_EMAIL,
-      },
+      custom_args: { form: formName, type, routed_to: TO_EMAIL },
     };
 
-    // --- Envoi ---
     const res = await fetch(SENDGRID_API, {
       method: "POST",
       headers: {
@@ -122,7 +109,7 @@ ${message}
       body: JSON.stringify(sgBody),
     });
 
-    const xMsgId = res.headers.get("x-message-id");
+    const xMsgId = res.headers.get("x-message-id") || "";
     console.log("SendGrid status:", res.status, "x-message-id:", xMsgId);
 
     if (!res.ok) {
@@ -131,7 +118,32 @@ ${message}
       return { statusCode: 502, body: `SendGrid error (${res.status})` };
     }
 
-    // Tout est bon
+    // === Enregistrement du lead dans Netlify Blobs ===
+    const leads = getStore({ name: "leads", consistency: "strong" });
+    const id = payload.id || crypto.randomUUID();
+    const msgRoot = xMsgId.split(".")[0] || "";
+
+    const lead = {
+      id,
+      createdAt: new Date().toISOString(),
+      form: formName,
+      type,
+      fullName,
+      email,
+      org,
+      subject,
+      message,
+      to: TO_EMAIL,
+      x_message_id: xMsgId,
+      status: "sent"
+    };
+
+    // clé principale + index par message-id pour mise à jour via webhook
+    await leads.setJSON(`lead:${id}`, lead);
+    if (msgRoot) {
+      await leads.setJSON(`msg:${msgRoot}`, { leadId: id });
+    }
+
     return { statusCode: 200, body: "OK" };
   } catch (e) {
     console.error("Function error:", e);
@@ -139,11 +151,6 @@ ${message}
   }
 };
 
-// Utilitaire pour échapper le HTML dans <pre>
 function escapeHtml(str = "") {
-  return str
-    .toString()
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+  return str.toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
