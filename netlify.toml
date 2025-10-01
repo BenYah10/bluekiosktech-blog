@@ -2,7 +2,12 @@
   publish = "."
   functions = "netlify/functions"
 
+# Fonction planifiée : tous les jours à 08:00 UTC
+[functions."send-daily-digest"]
+  schedule = "0 8 * * *"
+  
 [[redirects]]
   from = "/success"
   to = "/success.html"
   status = 200
+
