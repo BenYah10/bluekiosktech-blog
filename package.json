@@ -4,5 +4,7 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "engines": { "node": ">=18" },
-  "dependencies": {}
+  "dependencies": {
+    "@netlify/blobs": "^6.3.0"
+  }
 }
