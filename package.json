@@ -1,4 +1,12 @@
 {
   "name": "bluekiosk-blog",
-  "private": true
+  "private": true,
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "tweetnacl": "^1.0.3"
+  }
 }
