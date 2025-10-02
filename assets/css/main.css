@@ -227,4 +227,92 @@ a{ color:var(--brand); text-decoration:none }
   /* Switch langue compact */
   .lang-switch.lang--header{ right:12px; top:calc(100% + 8px); z-index:80; }
   .lang-switch.lang--header button{ padding:6px 10px }
+
+  /* ========================
+   THÈMES : clair / sombre
+   ======================== */
+
+/* Applique des variables quand <body> a la classe correspondante */
+body.theme-dark{
+  --bg:#0f172a;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --card:#111827;
+  --brand:#60a5fa;
+  --brand2:#22d3ee;
+  --bd:#1f2937;
+}
+
+body.theme-light{
+  --bg:#f8fafc;
+  --text:#0f172a;
+  --muted:#475569;
+  --card:#ffffff;
+  --brand:#0ea5e9;
+  --brand2:#22c55e;
+  --bd:#e2e8f0;
+}
+
+/* Ajustements d’UI en mode clair pour les éléments qui avaient des couleurs fixes */
+body.theme-light .site-header,
+body.theme-light .lang-switch.lang--header{
+  background:rgba(255,255,255,.88);
+}
+
+body.theme-light .btn.ghost,
+body.theme-light .chip,
+body.theme-light .nav.open,
+body.theme-light .input,
+body.theme-light .textarea{
+  background:#ffffff;
+  color:var(--text);
+}
+
+body.theme-light .nav a{ color:#334155; }
+
+/* === Overrides forts pour le choix utilisateur === */
+/* Si tes variables de couleur sont sur :root ou html, on force au niveau du body */
+body.theme-light{
+  --bg:#f8fafc !important;
+  --text:#0f172a !important;
+  --muted:#475569 !important;
+  --card:#ffffff !important;
+  --brand:#0ea5e9 !important;
+  --brand2:#22c55e !important;
+  --bd:#e2e8f0 !important;
+}
+
+body.theme-dark{
+  --bg:#0f172a !important;
+  --text:#e5e7eb !important;
+  --muted:#9ca3af !important;
+  --card:#111827 !important;
+  --brand:#60a5fa !important;
+  --brand2:#22d3ee !important;
+  --bd:#1f2937 !important;
+}
+
+
+/* ==============================
+   MENU BURGER PLUS GRAND MOBILE
+   ============================== */
+@media (max-width:760px){
+  /* Confort de clic sur les boutons d’actions du header */
+  .site-header .actions button{
+    border:1px solid var(--bd);
+    border-radius:12px;
+    padding:8px 10px;
+    line-height:1;
+    min-width:44px;   /* Accessibilité */
+    min-height:44px;  /* Accessibilité */
+  }
+
+  /* ~30% plus grand qu’un 16–18px standard */
+  #menuToggle{
+    font-size:22px;
+    padding:12px 14px;
+  }
+}
+
+
 }
