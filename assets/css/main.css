@@ -18,8 +18,8 @@
   --header-h-mobile: 78px;    /* mobile */
 
   /* Logo (taille indépendante du header) */
-  --logo-h: 220px;            /* ajuste selon ton rendu désiré */
-  --logo-h-mobile: 170px;
+  --logo-h: 250px;            /* ajuste selon ton rendu désiré */
+  --logo-h-mobile: 200px;
 
   /* Switch langue (couleur pastille active) */
   --lang-active:#10b981;
