@@ -5,6 +5,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // Année footer
   const y = document.getElementById('year');
   if (y) y.textContent = new Date().getFullYear();
+
+  // Masquer l'astuce Netlify en PROD sur la page Contact
+  const isProdDomain = /bluekiosktech\.ca|bluekiosk\.tech/i.test(location.hostname);
+  const isContactPage = /contact/i.test(location.pathname); // contact.html ou /contact/
+  if (isProdDomain && isContactPage) {
+    const hint = document.querySelector('[data-i18n="contact_hint"]');
+    if (hint) hint.remove();
+  }
 });
 
 /* ===== Thème clair/sombre (desktop + mobile) =====
