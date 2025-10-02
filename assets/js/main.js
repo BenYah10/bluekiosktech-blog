@@ -7,11 +7,57 @@ document.addEventListener('DOMContentLoaded', () => {
   if (y) y.textContent = new Date().getFullYear();
 });
 
+/* ===== Thème clair/sombre (desktop + mobile) =====
+   - Utilise les classes sur <body>: theme-light / theme-dark
+   - Mémorise le choix dans localStorage
+*/
+(function () {
+  const body = document.body;
+  const btn = document.getElementById('themeToggle');
+  const KEY = 'bk-theme';
+
+  function applyTheme(name) {
+    body.classList.remove('theme-light', 'theme-dark');
+    body.classList.add(name);
+    localStorage.setItem(KEY, name);
+    if (btn) btn.setAttribute('aria-pressed', String(name === 'theme-dark'));
+  }
+
+  // Thème initial (ordre: localStorage -> classes déjà présentes -> préférence système)
+  const saved = localStorage.getItem(KEY);
+  const initial =
+    saved ||
+    (body.classList.contains('theme-dark') ? 'theme-dark'
+     : body.classList.contains('theme-light') ? 'theme-light'
+     : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'theme-dark'
+     : 'theme-light');
+  applyTheme(initial);
+
+  // Toggle au clic (délégation → marche desktop et mobile)
+  document.addEventListener('click', (e) => {
+    const isBtn = e.target.closest && e.target.closest('#themeToggle');
+    if (!isBtn) return;
+    e.preventDefault();
+    const next = body.classList.contains('theme-dark') ? 'theme-light' : 'theme-dark';
+    applyTheme(next);
+  });
+
+  // Accessibilité clavier
+  if (btn) {
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        btn.click();
+      }
+    });
+  }
+})();
+
 /* ====== Menu mobile (☰) — délégation robuste ======
    - Fonctionne même si le DOM change ou si le script charge avant le HTML
    - Requiert: <button id="menuToggle" ...> et <nav id="nav" class="nav"> */
 document.addEventListener('click', (e) => {
-  const btn = e.target.closest('#menuToggle');
+  const btn = e.target.closest && e.target.closest('#menuToggle');
   if (!btn) return;
 
   const nav = document.getElementById('nav');
