@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
-Sitemap: /sitemap.xml
+Sitemap: https://www.bluekiosktech.blog/sitemap.xml
