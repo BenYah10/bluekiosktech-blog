@@ -3,9 +3,27 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title id="postTitleTag">Article — Bluekiosktech</title>
-  <meta name="description" id="postDescTag" content="Article du blog Bluekiosktech." />
+
+  <!-- Titre & description (remplis dynamiquement plus bas) -->
+  <title id="postTitleTag">Article — BlueKioskTech</title>
+  <meta name="description" id="postDescTag" content="Article du blog BlueKioskTech." />
+
+  <!-- Styles -->
   <link rel="stylesheet" href="assets/css/main.css" />
+
+  <!-- Canonical & alternates (renseignés via JS) -->
+  <link rel="canonical" href="" id="canonicalLink" />
+  <link rel="alternate" hreflang="fr" href="" id="altFr" />
+  <link rel="alternate" hreflang="en" href="" id="altEn" />
+  <link rel="alternate" hreflang="x-default" href="" id="altX" />
+
+  <!-- Open Graph / Twitter (renseignés via JS) -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="" id="ogTitle" />
+  <meta property="og:description" content="" id="ogDesc" />
+  <meta property="og:url" content="" id="ogUrl" />
+  <meta property="og:image" content="https://www.bluekiosktech.blog/assets/images/og-blog.jpg" id="ogImage" />
+  <meta name="twitter:card" content="summary_large_image" />
 </head>
 <body class="theme-light">
   <!-- HEADER -->
@@ -27,40 +45,37 @@
         <button id="themeToggle" aria-label="Basculer le thème">🌓</button>
         <button id="menuToggle" class="only-mobile" aria-label="Menu" type="button">☰</button>
       </div>
+
+      <div class="lang-switch lang--header" aria-label="Language switch">
+        <button id="lang-fr" class="is-active" aria-pressed="true">FR</button>
+        <button id="lang-en" aria-pressed="false">EN</button>
+      </div>
     </div>
   </header>
 
-  <!-- MAIN -->
   <main class="container">
     <!-- Contenu de l’article -->
     <article id="article" class="article card">
       <div class="meta" id="postMeta"></div>
-
-      <!-- >>> Ajout demandé : titre + contenu rendus par render.js -->
       <h1 id="postTitle"></h1>
       <div id="postContent"></div>
-      <!-- <<< -->
     </article>
 
     <!-- Aside -->
     <aside class="post-aside">
       <div class="card">
-        <h3 data-i18n="related_posts">Articles connexes</h3>
-        <div id="related"></div>
+        <h3 data-i18n="cta_pilote_title">Devenir site pilote</h3>
+        <p data-i18n="cta_pilote_desc">Intéressé par un pilote dans votre gym/bureau/campus ?</p>
+        <p>
+          <a class="btn" href="contact.html" data-i18n="cta_contact">Nous contacter</a>
+        </p>
       </div>
 
-      <div class="card" style="margin-top:12px">
-        <h3 data-i18n="cta_pilot_title">Devenir site pilote</h3>
-        <p data-i18n="cta_pilot_desc">Cycle <strong>&lt; 2 minutes</strong>, interface claire, 24/7.</p>
+      <div class="card">
+        <h3 data-i18n="cta_feedback_title">Vos retours</h3>
+        <p data-i18n="cta_feedback_desc">Vos retours nous aident à améliorer le produit.</p>
         <p>
-          <a class="btn primary"
-             href="https://bluekiosktech.ca/?utm_source=blog&utm_medium=sidebar&utm_campaign=waitlist"
-             data-i18n="cta_waitlist">Rejoindre la liste d’attente</a>
-        </p>
-        <p>
-          <a class="btn ghost"
-             href="https://www.bluekiosk.tech/?utm_source=blog&utm_medium=sidebar&utm_campaign=feedback"
-             data-i18n="cta_feedback">Donner votre avis</a>
+          <a class="btn" href="https://forms.gle/" target="_blank" rel="noopener" data-i18n="cta_feedback">Donner votre avis</a>
         </p>
       </div>
     </aside>
@@ -68,22 +83,101 @@
 
   <!-- FOOTER -->
   <footer class="site-footer">
-  <div class="container row between">
-    <p>© <span id="year"></span> Bluekiosktech.
-      <span data-i18n="footer_copy">Tous droits réservés.</span>
-    </p>
-
-    <p>
-      <a href="privacy.html" data-i18n="footer_privacy">Politique de confidentialité</a>
-    </p>
-  </div>
-</footer>
-
+    <div class="container row between">
+      <p>© <span id="year"></span> Bluekiosktech.
+        <span data-i18n="footer_copy">Tous droits réservés.</span>
+      </p>
+      <p><a href="privacy.html" data-i18n="footer_privacy">Politique de confidentialité</a></p>
+    </div>
+  </footer>
 
   <!-- Scripts (ordre important) -->
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/data.js"></script>
   <script src="assets/js/render.js"></script>
   <script src="assets/js/main.js"></script>
+
+  <!-- SEO runtime: canonical, og:url, hreflang, JSON-LD BlogPosting -->
+  <script>
+  (function () {
+    var u = new URL(location.href);
+    var id = u.searchParams.get('id') || '';
+    var lang = (u.searchParams.get('lang') || 'fr').toLowerCase();
+    if (!['fr','en'].includes(lang)) lang = 'fr';
+
+    // <html lang=…>
+    document.documentElement.setAttribute('lang', lang);
+
+    // Compose canonical URL with params
+    var canon = location.origin + location.pathname +
+      (id ? ('?id=' + encodeURIComponent(id) + '&lang=' + lang) : '');
+
+    // Helpers
+    function abs(url) {
+      if (!url) return '';
+      return /^https?:\/\//i.test(url) ? url : (location.origin + (url[0] === '/' ? url : '/' + url));
+    }
+    function setAttr(sel, attr, val) {
+      var el = document.querySelector(sel);
+      if (!el) { el = document.createElement(sel.startsWith('meta') ? 'meta' : 'link'); 
+        if (sel.startsWith('meta')) { var m = sel.match(/property="([^"]+)"/); if (m) el.setAttribute('property', m[1]); }
+        document.head.appendChild(el);
+      }
+      el.setAttribute(attr, val);
+      return el;
+    }
+
+    // Canonical + alternates
+    document.getElementById('canonicalLink').setAttribute('href', canon);
+    document.getElementById('altFr').setAttribute('href', location.origin + location.pathname + (id ? ('?id=' + encodeURIComponent(id) + '&lang=fr') : ''));
+    document.getElementById('altEn').setAttribute('href', location.origin + location.pathname + (id ? ('?id=' + encodeURIComponent(id) + '&lang=en') : ''));
+    document.getElementById('altX').setAttribute('href', canon);
+
+    // Pick the post from data.js
+    var postsFR = window.POSTS_FR || [];
+    var postsEN = window.POSTS_EN || [];
+    var posts = (lang === 'en' ? postsEN : postsFR);
+    var post = posts.find(function (p) { return p.id === id; }) || {};
+
+    // Title / Description
+    var title = (post.title ? post.title : 'Article') + ' — BlueKioskTech';
+    var desc = post.description || post.excerpt || 'Article du blog BlueKioskTech.';
+    var datePub = post.date || new Date().toISOString().slice(0,10);
+    var image = abs(post.image || post.cover || 'assets/images/og-blog.jpg');
+
+    // Inject into <head>
+    document.getElementById('postTitleTag').textContent = title;
+    document.getElementById('postDescTag').setAttribute('content', desc);
+
+    document.getElementById('ogTitle').setAttribute('content', title);
+    document.getElementById('ogDesc').setAttribute('content', desc);
+    document.getElementById('ogUrl').setAttribute('content', canon);
+    document.getElementById('ogImage').setAttribute('content', image);
+
+    // Also reflect in visible H1/meta if needed (render.js gère le contenu, ceci est un fallback)
+    var h1 = document.getElementById('postTitle');
+    if (h1 && !h1.textContent.trim() && post.title) h1.textContent = post.title;
+    var metaDiv = document.getElementById('postMeta');
+    if (metaDiv && !metaDiv.textContent.trim()) metaDiv.textContent = datePub;
+
+    // JSON-LD BlogPosting
+    var ld = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": post.title || "Article",
+      "inLanguage": lang,
+      "image": [ image ],
+      "datePublished": datePub,
+      "dateModified": datePub,
+      "author": { "@type": "Organization", "name": "BlueKioskTech" },
+      "publisher": { "@type": "Organization", "name": "BlueKioskTech" },
+      "mainEntityOfPage": { "@type": "WebPage", "@id": canon }
+    };
+    var s = document.createElement('script');
+    s.type = 'application/ld+json';
+    s.text = JSON.stringify(ld);
+    document.head.appendChild(s);
+  })();
+  </script>
 </body>
 </html>
