@@ -1,59 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://www.bluekiosktech.blog/post.html?id=immunite-collective-hygiene&amp;lang=fr</loc>
-    <lastmod>2025-09-25</lastmod>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://www.bluekiosktech.blog/post.html?id=immunite-collective-hygiene&amp;lang=fr" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.bluekiosktech.blog/post.html?id=immunite-collective-hygiene&amp;lang=en" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bluekiosktech.blog/post.html?id=immunite-collective-hygiene&amp;lang=fr" />
+    <loc>https://www.bluekiosktech.blog/</loc>
+    <lastmod>2025-10-06</lastmod>
   </url>
   <url>
-    <loc>https://www.bluekiosktech.blog/post.html?id=immunite-collective-hygiene&amp;lang=en</loc>
-    <lastmod>2025-09-25</lastmod>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://www.bluekiosktech.blog/post.html?id=immunite-collective-hygiene&amp;lang=fr" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.bluekiosktech.blog/post.html?id=immunite-collective-hygiene&amp;lang=en" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bluekiosktech.blog/post.html?id=immunite-collective-hygiene&amp;lang=fr" />
+    <loc>https://www.bluekiosktech.blog/blog.html</loc>
+    <lastmod>2025-10-06</lastmod>
   </url>
+
+  <!-- Un article (FR + EN via alternates) -->
   <url>
     <loc>https://www.bluekiosktech.blog/post.html?id=hygiene-gourdes-99-2min&amp;lang=fr</loc>
     <lastmod>2025-09-24</lastmod>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://www.bluekiosktech.blog/post.html?id=hygiene-gourdes-99-2min&amp;lang=fr" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.bluekiosktech.blog/post.html?id=hygiene-gourdes-99-2min&amp;lang=en" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bluekiosktech.blog/post.html?id=hygiene-gourdes-99-2min&amp;lang=fr" />
-  </url>
-  <url>
-    <loc>https://www.bluekiosktech.blog/post.html?id=hygiene-gourdes-99-2min&amp;lang=en</loc>
-    <lastmod>2025-09-24</lastmod>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://www.bluekiosktech.blog/post.html?id=hygiene-gourdes-99-2min&amp;lang=fr" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.bluekiosktech.blog/post.html?id=hygiene-gourdes-99-2min&amp;lang=en" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bluekiosktech.blog/post.html?id=hygiene-gourdes-99-2min&amp;lang=fr" />
-  </url>
-  <url>
-    <loc>https://www.bluekiosktech.blog/post.html?id=checklist-implantation-gym&amp;lang=fr</loc>
-    <lastmod>2025-09-23</lastmod>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://www.bluekiosktech.blog/post.html?id=checklist-implantation-gym&amp;lang=fr" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.bluekiosktech.blog/post.html?id=checklist-implantation-gym&amp;lang=en" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bluekiosktech.blog/post.html?id=checklist-implantation-gym&amp;lang=fr" />
-  </url>
-  <url>
-    <loc>https://www.bluekiosktech.blog/post.html?id=checklist-implantation-gym&amp;lang=en</loc>
-    <lastmod>2025-09-23</lastmod>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://www.bluekiosktech.blog/post.html?id=checklist-implantation-gym&amp;lang=fr" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.bluekiosktech.blog/post.html?id=checklist-implantation-gym&amp;lang=en" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bluekiosktech.blog/post.html?id=checklist-implantation-gym&amp;lang=fr" />
-  </url>
-  <url>
-    <loc>https://www.bluekiosktech.blog/post.html?id=normes-certifications&amp;lang=fr</loc>
-    <lastmod>2025-09-23</lastmod>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://www.bluekiosktech.blog/post.html?id=normes-certifications&amp;lang=fr" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.bluekiosktech.blog/post.html?id=normes-certifications&amp;lang=en" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bluekiosktech.blog/post.html?id=normes-certifications&amp;lang=fr" />
-  </url>
-  <url>
-    <loc>https://www.bluekiosktech.blog/post.html?id=normes-certifications&amp;lang=en</loc>
-    <lastmod>2025-09-23</lastmod>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://www.bluekiosktech.blog/post.html?id=normes-certifications&amp;lang=fr" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.bluekiosktech.blog/post.html?id=normes-certifications&amp;lang=en" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bluekiosktech.blog/post.html?id=normes-certifications&amp;lang=fr" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.bluekiosktech.blog/post.html?id=hygiene-gourdes-99-2min&amp;lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bluekiosktech.blog/post.html?id=hygiene-gourdes-99-2min&amp;lang=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bluekiosktech.blog/post.html?id=hygiene-gourdes-99-2min&amp;lang=fr"/>
   </url>
 </urlset>
