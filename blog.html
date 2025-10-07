@@ -3,9 +3,43 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Articles — Bluekiosktech</title>
-  <meta name="description" content="Tous les articles : hygiène clean-tech, cas d’usage, produit & roadmap, opérations pour gyms, durabilité et communauté." />
+
+  <!-- Titre & description -->
+  <title>BlueKioskTech — Blog</title>
+  <meta name="description" content="Hygiène clean-tech, études de cas et roadmap produit : nos articles et actualités BlueKioskTech." />
+
+  <!-- Styles -->
   <link rel="stylesheet" href="assets/css/main.css" />
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://www.bluekiosktech.blog/blog.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="BlueKioskTech — Blog" />
+  <meta property="og:description" content="Hygiène clean-tech, études de cas et roadmap produit : nos articles et actualités BlueKioskTech." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.bluekiosktech.blog/blog.html" />
+  <meta property="og:image" content="https://www.bluekiosktech.blog/assets/images/og-blog.jpg" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- JSON-LD : page de collection du blog -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "BlueKioskTech — Blog",
+    "url": "https://www.bluekiosktech.blog/blog.html",
+    "inLanguage": "fr",
+    "image": "https://www.bluekiosktech.blog/assets/images/og-blog.jpg",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Bluekiosktech Blog",
+      "url": "https://www.bluekiosktech.blog/"
+    }
+  }
+  </script>
 </head>
 <body class="theme-light">
   <header class="site-header">
@@ -68,17 +102,16 @@
   </main>
 
   <footer class="site-footer">
-  <div class="container row between">
-    <p>© <span id="year"></span> Bluekiosktech.
-      <span data-i18n="footer_copy">Tous droits réservés.</span>
-    </p>
+    <div class="container row between">
+      <p>© <span id="year"></span> Bluekiosktech.
+        <span data-i18n="footer_copy">Tous droits réservés.</span>
+      </p>
 
-    <p>
-      <a href="privacy.html" data-i18n="footer_privacy">Politique de confidentialité</a>
-    </p>
-  </div>
-</footer>
-
+      <p>
+        <a href="privacy.html" data-i18n="footer_privacy">Politique de confidentialité</a>
+      </p>
+    </div>
+  </footer>
 
   <!-- JS -->
   <script src="assets/js/i18n.js"></script>
