@@ -3,51 +3,103 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title data-i18n="contact_success_title">Message envoyé — Bluekiosktech</title>
+  <title>Succès — Bluekiosktech</title>
+  <meta name="description" content="Confirmation d'envoi du message." />
   <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    .center { text-align:center }
+    .big { font-size: clamp(24px, 3vw, 36px); margin: 0 0 8px }
+    .muted { color: var(--muted) }
+    .actions { display:flex; gap:10px; justify-content:center; margin-top:18px }
+    .card { max-width: 740px; margin: 24px auto }
+    .hidden { display:none }
+  </style>
 </head>
-<body>
+<body class="theme-light">
   <header class="site-header">
     <div class="container row between center">
       <a class="logo" href="index.html">
         <img src="assets/images/logo-blog.svg" alt="Bluekiosktech" />
         <span class="sr-only">Bluekiosktech.blog</span>
       </a>
+
       <nav id="nav" class="nav">
-        <a href="index.html" data-i18n="nav_home">Accueil</a>
-        <a href="blog.html" data-i18n="nav_blog">Articles</a>
-        <a href="about.html" data-i18n="nav_about">À propos</a>
-        <a href="contact.html" data-i18n="nav_contact">Contact</a>
+        <a href="index.html">Accueil</a>
+        <a href="blog.html">Articles</a>
+        <a href="about.html">À propos</a>
+        <a href="contact.html">Contact</a>
       </nav>
+
       <div class="actions">
-        <button id="langToggle" class="lang-switch" aria-label="Language">FR</button>
+        <button id="themeToggle" aria-label="Basculer le thème">🌓</button>
+        <button id="menuToggle" class="only-mobile" aria-label="Menu" type="button">☰</button>
+      </div>
+
+      <div class="lang-switch lang--header" aria-label="Language switch">
+        <button id="lang-fr" class="is-active" aria-pressed="true">FR</button>
+        <button id="lang-en" aria-pressed="false">EN</button>
       </div>
     </div>
   </header>
 
   <main class="container">
-    <section class="card" style="margin-top:18px">
-      <h1 data-i18n="contact_success_title">Merci, votre message a été envoyé ✅</h1>
-      <p data-i18n="contact_success_text">Nous revenons vers vous très vite. En attendant, découvrez nos derniers articles.</p>
-      <p><a class="btn primary" href="blog.html" data-i18n="cta_read">Lire les articles</a></p>
+    <section class="card center">
+      <!-- FR -->
+      <div id="block-fr">
+        <h1 class="big">✅ Merci !</h1>
+        <p>Votre message a bien été envoyé. Nous revenons vers vous très vite.</p>
+        <p class="muted">Pensez à vérifier votre dossier <em>Courrier indésirable</em> si vous ne voyez pas notre réponse.</p>
+        <div class="actions">
+          <a class="btn primary" href="index.html">← Retour à l’accueil</a>
+          <a class="btn ghost" href="contact.html">Envoyer un autre message</a>
+        </div>
+      </div>
+
+      <!-- EN -->
+      <div id="block-en" class="hidden">
+        <h1 class="big">✅ Thank you!</h1>
+        <p>Your message has been sent. We’ll get back to you shortly.</p>
+        <p class="muted">If you don’t see our reply, please check your <em>Spam/Junk</em> folder.</p>
+        <div class="actions">
+          <a class="btn primary" href="index.html">← Back to Home</a>
+          <a class="btn ghost" href="contact.html">Send another message</a>
+        </div>
+      </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="container row between">
-      <p>© <span id="year"></span> Bluekiosktech. <span data-i18n="footer_copy">Tous droits réservés.</span></p>
+      <p>© <span id="year"></span> Bluekiosktech. Tous droits réservés.</p>
+      <p><a href="privacy.html">Politique de confidentialité</a></p>
     </div>
   </footer>
 
+  <!-- JS (vos scripts habituels) -->
   <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <!-- Mini script de langue -->
   <script>
-    // init simple
-    document.addEventListener('DOMContentLoaded', ()=>{
-      if(typeof applyI18N==='function') applyI18N();
-      const btn=document.getElementById('langToggle');
-      btn && btn.addEventListener('click', ()=>{ Lang.set(Lang.get()==='fr'?'en':'fr'); applyI18N(); btn.textContent = Lang.get().toUpperCase(); });
-      const y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
-    });
+    (function () {
+      try {
+        var lang = (localStorage.getItem('lang') === 'en') ? 'en' : 'fr';
+        document.getElementById('block-fr').classList.toggle('hidden', lang !== 'fr');
+        document.getElementById('block-en').classList.toggle('hidden', lang !== 'en');
+
+        // boutons d’en-tête
+        var fr = document.getElementById('lang-fr');
+        var en = document.getElementById('lang-en');
+        if (fr && en) {
+          fr.classList.toggle('is-active', lang === 'fr');
+          en.classList.toggle('is-active', lang === 'en');
+          fr.onclick = function(){ localStorage.setItem('lang','fr'); location.reload(); };
+          en.onclick = function(){ localStorage.setItem('lang','en'); location.reload(); };
+        }
+      } catch(_) {}
+      // année
+      var y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear();
+    })();
   </script>
 </body>
 </html>
