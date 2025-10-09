@@ -1,5 +1,5 @@
 // /api/contact.js — Vercel Serverless Function (Node 18+)
-// Robuste aux vieux noms de champs + variantes FR/EN + logs de debug
+// Tolérant aux vieux noms + reparse "intelligente" (clé unique JSON, etc.)
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -22,21 +22,24 @@ async function readRawBody(req) {
   return Buffer.concat(chunks).toString('utf8');
 }
 
-function parseBody(raw, contentType = '') {
+function parsePrimary(raw, contentType = '') {
   contentType = String(contentType || '').toLowerCase();
-  // JSON
+
   if (contentType.includes('application/json')) {
     try { return JSON.parse(raw || '{}'); } catch { return {}; }
   }
-  // x-www-form-urlencoded (par défaut formulaire HTML)
+
   if (contentType.includes('application/x-www-form-urlencoded') || !contentType) {
-    const params = new URLSearchParams(raw || '');
     const obj = {};
-    for (const [k, v] of params.entries()) obj[k] = v;
+    try {
+      const sp = new URLSearchParams(raw || '');
+      for (const [k, v] of sp.entries()) obj[k] = v;
+    } catch {}
     return obj;
   }
-  // tentative : text/plain (certains outils JS)
+
   if (contentType.includes('text/plain')) {
+    // ex: "a=1&b=2"
     try {
       const obj = {};
       (raw || '').split('&').forEach(pair => {
@@ -44,46 +47,71 @@ function parseBody(raw, contentType = '') {
         if (k) obj[decodeURIComponent(k)] = decodeURIComponent(v || '');
       });
       return obj;
-    } catch { return {}; }
+    } catch {}
   }
-  // multipart/form-data (non géré sans lib) -> retour vide
+
+  // multipart non géré ici
   return {};
+}
+
+// Fallbacks : reparse cas tordus (clé unique contenant du JSON / querystring)
+function smartParse(raw, parsed) {
+  let data = parsed || {};
+  const keys = Object.keys(data);
+
+  // cas 1: rien parsé mais raw ressemble à du JSON
+  if (keys.length === 0 && raw && raw.trim().startsWith('{') && raw.trim().endsWith('}')) {
+    try { data = JSON.parse(raw); } catch {}
+  }
+
+  // cas 2: UNE seule clé qui ressemble à du JSON
+  if (Object.keys(data).length === 1) {
+    const onlyKey = Object.keys(data)[0];
+    if (onlyKey.trim().startsWith('{') && onlyKey.trim().endsWith('}')) {
+      try { data = JSON.parse(onlyKey); } catch {}
+    } else if (onlyKey.includes('=') || onlyKey.includes('&')) {
+      // ex: "a=1&b=2" contenu dans la clé
+      try {
+        const o = {};
+        const sp = new URLSearchParams(onlyKey);
+        for (const [k, v] of sp.entries()) o[k] = v;
+        data = o;
+      } catch {}
+    }
+  }
+
+  // cas 3: data vide mais raw a des paires k=v
+  if (Object.keys(data).length === 0 && raw && (raw.includes('=') || raw.includes('&'))) {
+    try {
+      const o = {};
+      const sp = new URLSearchParams(raw);
+      for (const [k, v] of sp.entries()) o[k] = v;
+      data = o;
+    } catch {}
+  }
+
+  return data;
 }
 
 // Normalisation très tolérante
 function normalize(o = {}, req) {
-  // mappe une clé arbitraire vers une clé canonique
   const toCanon = (key) => {
     const k = String(key || '')
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // accents
-      .toLowerCase().replace(/[^a-z0-9]+/g, '');        // tout sauf a-z0-9
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase().replace(/[^a-z0-9]+/g, '');
 
     const alias = {
-      // fullname
       fullname: 'fullname', nom: 'fullname', nomcomplet: 'fullname',
       name: 'fullname', username: 'fullname', yourname: 'fullname',
-      fullnamee: 'fullname', fullnam: 'fullname', fullnamefr: 'fullname',
-      // email
       email: 'email', mail: 'email', courriel: 'email', adresseemail: 'email',
-      // org
-      org: 'org', organisation: 'org', organization: 'org',
-      company: 'org', societe: 'org', entreprise: 'org',
-      // subject
+      org: 'org', organisation: 'org', organization: 'org', company: 'org', societe: 'org', entreprise: 'org',
       subject: 'subject', sujet: 'subject', suject: 'subject',
-      // type
       type: 'type', typedemande: 'type', demande: 'type', option: 'type',
-      // message
-      message: 'message', msg: 'message', contenu: 'message',
-      comment: 'message', comments: 'message', body: 'message',
-      // lang
+      message: 'message', msg: 'message', contenu: 'message', comment: 'message', comments: 'message', body: 'message',
       lang: 'lang', language: 'lang',
-      // honeypot
       website: 'website', url: 'website'
     };
-
     if (alias[k]) return alias[k];
-
-    // heuristiques : noms composés "full-name", "full_name"...
     if (k.includes('fullname') || (k.includes('name') && !k.includes('user'))) return 'fullname';
     if (k.includes('mail')) return 'email';
     if (k.includes('org') || k.includes('organis') || k.includes('company')) return 'org';
@@ -98,16 +126,11 @@ function normalize(o = {}, req) {
   const out = {};
   for (const [key, val] of Object.entries(o)) {
     const canon = toCanon(key);
-    if (['fullname','email','org','subject','type','message','lang','website'].includes(canon)) {
-      out[canon] = val;
-    } else {
-      // on garde les clés inconnues à part pour debug
-      if (!out._raw) out._raw = {};
-      out._raw[key] = val;
-    }
+    if (['fullname','email','org','subject','type','message','lang','website'].includes(canon)) out[canon] = val;
+    else { (out._raw ||= {})[key] = val; }
   }
 
-  // fusionne les query params aussi (au cas où)
+  // merge query params (au cas où)
   try {
     const u = new URL(req.url, 'https://x');
     for (const [k, v] of u.searchParams.entries()) {
@@ -156,11 +179,11 @@ module.exports = async (req, res) => {
 
   try {
     const raw = await readRawBody(req);
-    const parsed = parseBody(raw, req.headers['content-type']);
+    const primary = parsePrimary(raw, req.headers['content-type']);
+    const parsed = smartParse(raw, primary);
     const n = normalize(parsed, req);
 
-    // honeypot
-    if (n.website) return res.status(204).end();
+    if (n.website) return res.status(204).end(); // honeypot
 
     const lang = detectLang(req, n);
     const t = I18N[lang] || I18N.fr;
@@ -174,12 +197,13 @@ module.exports = async (req, res) => {
     const message  = (n.message || '').trim();
 
     if (!fullname || !email || !message) {
-      console.warn('Missing fields - received keys:', Object.keys(parsed));
+      console.warn('Missing fields — raw:', raw);
+      console.warn('Primary parsed keys:', Object.keys(primary));
+      console.warn('Final parsed keys:', Object.keys(parsed));
       console.warn('Normalized:', { fullname, email, message, other: n._raw || {} });
       return res.status(400).end('Missing required fields');
     }
 
-    // destinataires
     const to = String(process.env.INTERNAL_NOTIFY || process.env.FROM_EMAIL || '')
       .split(',').map(s => s.trim()).filter(Boolean);
     const from = { email: process.env.FROM_EMAIL, name: 'Bluekiosktech Blog' };
@@ -239,7 +263,7 @@ UA: ${req.headers['user-agent'] || ''}`;
       text, html
     });
 
-    res.statusCode = 303; // See Other
+    res.statusCode = 303;
     res.setHeader('Location', '/success.html');
     return res.end();
   } catch (err) {
