@@ -1,8 +1,5 @@
 {
   "version": 2,
-  "functions": {
-    "api/**/*.js": { "runtime": "nodejs20.x" }
-  },
   "redirects": [
     { "source": "/blog", "destination": "/blog.html", "permanent": false },
     { "source": "/about", "destination": "/about.html", "permanent": false },
