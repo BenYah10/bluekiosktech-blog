@@ -50,61 +50,60 @@
         Laissez-nous un message.
       </p>
 
-      <!-- *******************************
-           FORMULAIRE -> /api/contact (Vercel)
-           ******************************* -->
-   <form class="form" method="POST" action="/api/contact" accept-charset="UTF-8">
-  <!-- honeypot anti-spam -->
-  <p class="hidden">
-    <label>Don’t fill this out if you’re human: <input name="website" /></label>
-  </p>
+      <!-- ===============================
+           FORMULAIRE -> /api/contact
+           =============================== -->
+      <form class="form" method="POST" action="/api/contact" accept-charset="UTF-8">
+        <!-- honeypot anti-spam -->
+        <p class="hidden">
+          <label>Don’t fill this out if you’re human: <input name="website" /></label>
+        </p>
 
-  <!-- langue (optionnel mais recommandé) -->
-  <input type="hidden" name="lang" id="langInput">
+        <!-- langue (remplie plus bas via localStorage) -->
+        <input type="hidden" name="lang" id="langInput">
 
-  <div class="two">
-    <div>
-      <label for="fullname" data-i18n="contact_fullname_label">Nom complet</label><br>
-      <input id="fullname" name="fullname" class="input" type="text" required data-i18n-ph="contact_fullname_ph" />
-    </div>
-    <div>
-      <label for="email" data-i18n="contact_email_label">Email</label><br>
-      <input id="email" name="email" class="input" type="email" required data-i18n-ph="contact_email_ph" />
-    </div>
-  </div>
+        <div class="two">
+          <div>
+            <label for="fullname" data-i18n="contact_fullname_label">Nom complet</label><br>
+            <input id="fullname" name="fullname" class="input" type="text" required data-i18n-ph="contact_fullname_ph" />
+          </div>
+          <div>
+            <label for="email" data-i18n="contact_email_label">Email</label><br>
+            <input id="email" name="email" class="input" type="email" required data-i18n-ph="contact_email_ph" />
+          </div>
+        </div>
 
-  <div class="two">
-    <div>
-      <label for="org" data-i18n="contact_org_label">Organisation (facultatif)</label><br>
-      <input id="org" name="org" class="input" type="text" data-i18n-ph="contact_org_ph" />
-    </div>
-    <div>
-      <label for="subject" data-i18n="contact_subject_label">Sujet</label><br>
-      <input id="subject" name="subject" class="input" type="text" required data-i18n-ph="contact_subject_ph" />
-    </div>
-  </div>
+        <div class="two">
+          <div>
+            <label for="org" data-i18n="contact_org_label">Organisation (facultatif)</label><br>
+            <input id="org" name="org" class="input" type="text" data-i18n-ph="contact_org_ph" />
+          </div>
+          <div>
+            <label for="subject" data-i18n="contact_subject_label">Sujet</label><br>
+            <input id="subject" name="subject" class="input" type="text" required data-i18n-ph="contact_subject_ph" />
+          </div>
+        </div>
 
-  <div>
-    <label for="reqtype" data-i18n="contact_type_label">Type de demande</label><br>
-    <select id="reqtype" name="type" class="input" required>
-      <option value="" data-i18n="contact_type_placeholder">— Sélectionner —</option>
-      <option value="demo"   data-i18n="contact_type_demo">Démo</option>
-      <option value="pilot"  data-i18n="contact_type_pilot">Site pilote</option>
-      <option value="support" data-i18n="contact_type_support">Support</option>
-    </select>
-  </div>
+        <div>
+          <label for="reqtype" data-i18n="contact_type_label">Type de demande</label><br>
+          <select id="reqtype" name="type" class="input" required>
+            <option value="" data-i18n="contact_type_placeholder">— Sélectionner —</option>
+            <option value="demo"   data-i18n="contact_type_demo">Démo</option>
+            <option value="pilot"  data-i18n="contact_type_pilot">Site pilote</option>
+            <option value="support" data-i18n="contact_type_support">Support</option>
+          </select>
+        </div>
 
-  <div>
-    <label for="message" data-i18n="contact_message_label">Message</label><br>
-    <textarea id="message" name="message" class="textarea" required data-i18n-ph="contact_message_ph"></textarea>
-  </div>
+        <div>
+          <label for="message" data-i18n="contact_message_label">Message</label><br>
+          <textarea id="message" name="message" class="textarea" required data-i18n-ph="contact_message_ph"></textarea>
+        </div>
 
-  <div>
-    <button class="btn primary" type="submit" data-i18n="contact_send">Envoyer</button>
-    <button class="btn ghost" type="reset" style="margin-left:8px" data-i18n="contact_clear">Effacer</button>
-  </div>
-</form>
-
+        <div>
+          <button class="btn primary" type="submit" data-i18n="contact_send">Envoyer</button>
+          <button class="btn ghost" type="reset" style="margin-left:8px" data-i18n="contact_clear">Effacer</button>
+        </div>
+      </form>
 
       <p class="muted" style="margin-top:8px" data-i18n="contact_hint">
         Après envoi, vous serez redirigé vers la page de succès.
@@ -150,32 +149,27 @@
   <script src="assets/js/render.js"></script>
   <script src="assets/js/main.js"></script>
 
-  <!-- i18n placeholders -->
+  <!-- i18n placeholders + langue -->
   <script>
-    document.addEventListener('DOMContentLoaded', function(){
-      if (typeof applyI18N === 'function') applyI18N();
-      const setPH = (id, key) => {
-        const el = document.getElementById(id);
-        if (el && typeof Lang !== 'undefined') el.placeholder = Lang.t(key);
-      };
+    (function(){
+      try {
+        var lang = (localStorage.getItem('lang') === 'en') ? 'en' : 'fr';
+        var el = document.getElementById('langInput'); if (el) el.value = lang;
+      } catch(_) {}
+
+      function setPH(id, key){
+        var el = document.getElementById(id);
+        if (el && typeof Lang !== 'undefined' && Lang.t) {
+          var val = Lang.t(key);
+          if (val && el.placeholder !== undefined) el.placeholder = val;
+        }
+      }
       setPH('fullname','contact_fullname_ph');
       setPH('email','contact_email_ph');
       setPH('org','contact_org_ph');
       setPH('subject','contact_subject_ph');
       setPH('message','contact_message_ph');
-    });
+    })();
   </script>
-
-  <script>
-  (function(){
-    try {
-      var lang = (localStorage.getItem('lang') === 'en') ? 'en' : 'fr';
-      var el = document.getElementById('langInput');
-      if (el) el.value = lang;
-    } catch(_) {}
-  })();
- </script>  
 </body>
 </html>
-
-
