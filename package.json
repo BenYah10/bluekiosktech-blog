@@ -1,10 +1,11 @@
 {
   "name": "bluekiosk-blog",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "UNLICENSED",
   "engines": { "node": ">=18" },
   "dependencies": {
-    "@netlify/blobs": "^6.3.0"
+    "@netlify/blobs": "^6.3.0",
+    "@sendgrid/mail": "^7.7.0"
   }
 }
