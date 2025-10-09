@@ -55,6 +55,8 @@
            ******************************* -->
       <form class="form" method="POST" action="/api/contact" accept-charset="UTF-8">
         <!-- honeypot anti-spam -->
+       <input type="hidden" name="lang" id="langInput">
+
         <p class="hidden">
           <label>Don’t fill this out if you’re human: <input name="website" /></label>
         </p>
@@ -161,5 +163,16 @@
       setPH('message','contact_message_ph');
     });
   </script>
+
+  <script>
+  (function(){
+    try {
+      var lang = (localStorage.getItem('lang') === 'en') ? 'en' : 'fr';
+      var el = document.getElementById('langInput');
+      if (el) el.value = lang;
+    } catch(_) {}
+  })();
+ </script>  
 </body>
 </html>
+
