@@ -1,5 +1,5 @@
 // /api/contact.js — Vercel Serverless Function (Node 18+)
-// Bilingue FR/EN + badge type (demo|pilot|support) + tolérance anciens noms Netlify/FR
+// Robuste aux vieux noms de champs + variantes FR/EN + logs de debug
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -24,31 +24,104 @@ async function readRawBody(req) {
 
 function parseBody(raw, contentType = '') {
   contentType = String(contentType || '').toLowerCase();
+  // JSON
   if (contentType.includes('application/json')) {
     try { return JSON.parse(raw || '{}'); } catch { return {}; }
   }
-  // par défaut: x-www-form-urlencoded
-  const params = new URLSearchParams(raw || '');
-  const obj = {};
-  for (const [k, v] of params.entries()) obj[k] = v;
-  return obj;
+  // x-www-form-urlencoded (par défaut formulaire HTML)
+  if (contentType.includes('application/x-www-form-urlencoded') || !contentType) {
+    const params = new URLSearchParams(raw || '');
+    const obj = {};
+    for (const [k, v] of params.entries()) obj[k] = v;
+    return obj;
+  }
+  // tentative : text/plain (certains outils JS)
+  if (contentType.includes('text/plain')) {
+    try {
+      const obj = {};
+      (raw || '').split('&').forEach(pair => {
+        const [k, v] = pair.split('=');
+        if (k) obj[decodeURIComponent(k)] = decodeURIComponent(v || '');
+      });
+      return obj;
+    } catch { return {}; }
+  }
+  // multipart/form-data (non géré sans lib) -> retour vide
+  return {};
 }
 
-// Accepte anciens noms (FR/Netlify) et nouveaux
-function normalize(o = {}) {
-  return {
-    fullname: o.fullname || o.name || o.nom || o['Nom complet'] || o.full_name || '',
-    email:    o.email || o.mail || o['E-mail'] || '',
-    org:      o.org || o.organisation || o.organization || o['Organisation'] || '',
-    subject:  o.subject || o.sujet || o['Sujet'] || '',
-    type:     (o.type || o['Type'] || '').toLowerCase(),
-    message:  o.message || o.msg || o['Message'] || '',
-    lang:     (o.lang || o.language || '').toLowerCase()
+// Normalisation très tolérante
+function normalize(o = {}, req) {
+  // mappe une clé arbitraire vers une clé canonique
+  const toCanon = (key) => {
+    const k = String(key || '')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // accents
+      .toLowerCase().replace(/[^a-z0-9]+/g, '');        // tout sauf a-z0-9
+
+    const alias = {
+      // fullname
+      fullname: 'fullname', nom: 'fullname', nomcomplet: 'fullname',
+      name: 'fullname', username: 'fullname', yourname: 'fullname',
+      fullnamee: 'fullname', fullnam: 'fullname', fullnamefr: 'fullname',
+      // email
+      email: 'email', mail: 'email', courriel: 'email', adresseemail: 'email',
+      // org
+      org: 'org', organisation: 'org', organization: 'org',
+      company: 'org', societe: 'org', entreprise: 'org',
+      // subject
+      subject: 'subject', sujet: 'subject', suject: 'subject',
+      // type
+      type: 'type', typedemande: 'type', demande: 'type', option: 'type',
+      // message
+      message: 'message', msg: 'message', contenu: 'message',
+      comment: 'message', comments: 'message', body: 'message',
+      // lang
+      lang: 'lang', language: 'lang',
+      // honeypot
+      website: 'website', url: 'website'
+    };
+
+    if (alias[k]) return alias[k];
+
+    // heuristiques : noms composés "full-name", "full_name"...
+    if (k.includes('fullname') || (k.includes('name') && !k.includes('user'))) return 'fullname';
+    if (k.includes('mail')) return 'email';
+    if (k.includes('org') || k.includes('organis') || k.includes('company')) return 'org';
+    if (k.includes('sujet') || k.includes('subject')) return 'subject';
+    if (k.includes('type')) return 'type';
+    if (k.includes('msg') || k.includes('message') || k.includes('comment')) return 'message';
+    if (k.includes('lang')) return 'lang';
+    if (k.includes('web') || k.includes('site')) return 'website';
+    return key;
   };
+
+  const out = {};
+  for (const [key, val] of Object.entries(o)) {
+    const canon = toCanon(key);
+    if (['fullname','email','org','subject','type','message','lang','website'].includes(canon)) {
+      out[canon] = val;
+    } else {
+      // on garde les clés inconnues à part pour debug
+      if (!out._raw) out._raw = {};
+      out._raw[key] = val;
+    }
+  }
+
+  // fusionne les query params aussi (au cas où)
+  try {
+    const u = new URL(req.url, 'https://x');
+    for (const [k, v] of u.searchParams.entries()) {
+      const canon = toCanon(k);
+      if (!out[canon]) out[canon] = v;
+    }
+  } catch {}
+
+  return out;
 }
 
 function detectLang(req, n) {
-  if (n.lang === 'fr' || n.lang === 'en') return n.lang;
+  const l = (n.lang || '').toLowerCase();
+  if (l === 'fr' || l === 'en') return l;
   const al = String(req.headers['accept-language'] || '').toLowerCase();
   return al.startsWith('en') ? 'en' : 'fr';
 }
@@ -84,9 +157,11 @@ module.exports = async (req, res) => {
   try {
     const raw = await readRawBody(req);
     const parsed = parseBody(raw, req.headers['content-type']);
-    if (parsed.website) return res.status(204).end(); // honeypot
+    const n = normalize(parsed, req);
 
-    const n = normalize(parsed);
+    // honeypot
+    if (n.website) return res.status(204).end();
+
     const lang = detectLang(req, n);
     const t = I18N[lang] || I18N.fr;
     const typeLabel = t.types[n.type] || n.type || '—';
@@ -99,17 +174,16 @@ module.exports = async (req, res) => {
     const message  = (n.message || '').trim();
 
     if (!fullname || !email || !message) {
-      // aide debug: quels champs reçus ?
-      console.warn('Missing fields:', { fullname: !!fullname, email: !!email, message: !!message });
+      console.warn('Missing fields - received keys:', Object.keys(parsed));
+      console.warn('Normalized:', { fullname, email, message, other: n._raw || {} });
       return res.status(400).end('Missing required fields');
     }
 
-    // destinataires (simple ou liste "a@x,b@y")
+    // destinataires
     const to = String(process.env.INTERNAL_NOTIFY || process.env.FROM_EMAIL || '')
       .split(',').map(s => s.trim()).filter(Boolean);
     const from = { email: process.env.FROM_EMAIL, name: 'Bluekiosktech Blog' };
 
-    // TEXT (fallback)
     const text =
 `${t.newMessage}
 
@@ -125,7 +199,6 @@ ${message}
 IP: ${req.headers['x-forwarded-for'] || req.socket?.remoteAddress || ''}
 UA: ${req.headers['user-agent'] || ''}`;
 
-    // HTML
     const msgHtml = escapeHtml(message).replace(/\n/g, '<br>');
     const badgeStyle = `display:inline-block;padding:2px 10px;border-radius:9999px;font-size:12px;font-weight:600;background:${badge.color};color:#fff;`;
     const html = `<!doctype html>
@@ -166,7 +239,6 @@ UA: ${req.headers['user-agent'] || ''}`;
       text, html
     });
 
-    // Redirection propre après POST
     res.statusCode = 303; // See Other
     res.setHeader('Location', '/success.html');
     return res.end();
