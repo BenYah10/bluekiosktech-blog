@@ -1,143 +1,85 @@
-# Decap CMS — Configuration "pro"
-# Docs: https://decapcms.org/docs/
+# ============================================================
+# 🔧 CONFIGURATION PRINCIPALE DU CMS (Decap CMS)
+# ============================================================
 
 backend:
-  name: github
-  repo: BenYah10/bluekiosktech-blog   # ← ⚠️ vérifie l'owner/repo
-  branch: main
-  auth_endpoint: /api/oauth           # ← on ajoute l'API OAuth Vercel à l'étape suivante
+  name: git-gateway      # Type d'authentification (Git Gateway via Netlify ou Vercel)
+  branch: main           # Branche du dépôt utilisée pour enregistrer les articles
+  repo: BenYah10/bluekiosktech-blog  # Nom complet du dépôt GitHub
 
-site_url: https://www.bluekiosktech.blog
-display_url: https://www.bluekiosktech.blog
+media_folder: "public/images/uploads"   # Dossier où seront stockées les images
+public_folder: "/images/uploads"        # Chemin public (accès via le site)
 
-publish_mode: editorial_workflow       # Brouillons → Review → Publié
-media_folder: "assets/uploads"         # où les fichiers sont stockés dans le repo
-public_folder: "/assets/uploads"       # URL publique correspondante
-
-local_backend: false                   # true seulement pour dev local
-
-slug:
-  encoding: unicode
-  clean_accents: true
-  sanitize_replacement: "-"
-  # slug final sera: {{year}}-{{month}}-{{day}}-{{slug}}
-# ---------------- i18n ----------------
+# ============================================================
+# 🌍 LOCALISATION ET PARAMÈTRES GÉNÉRAUX
+# ============================================================
+local_backend: true     # Permet de tester le CMS localement sans back-end
 i18n:
-  structure: multiple_folders
-  locales: [fr, en]
-  default_locale: fr
+  structure: multiple_folders  # Chaque langue a son dossier
+  locales: [fr, en]            # Langues supportées
+  default_locale: fr           # Langue par défaut
 
-editor:
-  preview: true
+# ============================================================
+# 📂 DÉFINITION DES COLLECTIONS
+# Chaque "collection" correspond à une section du CMS (Articles, Auteurs, etc.)
+# ============================================================
 
 collections:
-  # =======================
-  # 1) Articles (posts)
-  # =======================
-  - name: "posts"
-    label: "Articles"
-    label_singular: "Article"
-    folder: "content/posts"
-    create: true
-    i18n: true
-    format: "frontmatter"
-    extension: "md"
-    path: "{{year}}/{{month}}/{{slug}}"
-    preview_path: "post.html?locale={{locale}}&slug={{slug}}"
-    sortable_fields: ["date", "title"]
-    fields:
-      # langue implicite courante
-      - { label: "Langue (auto)", name: "lang", widget: "hidden", i18n: duplicate, default: "{{locale}}" }
-      - { label: "Titre",        name: "title", widget: "string",   i18n: true }
-      - { label: "Slug",         name: "slug",  widget: "string",   i18n: duplicate }
-      - { label: "Date",         name: "date",  widget: "datetime", i18n: duplicate }
-      - label: "Auteur"
-        name: "author"
-        widget: "relation"
-        collection: "authors"
-        search_fields: ["name"]
-        value_field: "name"
-        display_fields: ["name"]
-        i18n: duplicate
-      - { label: "Chapo / Résumé", name: "excerpt", widget: "text",   i18n: true,  required: false }
-      - { label: "Image à la une", name: "cover",   widget: "image",  i18n: duplicate, required: false }
-      - { label: "Mots-clés",      name: "tags",    widget: "list",   i18n: translate, required: false }
-      # ✅ Widget color : i18n doit être booléen (ou absent)
-      - { label: "Couleur de badge", name: "badge_color", widget: "color", i18n: false, required: false }
-      - { label: "Contenu", name: "body", widget: "markdown", i18n: translate }
+  # ------------------------------------------------------------
+  # 📝 ARTICLES DU BLOG
+  # ------------------------------------------------------------
+  - name: "posts"           # Nom interne de la collection
+    label: "Articles"       # Nom affiché dans le CMS
+    folder: "content/posts" # Dossier où sont stockés les fichiers
+    create: true            # Autorise la création de nouveaux articles
+    slug: "{{slug}}"        # Modèle pour le nom du fichier créé
 
-  # =======================
-  # 2) Auteurs
-  # =======================
+    fields:                 # Liste des champs à remplir
+      - { label: "Titre", name: "title", widget: "string", i18n: true }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Auteur", name: "author", widget: "string" }
+      - { label: "Description", name: "description", widget: "text", i18n: true }
+      - { label: "Image Principale", name: "thumbnail", widget: "image", required: false }
+      - { label: "Contenu", name: "body", widget: "markdown", i18n: true }
+      - { label: "Catégorie", name: "category", widget: "select", options: ["Tech", "Business", "E-commerce"], i18n: true }
+      - { label: "Couleur du thème", name: "color", widget: "color" } # i18n retiré car non supporté sur widget color
+
+  # ------------------------------------------------------------
+  # 👤 AUTEURS
+  # ------------------------------------------------------------
   - name: "authors"
     label: "Auteurs"
-    label_singular: "Auteur"
     folder: "content/authors"
     create: true
-    format: "json"
-    extension: "json"
-    i18n: false
-    identifier_field: "name"
     slug: "{{slug}}"
+
     fields:
-      - { label: "Nom",         name: "name",  widget: "string" }
-      - { label: "Rôle / Fonction", name: "role", widget: "string", required: false }
-      - { label: "Bio courte",  name: "bio",   widget: "text",   required: false }
-      - { label: "Avatar",      name: "avatar",widget: "image",  required: false }
-      - { label: "Email",       name: "email", widget: "string", required: false }
-      - label: "Réseaux"
-        name: "social"
-        widget: "object"
-        collapsed: true
-        required: false
-        fields:
-          - { label: "LinkedIn", name: "linkedin", widget: "string", required: false }
-          - { label: "X / Twitter", name: "twitter", widget: "string", required: false }
-          - { label: "Site perso",  name: "website", widget: "string", required: false }
+      - { label: "Nom", name: "name", widget: "string", i18n: true }
+      - { label: "Biographie", name: "bio", widget: "text", i18n: true }
+      - { label: "Photo", name: "avatar", widget: "image", required: false }
 
-  # =======================
-  # 3) Réglages du site
-  # =======================
+  # ------------------------------------------------------------
+  # ⚙️ PARAMÈTRES DU SITE (gérés via un fichier unique)
+  # ------------------------------------------------------------
   - name: "settings"
-    label: "Réglages"
-    i18n: true
+    label: "Paramètres du site"
     files:
-      - name: "site"
-        label: "Paramètres généraux"
-        file: "content/settings/site.json"
-        format: "json"
+      - file: "content/settings/site.json"  # Fichier JSON unique pour les paramètres
+        label: "Site"
+        name: "site"
         fields:
-          - { label: "Nom du site",     name: "site_name", widget: "string", i18n: true }
-          - { label: "Baseline",        name: "tagline",   widget: "string", i18n: true, required: false }
-          - { label: "Description",     name: "description", widget: "text", i18n: true, required: false }
-
-          # Ces 2 blocs sont bien des *champs* du même fichier 'site.json'
-          - label: "Réseaux"
+          - { label: "Titre du site", name: "title", widget: "string", i18n: true }
+          - { label: "Description", name: "description", widget: "text", i18n: true }
+          - label: "Liens sociaux"
             name: "socials"
             widget: "object"
-            collapsed: true
-            i18n: duplicate
             fields:
-              - { label: "Facebook",  name: "facebook",  widget: "string", required: false }
+              - { label: "Facebook", name: "facebook", widget: "string", required: false }
               - { label: "Instagram", name: "instagram", widget: "string", required: false }
-              - { label: "LinkedIn",  name: "linkedin",  widget: "string", required: false }
-              - { label: "YouTube",   name: "youtube",   widget: "string", required: false }
-
-          - label: "Apparence"
+              - { label: "LinkedIn", name: "linkedin", widget: "string", required: false }
+          - label: "Thème"
             name: "theme"
             widget: "object"
-            i18n: duplicate
-            collapsed: true
             fields:
-              - label: "Mode"
-                name: "mode"
-                widget: "select"
-                options:
-                  - { label: "Système", value: "system" }
-                  - { label: "Clair",   value: "light" }
-                  - { label: "Sombre",  value: "dark" }
-                default: "system"
-                required: false
-              # ✅ Widgets color : i18n false
-              - { label: "Couleur de la marque", name: "brand_color",  widget: "color", i18n: false, required: false }
-              - { label: "Couleur d’accent",     name: "accent_color", widget: "color", i18n: false, required: false }
+              - { label: "Couleur principale", name: "primary_color", widget: "color" } # corrigé (i18n supprimé)
+              - { label: "Couleur secondaire", name: "secondary_color", widget: "color" } # corrigé
