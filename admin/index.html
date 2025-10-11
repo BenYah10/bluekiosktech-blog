@@ -1,35 +1,59 @@
-<body>
-  <!-- Decap CMS -->
-  <script>
-    /* Empêche toute auto-détection de Netlify Identity si présent ailleurs */
-    try { delete window.netlifyIdentity; } catch(e) {}
-    window.CMS_MANUAL_INIT = true;
-  </script>
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Cache-Control" content="no-store, must-revalidate" />
+    <title>Bluekiosktech — Admin</title>
+    <style>
+      /* petit confort visuel */
+      html, body { height: 100%; margin: 0; }
+    </style>
 
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <!-- Désactive toute éventuelle auto-détection Netlify Identity -->
+    <script>
+      try { delete window.netlifyIdentity; } catch (_) {}
+      window.CMS_MANUAL_INIT = true;
+    </script>
+  </head>
 
-  <script>
-    /* On force le backend GitHub + notre endpoint Vercel */
-    CMS.init({
-      config: {
-        backend: {
-          name: 'github',
-          repo: 'BenYah10/bluekiosktech-blog',
-          branch: 'dev',                // garde 'dev' pour ton flux; mets 'main' si tu veux publier direct
-          auth_endpoint: '/api/oauth'
-        },
-        site_url: 'https://www.bluekiosktech.blog',
-        media_folder: 'assets/uploads',
-        public_folder: '/assets/uploads',
-        publish_mode: 'editorial_workflow',
-        i18n: {
-          structure: 'multiple_folders',
-          locales: ['fr','en'],
-          default_locale: 'fr'
-        },
-        /* On fusionne avec admin/config.yml (collections, champs, etc.) */
-        load_config_file: true
-      }
-    });
-  </script>
-</body>
+  <body>
+    <!-- Decap CMS -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+    <!-- Initialisation MANUELLE du backend (GitHub + OAuth Vercel) -->
+    <script>
+      (function initCMS() {
+        if (!window.CMS) return setTimeout(initCMS, 50);
+
+        CMS.init({
+          config: {
+            backend: {
+              name: 'github',
+              repo: 'BenYah10/bluekiosktech-blog',
+              branch: 'dev',             // publie sur "dev" (change en "main" si tu veux publier direct)
+              auth_endpoint: '/api/oauth' // ta Function Vercel
+            },
+
+            site_url: 'https://www.bluekiosktech.blog',
+
+            media_folder: 'assets/uploads',
+            public_folder: '/assets/uploads',
+
+            publish_mode: 'editorial_workflow',
+
+            i18n: {
+              structure: 'multiple_folders',
+              locales: ['fr', 'en'],
+              default_locale: 'fr'
+            },
+
+            /* Fusionne avec admin/config.yml (collections, champs, etc.) */
+            load_config_file: true
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
