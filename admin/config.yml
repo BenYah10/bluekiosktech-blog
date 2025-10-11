@@ -4,7 +4,6 @@ backend:
   repo: BenYah10/bluekiosktech-blog
   base_url: https://www.bluekiosktech.blog
   auth_endpoint: /api/oauth
-  # (optionnel) si vous utilisez un domaine custom pointant sur Vercel :
   site_domain: www.bluekiosktech.blog
 
 publish_mode: editorial_workflow
@@ -17,6 +16,7 @@ slug:
   encoding: "unicode"
   sanitize_replacement: "-"
 
+# ───────────────── i18n (corrigé : pas de doublons) ─────────────────
 i18n:
   structure: multiple_folders   # => content/posts/fr/... et content/posts/en/...
   locales: [fr, en]
@@ -26,9 +26,7 @@ editor:
   preview: true
 
 collections:
-  # ────────────────────────────────────────────────────────────────────────────
-  # ARTICLES (Markdown, multi-langue, arborescence année/mois/slug)
-  # ────────────────────────────────────────────────────────────────────────────
+  # ─────────────── Articles (Markdown, multi-langue) ───────────────
   - name: "posts"
     label: "Articles"
     label_singular: "Article"
@@ -37,25 +35,19 @@ collections:
     i18n: true
     format: "frontmatter"
     extension: "md"
-    # path à l’intérieur du dossier de langue (fr | en)
     path: "{{year}}/{{month}}/{{slug}}"
     preview_path: "post.html?locale={{locale}}&slug={{slug}}"
     sortable_fields: ["date", "title"]
-    view_filters:
-      - label: "FR"
-        field: "lang"
-        pattern: "fr"
-      - label: "EN"
-        field: "lang"
-        pattern: "en"
     fields:
-      # meta technique — stockée pour faciliter des filtres si besoin
+      # index 0
       - { label: "Langue (auto)", name: "lang", widget: "hidden", i18n: duplicate, default: "{{locale}}" }
-
+      # 1
       - { label: "Titre", name: "title", widget: "string", i18n: true }
+      # 2
       - { label: "Slug", name: "slug", widget: "string", i18n: duplicate, hint: "Sans espaces, utilisé dans l’URL" }
+      # 3
       - { label: "Date", name: "date", widget: "datetime", i18n: duplicate }
-
+      # 4
       - label: "Auteur"
         name: "author"
         widget: "relation"
@@ -64,27 +56,27 @@ collections:
         value_field: "name"
         display_fields: ["name"]
         i18n: duplicate
-
-      - { label: "Chapo / Résumé", name: "excerpt", widget: "text", i18n: true, required: false, hint: "Résumé court (meta description)" }
-
+      # 5
+      - { label: "Chapo / Résumé", name: "excerpt", widget: "text", i18n: true, required: false }
+      # 6
       - label: "Image à la une"
         name: "cover"
         widget: "image"
         i18n: duplicate
         allow_multiple: false
         required: false
-
-      - label: "Mots-clés"
-        name: "tags"
-        widget: "list"
-        i18n: translate
+      # 7  (⚠ champ couleur conservé, i18n **booléen**)
+      - label: "Couleur de badge"
+        name: "badge_color"
+        widget: "color"
+        i18n: false
         required: false
-
+      # 8
+      - { label: "Mots-clés", name: "tags", widget: "list", i18n: translate, required: false }
+      # 9
       - { label: "Contenu", name: "body", widget: "markdown", i18n: translate }
 
-  # ────────────────────────────────────────────────────────────────────────────
-  # AUTEURS (JSON, mono-langue) : content/authors/*.json
-  # ────────────────────────────────────────────────────────────────────────────
+  # ─────────────── Auteurs (JSON, mono-langue) ───────────────
   - name: "authors"
     label: "Auteurs"
     label_singular: "Auteur"
@@ -111,9 +103,7 @@ collections:
           - { label: "X / Twitter", name: "twitter", widget: "string", required: false }
           - { label: "Site perso", name: "website", widget: "string", required: false }
 
-  # ────────────────────────────────────────────────────────────────────────────
-  # RÉGLAGES DU SITE (JSON, multi-langue pour les textes)
-  # ────────────────────────────────────────────────────────────────────────────
+  # ─────────────── Réglages du site (JSON, multi-langue) ───────────────
   - name: "settings"
     label: "Réglages"
     i18n: true
@@ -153,10 +143,6 @@ collections:
                   - { label: "Sombre", value: "dark" }
                 default: "system"
                 required: false
-              - label: "Couleur de marque"
-                name: "brand_color"
-                widget: "color"
-                required: false
-                i18n: duplicate
-
-# Fin du fichier
+              # ⚠ widgets 'color' avec i18n **booléen**
+              - { label: "Couleur de la marque", name: "brand_color", widget: "color", i18n: false, required: false }
+              - { label: "Couleur d’accent", name: "accent_color", widget: "color", i18n: false, required: false }
