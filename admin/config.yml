@@ -1,0 +1,163 @@
+# Decap CMS — Configuration "pro"
+# Docs: https://decapcms.org/docs/
+
+backend:
+  name: github
+  repo: BenYah10/bluekiosktech-blog   # ← ⚠️ vérifie l'owner/repo
+  branch: main
+  auth_endpoint: /api/oauth           # ← on ajoute l'API OAuth Vercel à l'étape suivante
+
+site_url: https://www.bluekiosktech.blog
+display_url: https://www.bluekiosktech.blog
+
+publish_mode: editorial_workflow       # Brouillons → Review → Publié
+media_folder: "assets/uploads"         # où les fichiers sont stockés dans le repo
+public_folder: "/assets/uploads"       # URL publique correspondante
+
+local_backend: false                   # true seulement pour dev local
+
+slug:
+  encoding: unicode
+  clean_accents: true
+  sanitize_replacement: "-"
+  # slug final sera: {{year}}-{{month}}-{{day}}-{{slug}}
+
+i18n:
+  structure: multiple_folders          # /fr, /en
+  locales: [fr, en]
+  default_locale: fr
+
+editor:
+  preview: false                       # pas de live preview pour limiter la complexité (on pourra l’ajouter plus tard)
+
+collections:
+  # ————————————————————————————————————————————————————
+  # 1) Articles du blog
+  # /content/posts/<locale>/<year>/<month>/<slug>.md
+  # ————————————————————————————————————————————————————
+  - name: "posts"
+    label: "Articles"
+    label_singular: "Article"
+    i18n: true
+    folder: "content/posts"
+    path: "{{locale}}/{{year}}/{{month}}/{{slug}}"
+    create: true
+    sortable_fields: ["date", "title"]
+    view_filters:
+      - label: "Brouillons"
+        field: "draft"
+        pattern: true
+      - label: "FR uniquement"
+        field: "i18n.locale"
+        pattern: "fr"
+      - label: "EN uniquement"
+        field: "i18n.locale"
+        pattern: "en"
+    view_groups:
+      - label: "Année"
+        field: "date"
+        pattern: "\\d{4}"
+    fields:
+      - { label: "Titre", name: "title", widget: "string", i18n: true }
+      - { label: "Slug (URL)", name: "slug", widget: "string", i18n: duplicate, hint: "Laisse vide pour générer automatiquement." , required: false }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DDTHH:mm:ssZ", i18n: true }
+      - label: "Auteur"
+        name: "author"
+        widget: "relation"
+        collection: "authors"
+        search_fields: ["name", "handle"]
+        value_field: "handle"
+        display_fields: ["name"]
+        i18n: duplicate
+      - { label: "Résumé (excerpt)", name: "excerpt", widget: "text", i18n: true, required: false }
+      - { label: "Image de couverture", name: "cover", widget: "image", i18n: duplicate, required: false }
+      - { label: "Crédit image (alt)", name: "cover_alt", widget: "string", i18n: true, required: false }
+      - { label: "Tags", name: "tags", widget: "list", i18n: duplicate, required: false }
+      - { label: "Brouillon", name: "draft", widget: "boolean", default: true, i18n: duplicate }
+      - label: "SEO"
+        name: "seo"
+        widget: "object"
+        collapsed: true
+        i18n: true
+        fields:
+          - { label: "Meta title", name: "meta_title", widget: "string", required: false }
+          - { label: "Meta description", name: "meta_description", widget: "text", required: false }
+          - { label: "OG image", name: "og_image", widget: "image", required: false, i18n: duplicate }
+          - { label: "Canonical URL", name: "canonical_url", widget: "string", required: false }
+      - { label: "Contenu", name: "body", widget: "markdown", i18n: true }
+
+  # ————————————————————————————————————————————————————
+  # 2) Auteurs (réutilisables dans les articles)
+  # /content/authors/<handle>.json
+  # ————————————————————————————————————————————————————
+  - name: "authors"
+    label: "Auteurs"
+    label_singular: "Auteur"
+    folder: "content/authors"
+    path: "{{slug}}"
+    create: true
+    format: "json"
+    slug: "{{slug}}"
+    fields:
+      - { label: "Nom affiché", name: "name", widget: "string" }
+      - { label: "Handle (id unique)", name: "handle", widget: "string", hint: "ex: mbeyahmed" }
+      - { label: "Rôle", name: "role", widget: "string", required: false }
+      - { label: "Bio courte", name: "bio", widget: "text", required: false }
+      - { label: "Avatar", name: "avatar", widget: "image", required: false }
+      - { label: "Liens", name: "links", widget: "object", collapsed: true, required: false, fields: [
+          { label: "Site", name: "site", widget: "string", required: false },
+          { label: "LinkedIn", name: "linkedin", widget: "string", required: false },
+          { label: "X/Twitter", name: "twitter", widget: "string", required: false }
+        ] }
+
+  # ————————————————————————————————————————————————————
+  # 3) Pages (“À propos”, “Confidentialité”, etc.)
+  # /content/pages/<locale>/<slug>.md
+  # ————————————————————————————————————————————————————
+  - name: "pages"
+    label: "Pages"
+    i18n: true
+    folder: "content/pages"
+    path: "{{locale}}/{{slug}}"
+    create: true
+    fields:
+      - { label: "Titre", name: "title", widget: "string", i18n: true }
+      - { label: "SEO: Meta description", name: "meta_description", widget: "text", i18n: true, required: false }
+      - { label: "Contenu", name: "body", widget: "markdown", i18n: true }
+
+  # ————————————————————————————————————————————————————
+  # 4) Réglages du site (JSON)
+  # /content/settings/site.json
+  # ————————————————————————————————————————————————————
+  - name: "settings"
+    label: "Réglages"
+    files:
+      - name: "site"
+        label: "Paramètres généraux"
+        file: "content/settings/site.json"
+        format: "json"
+        fields:
+          - { label: "Nom du site", name: "site_name", widget: "string" }
+          - { label: "Baseline", name: "tagline", widget: "string", required: false }
+          - { label: "Description", name: "description", widget: "text", required: false }
+          - label: "Réseaux sociaux"
+            name: "socials"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Facebook", name: "facebook", widget: "string", required: false }
+              - { label: "Instagram", name: "instagram", widget: "string", required: false }
+              - { label: "LinkedIn", name: "linkedin", widget: "string", required: false }
+              - { label: "YouTube", name: "youtube", widget: "string", required: false }
+
+# ————————————————————————————————————————————————————
+# (Option) Cloudinary comme media library pro (à activer plus tard)
+# media_library:
+#   name: cloudinary
+#   config:
+#     cloud_name: "<cloud_name>"
+#     api_key: "<api_key>"
+#     default_transformations:
+#       - - fetch_format: auto
+#           quality: auto
+# ————————————————————————————————————————————————————
