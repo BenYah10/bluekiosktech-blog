@@ -136,4 +136,4 @@ collections:
 
               # ⚠️ champs color => i18n: false
               - { label: "Couleur de la marque", name: "brand_color", widget: "color", i18n: false, required: false }
-              - { label: "Couleur d’accent", name: "accent_color", widget: "color", i18n: false, required: false }
+              - { label: "Couleur d’accent",  name: "accent_color", widget: "color", i18n: false, required: false }
