@@ -19,7 +19,7 @@ slug:
 # -------- i18n --------
 i18n:
   structure: multiple_folders
-  locales: [fr, en]
+  locales: [fr, en]      # ✅ pas de doublon
   default_locale: fr
 
 editor:
@@ -71,7 +71,7 @@ collections:
     create: true
     format: "json"
     extension: "json"
-    i18n: false
+    i18n: false              # un seul set d’auteurs
     identifier_field: "name"
     slug: "{{slug}}"
     fields:
