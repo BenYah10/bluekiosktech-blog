@@ -2,69 +2,16 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <meta name="robots" content="noindex" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- évite l'ancienne version via cache navigateur -->
-    <meta http-equiv="Cache-Control" content="no-store, must-revalidate" />
+    <meta name="robots" content="noindex" />
     <title>Bluekiosktech — Admin</title>
-    <style>
-      html, body { height: 100%; margin: 0; }
-    </style>
-
-    <!-- Empêche toute auto-détection Netlify Identity -->
-    <script>
-      try { delete window.netlifyIdentity; } catch (_) {}
-      window.CMS_MANUAL_INIT = true; // on initialise le CMS nous-mêmes
-    </script>
   </head>
-
   <body>
     <!-- Decap CMS -->
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-
-    <!-- Initialisation manuelle : GitHub + OAuth côté Vercel -->
+    <script src="https://unpkg.com/decap-cms@3.0.0/dist/decap-cms.js"></script>
     <script>
-      (function initCMS() {
-        if (!window.CMS) { setTimeout(initCMS, 50); return; }
-
-        // Permet de choisir la branche via ?branch=main (par défaut: dev)
-        const params = new URLSearchParams(location.search);
-        const BRANCH = params.get('branch') || 'dev';
-
-        CMS.init({
-          config: {
-            backend: {
-              name: 'github',
-              repo: 'BenYah10/bluekiosktech-blog',
-              branch: BRANCH,            // dev par défaut (mets main si tu veux)
-              auth_endpoint: '/api/oauth' // Function Vercel pour l'OAuth GitHub
-            },
-
-            site_url: 'https://www.bluekiosktech.blog',
-
-            media_folder: 'assets/uploads',
-            public_folder: '/assets/uploads',
-
-            publish_mode: 'editorial_workflow',
-            editor: { preview: true },
-
-            i18n: {
-              structure: 'multiple_folders',
-              locales: ['fr', 'en'],
-              default_locale: 'fr'
-            },
-
-            // charge et fusionne automatiquement /admin/config.yml
-            load_config_file: true
-          }
-        });
-
-        // (optionnel) petit log pour debug
-        CMS.registerEventListener({
-          name: 'configLoaded',
-          handler: ({ config }) => console.log('[Decap] config chargée', config)
-        });
-      })();
+      // IMPORTANT : on charge uniquement le fichier YAML
+      CMS.init({ load_config_file: true });
     </script>
   </body>
 </html>
