@@ -18,7 +18,7 @@ slug:
 
 # ───────────────── i18n (corrigé : pas de doublons) ─────────────────
 i18n:
-  structure: multiple_folders
+  structure: multiple_folders   # => content/posts/fr/... et content/posts/en/...
   locales: [fr, en]
   default_locale: fr
 
