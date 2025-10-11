@@ -1,94 +1,162 @@
 backend:
   name: github
-  repo: BenYah10/bluekiosktech-blog   # <— ton repo
-  branch: dev                        # dev = brouillons / lot; mets main si tu veux publier direct prod
+  branch: main
+  repo: BenYah10/bluekiosktech-blog
+  base_url: https://www.bluekiosktech.blog
   auth_endpoint: /api/oauth
+  # (optionnel) si vous utilisez un domaine custom pointant sur Vercel :
+  site_domain: www.bluekiosktech.blog
 
-site_url: https://www.bluekiosktech.blog
 publish_mode: editorial_workflow
 
-media_folder: "assets/uploads"       # où les fichiers sont stockés dans le repo
-public_folder: "/assets/uploads"     # URL publique
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
 
-# Internationalisation (FR/EN) en sous-dossiers
+slug:
+  clean_accents: true
+  encoding: "unicode"
+  sanitize_replacement: "-"
+
 i18n:
-  structure: multiple_folders
+  structure: multiple_folders   # => content/posts/fr/... et content/posts/en/...
   locales: [fr, en]
   default_locale: fr
 
+editor:
+  preview: true
+
 collections:
-  # ————————————————
-  # Articles
-  # ————————————————
+  # ────────────────────────────────────────────────────────────────────────────
+  # ARTICLES (Markdown, multi-langue, arborescence année/mois/slug)
+  # ────────────────────────────────────────────────────────────────────────────
   - name: "posts"
     label: "Articles"
+    label_singular: "Article"
     folder: "content/posts"
     create: true
-    format: "frontmatter"
-    slug: "{{slug}}"
     i18n: true
-    path: "{{locale}}/{{year}}/{{month}}/{{slug}}"
+    format: "frontmatter"
+    extension: "md"
+    # path à l’intérieur du dossier de langue (fr | en)
+    path: "{{year}}/{{month}}/{{slug}}"
+    preview_path: "post.html?locale={{locale}}&slug={{slug}}"
+    sortable_fields: ["date", "title"]
+    view_filters:
+      - label: "FR"
+        field: "lang"
+        pattern: "fr"
+      - label: "EN"
+        field: "lang"
+        pattern: "en"
     fields:
-      - { label: "Titre",   name: "title",  widget: "string",   i18n: true }
-      - { label: "Slug",    name: "slug",   widget: "string",   i18n: true, hint: "URL courte sans espaces" }
-      - { label: "Date",    name: "date",   widget: "datetime", i18n: false }
-      - { label: "Extrait", name: "excerpt",widget: "text",     i18n: true, required: false }
-      - { label: "Image de couverture", name: "cover", widget: "image", required: false, i18n: false }
-      - { label: "Texte alternatif",     name: "cover_alt", widget: "string", required: false, i18n: true }
-      - {
-          label: "Auteur", name: "author", widget: "relation", collection: "authors",
-          search_fields: ["name"], value_field: "id", display_fields: ["name"],
-          required: false, i18n: false
-        }
-      - { label: "Tags",    name: "tags",   widget: "list",     required: false, i18n: true }
-      - { label: "Brouillon", name: "draft", widget: "boolean", default: false, i18n: false }
-      - { label: "Contenu", name: "body",   widget: "markdown", i18n: true }
+      # meta technique — stockée pour faciliter des filtres si besoin
+      - { label: "Langue (auto)", name: "lang", widget: "hidden", i18n: duplicate, default: "{{locale}}" }
 
-  # ————————————————
-  # Auteurs (JSON)
-  # ————————————————
+      - { label: "Titre", name: "title", widget: "string", i18n: true }
+      - { label: "Slug", name: "slug", widget: "string", i18n: duplicate, hint: "Sans espaces, utilisé dans l’URL" }
+      - { label: "Date", name: "date", widget: "datetime", i18n: duplicate }
+
+      - label: "Auteur"
+        name: "author"
+        widget: "relation"
+        collection: "authors"
+        search_fields: ["name"]
+        value_field: "name"
+        display_fields: ["name"]
+        i18n: duplicate
+
+      - { label: "Chapo / Résumé", name: "excerpt", widget: "text", i18n: true, required: false, hint: "Résumé court (meta description)" }
+
+      - label: "Image à la une"
+        name: "cover"
+        widget: "image"
+        i18n: duplicate
+        allow_multiple: false
+        required: false
+
+      - label: "Mots-clés"
+        name: "tags"
+        widget: "list"
+        i18n: translate
+        required: false
+
+      - { label: "Contenu", name: "body", widget: "markdown", i18n: translate }
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # AUTEURS (JSON, mono-langue) : content/authors/*.json
+  # ────────────────────────────────────────────────────────────────────────────
   - name: "authors"
     label: "Auteurs"
+    label_singular: "Auteur"
     folder: "content/authors"
     create: true
     format: "json"
+    extension: "json"
     i18n: false
-    slug: "{{id}}"
+    identifier_field: "name"
+    slug: "{{slug}}"
     fields:
-      - { label: "ID",     name: "id",     widget: "string" }
-      - { label: "Nom",    name: "name",   widget: "string" }
-      - { label: "Bio",    name: "bio",    widget: "text",   required: false }
-      - { label: "Avatar", name: "avatar", widget: "image",  required: false }
-
-  # ————————————————
-  # Paramètres du site (JSON)
-  # ————————————————
-  - name: "settings"
-    label: "Paramètres du site"
-    i18n: false
-    files:
-      - label: "Général"
-        name: "site"
-        file: "content/settings/site.json"
+      - { label: "Nom", name: "name", widget: "string" }
+      - { label: "Rôle / Fonction", name: "role", widget: "string", required: false }
+      - { label: "Bio courte", name: "bio", widget: "text", required: false }
+      - { label: "Avatar", name: "avatar", widget: "image", required: false }
+      - { label: "Email", name: "email", widget: "string", required: false }
+      - label: "Réseaux"
+        name: "social"
+        widget: "object"
+        collapsed: true
+        required: false
         fields:
-          - { label: "Titre du site",       name: "site_title",       widget: "string" }
-          - { label: "Description du site", name: "site_description", widget: "text", required: false }
-          - label: "Couleur primaire"
-            name: "primary_color"
-            widget: "color"
-            allowInput: true
-            enableAlpha: false
-            default: "#0ea5e9"
+          - { label: "LinkedIn", name: "linkedin", widget: "string", required: false }
+          - { label: "X / Twitter", name: "twitter", widget: "string", required: false }
+          - { label: "Site perso", name: "website", widget: "string", required: false }
 
-# ————————————————————————————————————————————————————
-# (Option) Cloudinary comme media library pro (à activer plus tard)
-# media_library:
-#   name: cloudinary
-#   config:
-#     cloud_name: "<cloud_name>"
-#     api_key: "<api_key>"
-#     default_transformations:
-#       - - fetch_format: auto
-#           quality: auto
-# ————————————————————————————————————————————————————
+  # ────────────────────────────────────────────────────────────────────────────
+  # RÉGLAGES DU SITE (JSON, multi-langue pour les textes)
+  # ────────────────────────────────────────────────────────────────────────────
+  - name: "settings"
+    label: "Réglages"
+    i18n: true
+    files:
+      - name: "site"
+        label: "Paramètres généraux"
+        file: "content/settings/site.json"
+        format: "json"
+        fields:
+          - { label: "Nom du site", name: "site_name", widget: "string", i18n: true }
+          - { label: "Baseline", name: "tagline", widget: "string", i18n: true, required: false }
+          - { label: "Description", name: "description", widget: "text", i18n: true, required: false }
 
+          - label: "Réseaux"
+            name: "socials"
+            widget: "object"
+            collapsed: true
+            i18n: duplicate
+            fields:
+              - { label: "Facebook", name: "facebook", widget: "string", required: false }
+              - { label: "Instagram", name: "instagram", widget: "string", required: false }
+              - { label: "LinkedIn", name: "linkedin", widget: "string", required: false }
+              - { label: "YouTube", name: "youtube", widget: "string", required: false }
+
+          - label: "Apparence"
+            name: "theme"
+            widget: "object"
+            i18n: duplicate
+            collapsed: true
+            fields:
+              - label: "Mode"
+                name: "mode"
+                widget: "select"
+                options:
+                  - { label: "Système", value: "system" }
+                  - { label: "Clair", value: "light" }
+                  - { label: "Sombre", value: "dark" }
+                default: "system"
+                required: false
+              - label: "Couleur de marque"
+                name: "brand_color"
+                widget: "color"
+                required: false
+                i18n: duplicate
+
+# Fin du fichier
