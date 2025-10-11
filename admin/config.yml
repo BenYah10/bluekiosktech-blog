@@ -1,29 +1,27 @@
 backend:
   name: github
+  repo: BenYah10/bluekiosktech-blog   # <-- vérifie le nom exact du repo
   branch: main
-  repo: BenYah10/bluekiosktech-blog
   base_url: https://www.bluekiosktech.blog
   auth_endpoint: /api/oauth
-  site_domain: www.bluekiosktech.blog
 
-publish_mode: editorial_workflow
+site_url: https://www.bluekiosktech.blog
+display_url: https://www.bluekiosktech.blog
 
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
-slug:
-  clean_accents: true
-  encoding: "unicode"
-  sanitize_replacement: "-"
+publish_mode: editorial_workflow
 
-# ───────────────── i18n (pas de doublons) ─────────────────
 i18n:
-  structure: multiple_folders
+  structure: single_file
   locales: [fr, en]
   default_locale: fr
 
-editor:
-  preview: true
+slug:
+  encoding: unicode
+  clean_accents: true
+  sanitize_replacement: "-"
 
 collections:
   # ─────────────── Articles ───────────────
@@ -32,22 +30,17 @@ collections:
     label_singular: "Article"
     folder: "content/posts"
     create: true
-    i18n: true
     format: "frontmatter"
-    extension: "md"
     path: "{{year}}/{{month}}/{{slug}}"
     preview_path: "post.html?locale={{locale}}&slug={{slug}}"
-    sortable_fields: ["date", "title"]
+    sortable_fields: [ "date", "title" ]
+    i18n: true
     fields:
-      # 0
-      - { label: "Langue (auto)", name: "lang", widget: "hidden", i18n: duplicate, default: "{{locale}}" }
-      # 1
+      - { label: "Langue (auto)", name: "lang", widget: "hidden", i18n: "duplicate", default: "{{locale}}" }
       - { label: "Titre", name: "title", widget: "string", i18n: true }
-      # 2
-      - { label: "Slug", name: "slug", widget: "string", i18n: duplicate }
-      # 3
-      - { label: "Date", name: "date", widget: "datetime", i18n: duplicate }
-      # 4
+      - { label: "Slug", name: "slug", widget: "string", i18n: "duplicate" }
+      - { label: "Date", name: "date", widget: "datetime", i18n: "duplicate" }
+
       - label: "Auteur"
         name: "author"
         widget: "relation"
@@ -55,26 +48,16 @@ collections:
         search_fields: ["name"]
         value_field: "name"
         display_fields: ["name"]
-        i18n: duplicate
-      # 5
+        i18n: "duplicate"
+
       - { label: "Chapo / Résumé", name: "excerpt", widget: "text", i18n: true, required: false }
-      # 6
-      - label: "Image à la une"
-        name: "cover"
-        widget: "image"
-        i18n: duplicate
-        allow_multiple: false
-        required: false
-      # 7 (liste de tags traduisible)
-      - { label: "Mots-clés", name: "tags", widget: "list", i18n: translate, required: false }
-      # 8  ⚠ le champ "color" doit avoir i18n **booléen**
-      - label: "Couleur de badge"
-        name: "badge_color"
-        widget: "color"
-        i18n: false
-        required: false
-      # 9
-      - { label: "Contenu", name: "body", widget: "markdown", i18n: translate }
+      - { label: "Image à la une", name: "cover", widget: "image", i18n: "duplicate", required: false }
+      - { label: "Mots-clés", name: "tags", widget: "list", i18n: "translate", required: false }
+
+      # IMPORTANT : widget color => i18n doit être booléen ; on force à false
+      - { label: "Couleur de badge", name: "badge_color", widget: "color", i18n: false, required: false, allowInput: true }
+
+      - { label: "Contenu", name: "body", widget: "markdown", i18n: "translate" }
 
   # ─────────────── Auteurs ───────────────
   - name: "authors"
@@ -93,6 +76,7 @@ collections:
       - { label: "Bio courte", name: "bio", widget: "text", required: false }
       - { label: "Avatar", name: "avatar", widget: "image", required: false }
       - { label: "Email", name: "email", widget: "string", required: false }
+
       - label: "Réseaux"
         name: "social"
         widget: "object"
@@ -103,13 +87,13 @@ collections:
           - { label: "X / Twitter", name: "twitter", widget: "string", required: false }
           - { label: "Site perso", name: "website", widget: "string", required: false }
 
-  # ─────────────── Réglages du site ───────────────
+  # ─────────────── Réglages ───────────────
   - name: "settings"
     label: "Réglages"
     i18n: true
     files:
       - name: "site"
-        label: "Paramètres généraux"
+        label: "Site"
         file: "content/settings/site.json"
         format: "json"
         fields:
@@ -121,28 +105,29 @@ collections:
             name: "socials"
             widget: "object"
             collapsed: true
-            i18n: duplicate
+            i18n: false
             fields:
               - { label: "Facebook", name: "facebook", widget: "string", required: false }
               - { label: "Instagram", name: "instagram", widget: "string", required: false }
               - { label: "LinkedIn", name: "linkedin", widget: "string", required: false }
               - { label: "YouTube", name: "youtube", widget: "string", required: false }
 
-          - label: "Apparence"
-            name: "theme"
-            widget: "object"
-            i18n: duplicate
-            collapsed: true
-            fields:
-              - label: "Mode"
-                name: "mode"
-                widget: "select"
-                options:
-                  - { label: "Système", value: "system" }
-                  - { label: "Clair", value: "light" }
-                  - { label: "Sombre", value: "dark" }
-                default: "system"
-                required: false
-              # champs "color" avec i18n booléen
-              - { label: "Couleur de la marque", name: "brand_color", widget: "color", i18n: false, required: false }
-              - { label: "Couleur d’accent",  name: "accent_color", widget: "color", i18n: false, required: false }
+      - name: "theme"
+        label: "Apparence"
+        file: "content/settings/theme.json"
+        format: "json"
+        i18n: true
+        fields:
+          - label: "Mode"
+            name: "mode"
+            widget: "select"
+            default: "system"
+            i18n: false
+            options:
+              - { label: "Système", value: "system" }
+              - { label: "Clair", value: "light" }
+              - { label: "Sombre", value: "dark" }
+
+          # IMPORTANT : widgets color => i18n booléen
+          - { label: "Couleur de la marque", name: "brand_color", widget: "color", i18n: false, required: false, allowInput: true }
+          - { label: "Couleur d’accent", name: "accent_color", widget: "color", i18n: false, required: false, allowInput: true }
