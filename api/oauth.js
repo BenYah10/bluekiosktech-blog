@@ -6,8 +6,8 @@
 
 const jwt = require('crypto'); // on l'utilise pour signer/valider le "state" (HMAC)
 const APP = {
-  clientId: process.env.OAUTH_GITHUB_CLIENT_ID,
-  clientSecret: process.env.OAUTH_GITHUB_CLIENT_SECRET,
+  clientId: process.env.OAUTH_GITHUB_CLIENT_ID || process.env.GITHUB_CLIENT_ID,
+  clientSecret: process.env.OAUTH_GITHUB_CLIENT_SECRET || process.env.GITHUB_CLIENT_SECRET,
   jwtSecret: process.env.OAUTH_JWT_SECRET || 'change-me',
   scope: process.env.OAUTH_GITHUB_SCOPES || 'repo,user:email'
 };
