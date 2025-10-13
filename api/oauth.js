@@ -65,7 +65,7 @@ function htmlSuccess(token) {
 }
 
 function htmlError(msg) {
-  const safe = String(msg || 'OAuth error').replace(/</g, '&lt;');
+  const safe = String(msg || "OAuth error").replace(/</g, "&lt;");
   return `<!doctype html><meta charset="utf-8" />
 <title>OAuth Error</title>
 <body style="font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif;padding:24px;color:#b00020">
