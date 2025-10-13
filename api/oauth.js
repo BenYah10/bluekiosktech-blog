@@ -1,7 +1,7 @@
 // /api/oauth.js — GitHub OAuth pour Decap CMS (super-compat)
-// - Envoie deux formats postMessage (objet + legacy string)
-// - Écrit aussi le token dans le localStorage de la fenêtre parente (2 clés)
-// => Si l'event est manqué, le CMS lit quand même la session au reload.
+// - postMessage en 2 formats (objet + legacy string)
+// - écrit aussi le token dans le localStorage de la fenêtre parente (2 clés)
+// => même si l'event est perdu, l'admin retrouve la session au reload.
 
 const crypto = require('crypto');
 
@@ -20,9 +20,7 @@ function baseUrl(req) {
   return `${proto}://${host}`;
 }
 
-function hmac(s) {
-  return crypto.createHmac('sha256', CFG.jwtSecret).update(s).digest('hex');
-}
+function hmac(s) { return crypto.createHmac('sha256', CFG.jwtSecret).update(s).digest('hex'); }
 function makeState() {
   const raw = `${Date.now()}:${crypto.randomBytes(16).toString('hex')}`;
   const sig = hmac(raw);
@@ -34,9 +32,8 @@ function checkState(state) {
   if (parts.length !== 3) return false;
   const [ts, nonce, sig] = parts;
   const expect = hmac(`${ts}:${nonce}`);
-  try {
-    if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expect))) return false;
-  } catch { return false; }
+  try { if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expect))) return false; }
+  catch { return false; }
   return (Date.now() - Number(ts)) <= 10 * 60 * 1000; // 10 min
 }
 
@@ -51,14 +48,14 @@ function htmlSuccess(token) {
     var token = '${safe}';
     try {
       if (window.opener && !window.opener.closed) {
-        // 1) Stockage local fallback (2 clés compatibles)
+        // 1) Stockage local (fallback)
         try {
           var payload = JSON.stringify({ token: token, provider: 'github' });
           window.opener.localStorage.setItem('decap-cms.user', payload);
           window.opener.localStorage.setItem('netlify-cms.user', payload);
         } catch(e){ console.warn('localStorage set failed:', e); }
 
-        // 2) postMessage (objet + legacy string)
+        // 2) Signaux postMessage (2 formats)
         try { window.opener.postMessage({ token: token, provider: 'github' }, '*'); } catch(e){}
         try { window.opener.postMessage('authorization:github:success:' + token, '*'); } catch(e){}
 
@@ -100,10 +97,7 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'GET') {
-    res.setHeader('Allow', 'GET,OPTIONS');
-    return res.status(405).end('Method Not Allowed');
-  }
+  if (req.method !== 'GET') { res.setHeader('Allow', 'GET,OPTIONS'); return res.status(405).end('Method Not Allowed'); }
 
   const url = new URL(req.url, baseUrl(req));
   const provider = url.searchParams.get('provider') || 'github';
