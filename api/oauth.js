@@ -2,10 +2,11 @@
 // - Redirection vers GitHub (step 1) puis callback (step 2)
 // - Vérifie le "state"
 // - Échange "code" -> "access_token"
-// - Renvoye un HTML qui:
+// - Renvoye un HTML qui :
 //    - fait postMessage({ token, provider:'github' }, '*')
 //    - fait postMessage('authorization:github:success:' + token, '*')
 //    - écrit aussi localStorage 'decap-cms.user' et 'netlify-cms.user'
+//    - fallback : si ouvert hors popup, redirige vers /admin/#/
 
 const GITHUB_AUTHORIZE = 'https://github.com/login/oauth/authorize';
 const GITHUB_TOKEN = 'https://github.com/login/oauth/access_token';
@@ -43,22 +44,29 @@ function htmlSuccess(token) {
   <script>
   (function () {
     var token = '${safe}';
+    var payload = JSON.stringify({ token: token, provider: 'github' });
+
+    // Fallback : écrire ici aussi (si l'URL est ouverte directement)
+    try {
+      localStorage.setItem('decap-cms.user', payload);
+      localStorage.setItem('netlify-cms.user', payload);
+    } catch (e) {}
+
     try {
       if (window.opener && !window.opener.closed) {
-        // Stockage local (2 clés compatibles)
-        try {
-          var payload = JSON.stringify({ token: token, provider: 'github' });
-          window.opener.localStorage.setItem('decap-cms.user', payload);
-          window.opener.localStorage.setItem('netlify-cms.user', payload);
-        } catch(e){}
-
+        // Stockage dans la fenêtre parent
+        try { window.opener.localStorage.setItem('decap-cms.user', payload); } catch(e){}
+        try { window.opener.localStorage.setItem('netlify-cms.user', payload); } catch(e){}
         // postMessage (format objet + legacy)
         try { window.opener.postMessage({ token: token, provider: 'github' }, '*'); } catch(e){}
         try { window.opener.postMessage('authorization:github:success:' + token, '*'); } catch(e){}
-
-        setTimeout(function(){ window.close(); }, 120);
+        setTimeout(function(){ window.close(); }, 80);
+        return;
       }
-    } catch (e) { console.error(e); }
+    } catch (e) {}
+
+    // Si pas de window.opener (ouverture directe), revenir à l'admin
+    setTimeout(function(){ window.location.replace('/admin/#/'); }, 200);
   })();
   </script>
 </body>`;
@@ -101,6 +109,7 @@ function setCookie(res, name, val, maxAgeSec) {
     'Path=/',
     'HttpOnly',
     'SameSite=Lax',
+    // 'Secure', // décommente si tu es 100% en HTTPS, même en preview
   ];
   if (maxAgeSec) parts.push('Max-Age=' + maxAgeSec);
   res.setHeader('Set-Cookie', parts.join('; '));
