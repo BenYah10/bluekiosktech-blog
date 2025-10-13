@@ -5,12 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
     <title>Bluekiosktech — Admin</title>
+    <script>
+      // IMPORTANT : empêche l'auto-init de Decap (sinon double initialisation)
+      window.CMS_MANUAL_INIT = true;
+    </script>
   </head>
   <body>
-    <!-- Decap CMS -->
-    <script src="https://unpkg.com/decap-cms@^3/dist/decap-cms.js"></script>
+    <!-- Decap CMS (version fixée) -->
+    <script src="https://unpkg.com/decap-cms@3.0.0/dist/decap-cms.js"></script>
     <script>
-      // Charge explicitement le YAML depuis /admin/
+      // Init explicite avec le chemin de config
       CMS.init({ config: '/admin/config.yml' });
     </script>
   </body>
