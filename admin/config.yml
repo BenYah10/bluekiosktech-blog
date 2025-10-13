@@ -3,23 +3,23 @@
 # ============================================================
 
 backend:
-  name: github    # Type d'authentification (Git Gateway via Netlify ou Vercel)
-  branch: main           # Branche du dépôt utilisée pour enregistrer les articles
-  repo: BenYah10/bluekiosktech-blog  # Nom complet du dépôt GitHub
+  name: github
+  branch: main
+  repo: BenYah10/bluekiosktech-blog
   base_url: https://www.bluekiosktech.blog
-  auth_endpoint: /api/oauth
+  auth_endpoint: api/oauth   # <= sans slash initial
 
-media_folder: "public/images/uploads"   # Dossier où seront stockées les images
-public_folder: "/images/uploads"        # Chemin public (accès via le site)
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
 
 # ============================================================
 # 🌍 LOCALISATION ET PARAMÈTRES GÉNÉRAUX
 # ============================================================
-local_backend: true     # Permet de tester le CMS localement sans back-end
+local_backend: false        # <= désactivé en production
 i18n:
-  structure: multiple_folders  # Chaque langue a son dossier
-  locales: [fr, en]            # Langues supportées
-  default_locale: fr           # Langue par défaut
+  structure: multiple_folders
+  locales: [fr, en]
+  default_locale: fr
 
 # ============================================================
 # 📂 DÉFINITION DES COLLECTIONS
@@ -85,4 +85,5 @@ collections:
             fields:
               - { label: "Couleur principale", name: "primary_color", widget: "color" } # corrigé (i18n supprimé)
               - { label: "Couleur secondaire", name: "secondary_color", widget: "color" } # corrigé
+
 

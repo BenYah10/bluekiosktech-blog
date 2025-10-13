@@ -8,10 +8,10 @@
   </head>
   <body>
     <!-- Decap CMS -->
-    <script src="https://unpkg.com/decap-cms@3.0.0/dist/decap-cms.js"></script>
+    <script src="https://unpkg.com/decap-cms@^3/dist/decap-cms.js"></script>
     <script>
-      // IMPORTANT : on charge uniquement le fichier YAML
-      CMS.init({ load_config_file: true });
+      // Charge explicitement le YAML depuis /admin/
+      CMS.init({ config: '/admin/config.yml' });
     </script>
   </body>
 </html>
