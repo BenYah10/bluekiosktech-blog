@@ -64,7 +64,7 @@ function htmlSuccess(token) {
           window.opener.localStorage.setItem('netlify-cms.user', payload);
         } catch(e){ console.warn('localStorage set failed:', e); }
 
-        // 2) postMessage (objet + legacy string)
+        // 2) Signaux postMessage (2 formats)
         try { window.opener.postMessage({ token: token, provider: 'github' }, '*'); } catch(e){}
         try { window.opener.postMessage('authorization:github:success:' + token, '*'); } catch(e){}
 
