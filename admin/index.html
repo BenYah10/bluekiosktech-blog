@@ -5,10 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
     <title>Bluekiosktech — Admin</title>
-    <script>window.CMS_MANUAL_INIT = true;</script>
+    <script>
+      // Empêche l'auto-init (sinon double init)
+      window.CMS_MANUAL_INIT = true;
+    </script>
+    <style>
+      .direct-login {
+        position: fixed; top: 12px; right: 12px; z-index: 9999;
+        font: 14px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Helvetica, Arial, sans-serif;
+        background: #24292f; color: #fff; padding: 8px 10px; border-radius: 8px; text-decoration: none;
+      }
+      .direct-login:hover { opacity: .9; }
+    </style>
   </head>
   <body>
+    <!-- Lien de secours: login direct (sans popup) -->
+    <a class="direct-login" href="/api/oauth?provider=github">Connexion GitHub (direct)</a>
+
+    <!-- Decap CMS (version fixée) -->
     <script src="https://unpkg.com/decap-cms@3.8.4/dist/decap-cms.js"></script>
-    <script>CMS.init({ config: '/admin/config.yml' });</script>
+    <script>
+      // Initialise Decap en lisant /admin/config.yml
+      CMS.init({ config: '/admin/config.yml' });
+
+      // Petit log de debug: affiche les messages OAuth si popup utilisé
+      window.addEventListener('message', e => {
+        if (e && e.data) console.log('OAUTH MESSAGE →', e.data);
+      });
+    </script>
   </body>
 </html>
