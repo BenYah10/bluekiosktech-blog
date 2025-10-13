@@ -1,8 +1,9 @@
 {
   "name": "bluekiosk-blog",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "UNLICENSED",
+  "type": "module",
   "engines": { "node": ">=18" },
   "dependencies": {
     "@netlify/blobs": "^6.3.0",
@@ -13,4 +14,3 @@
     "reading-time": "^1.5.0"
   }
 }
-
