@@ -1,4 +1,4 @@
-// API OAuth GitHub pour BlueKioskTech - Version simplifiée
+// API OAuth GitHub pour BlueKioskTech - Version stable
 const GITHUB_AUTHORIZE = 'https://github.com/login/oauth/authorize';
 const GITHUB_TOKEN = 'https://github.com/login/oauth/access_token';
 
@@ -14,16 +14,13 @@ export default async function handler(request) {
     if (!clientId || !clientSecret) {
       return new Response(
         `<!DOCTYPE html>
-        <html><body>
-          <h2>Erreur Configuration</h2>
-          <p>Variables OAuth manquantes</p>
-          <script>
-            if (window.opener) {
-              window.opener.postMessage({ error: 'Configuration OAuth manquante' }, '*');
-              setTimeout(() => window.close(), 2000);
-            }
-          </script>
-        </body></html>`,
+        <html>
+        <body style="font-family: sans-serif; padding: 20px; text-align: center;">
+          <h2>Erreur de Configuration</h2>
+          <p>Variables d'environnement OAuth manquantes</p>
+          <button onclick="window.close()">Fermer</button>
+        </body>
+        </html>`,
         { status: 500, headers: { 'Content-Type': 'text/html' } }
       );
     }
@@ -33,17 +30,14 @@ export default async function handler(request) {
 
     // ÉTAPE 1: Redirection vers GitHub
     if (!code) {
-      const state = Math.random().toString(36).substring(2);
+      const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
       const redirectUrl = new URL(GITHUB_AUTHORIZE);
       
       redirectUrl.searchParams.set('client_id', clientId);
       redirectUrl.searchParams.set('redirect_uri', `${siteUrl}/api/oauth`);
       redirectUrl.searchParams.set('scope', 'repo,user');
       redirectUrl.searchParams.set('state', state);
-      redirectUrl.searchParams.set('allow_signup', 'false');
 
-      console.log('🔐 Redirection vers GitHub avec state:', state);
-      
       const response = new Response(null, { status: 302 });
       response.headers.set('Location', redirectUrl.toString());
       response.headers.set('Set-Cookie', `oauth_state=${state}; Path=/; HttpOnly; SameSite=Lax; Secure; Max-Age=600`);
@@ -71,10 +65,6 @@ export default async function handler(request) {
     }
 
     const tokenData = await tokenResponse.json();
-    console.log('📦 Réponse token GitHub:', { 
-      access_token: tokenData.access_token ? 'présent' : 'absent',
-      scope: tokenData.scope 
-    });
 
     if (!tokenData.access_token) {
       throw new Error('No access token received');
@@ -85,49 +75,73 @@ export default async function handler(request) {
       `<!DOCTYPE html>
       <html>
       <head>
-        <title>Authentification réussie</title>
+        <title>Authentification réussie - BlueKioskTech</title>
         <style>
-          body { font-family: -apple-system, sans-serif; padding: 40px; text-align: center; }
-          .success { color: #28a745; font-size: 48px; margin-bottom: 20px; }
+          body { 
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
+            padding: 40px; 
+            text-align: center; 
+            background: #f5f5f5;
+          }
+          .success { 
+            color: #28a745; 
+            font-size: 48px; 
+            margin-bottom: 20px; 
+          }
+          .box {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: 0 auto;
+          }
         </style>
       </head>
       <body>
-        <div class="success">✓</div>
-        <h2>Authentification réussie</h2>
-        <p>Vous pouvez fermer cette fenêtre.</p>
+        <div class="box">
+          <div class="success">✓</div>
+          <h2>Authentification réussie</h2>
+          <p>Vous pouvez fermer cette fenêtre.</p>
+        </div>
         <script>
           (function() {
             const token = '${tokenData.access_token}';
             const userData = {
               token: token,
-              provider: 'github'
+              provider: 'github',
+              user: { login: 'admin' }
             };
             
-            // Stockage multiple pour compatibilité
             try {
+              // Stockage pour Decap CMS
               localStorage.setItem('decap-cms.user', JSON.stringify(userData));
-              localStorage.setItem('netlify-cms.user', JSON.stringify(userData));
-            } catch (e) {}
+              console.log('Token stocké avec succès');
+            } catch (e) {
+              console.error('Erreur stockage:', e);
+            }
             
-            // Communication avec la fenêtre parente
+            // Communication avec parent
             try {
               if (window.opener && !window.opener.closed) {
                 window.opener.postMessage({
                   type: 'oauth:success',
                   token: token,
                   provider: 'github'
-                }, '*');
+                }, '${siteUrl}');
                 
-                setTimeout(() => window.close(), 500);
+                setTimeout(function() {
+                  window.close();
+                }, 500);
               } else {
-                // Fallback: redirection
-                setTimeout(() => {
+                // Redirection fallback
+                setTimeout(function() {
                   window.location.href = '${siteUrl}/admin/';
                 }, 1000);
               }
             } catch (error) {
               console.error('Error:', error);
-              setTimeout(() => {
+              setTimeout(function() {
                 window.location.href = '${siteUrl}/admin/';
               }, 1000);
             }
@@ -139,7 +153,6 @@ export default async function handler(request) {
         status: 200, 
         headers: { 
           'Content-Type': 'text/html; charset=utf-8',
-          'Cache-Control': 'no-store'
         } 
       }
     );
@@ -149,18 +162,22 @@ export default async function handler(request) {
     
     return new Response(
       `<!DOCTYPE html>
-      <html><body>
-        <h2>Erreur d'authentification</h2>
+      <html>
+      <body style="font-family: sans-serif; padding: 20px; text-align: center;">
+        <h2 style="color: #dc3545;">Erreur d'authentification</h2>
         <p>${error.message}</p>
+        <button onclick="window.close()">Fermer</button>
         <script>
-          if (window.opener) {
-            window.opener.postMessage({ 
-              error: 'Authentication failed: ${error.message}' 
-            }, '*');
-            setTimeout(() => window.close(), 3000);
-          }
+          try {
+            if (window.opener) {
+              window.opener.postMessage({ 
+                error: 'Authentication failed' 
+              }, '*');
+            }
+          } catch (e) {}
         </script>
-      </body></html>`,
+      </body>
+      </html>`,
       { status: 500, headers: { 'Content-Type': 'text/html' } }
     );
   }
