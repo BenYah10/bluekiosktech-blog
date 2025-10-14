@@ -1,12 +1,13 @@
 // Branche la liste sur blog.html (div#posts-list) et la lecture sur post.html (article#post-content)
 ;(function () {
+  // Neutralisation sur les pages qui ne doivent PAS exécuter ce flux legacy
   if (typeof window !== 'undefined' && window.FEED_SOURCE && window.FEED_SOURCE !== 'legacy') {
-    console.info('[cms-posts] neutralisé sur cette page (FEED_SOURCE=', window.FEED_SOURCE, ')');
-    return; // ↩️ stoppe l'exécution du reste du fichier sur blog.html
+    console.info('[cms-posts] neutralisé sur cette page (FEED_SOURCE =', window.FEED_SOURCE, ')');
+    return; // ↩️ stoppe l'exécution du script ici
   }
 
-(function () {
-  const qs = (s) => document.querySelector(s);
+  // ----- Ton code d'origine (inchangé) -----
+  const qs  = (s) => document.querySelector(s);
   const qsa = (s) => Array.from(document.querySelectorAll(s));
   const get = (url) => fetch(url, { credentials: 'same-origin' }).then(r => r.ok ? r.json() : Promise.reject(r));
 
@@ -68,7 +69,7 @@
 
       // Titre, cover, méta si éléments présents
       const titleEl = qs('#post-title');
-      const metaEl = qs('#post-meta');
+      const metaEl  = qs('#post-meta');
       const coverEl = qs('#post-cover');
 
       if (titleEl) titleEl.textContent = meta.title;
@@ -81,7 +82,6 @@
       }
 
       mount.innerHTML = html;
-      // Optionnel: scroll top
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (e) {
       mount.innerHTML = `<p>Article introuvable.</p>`;
@@ -91,5 +91,4 @@
   // Auto-run
   renderList();
   renderPost();
-})();
-
+})(); // ✅ IIFE fermée
