@@ -95,6 +95,8 @@
         <option value="oldest" data-i18n="sort_oldest">Plus anciens</option>
       </select>
     </div>
+    <div id="posts" class="posts-grid"></div>
+
 
     <!-- ⚠️ ID aligné avec render.js -->
     <div id="postsList" class="grid cards"></div>
@@ -141,5 +143,7 @@
       if (typeof renderList === 'function') renderList();
     });
   </script>
+  <script type="module" src="/js/fetchPosts.js"></script>
+
 </body>
 </html>
