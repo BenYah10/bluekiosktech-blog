@@ -9,8 +9,8 @@ backend:
   base_url: https://www.bluekiosktech.blog
   auth_endpoint: api/oauth   # <= sans slash initial
 
-media_folder: "public/images/uploads"
-public_folder: "/images/uploads"
+media_folder: "assets/images/uploads"
+public_folder: "/assets/images/uploads"
 
 # ============================================================
 # 🌍 LOCALISATION ET PARAMÈTRES GÉNÉRAUX
@@ -85,5 +85,6 @@ collections:
             fields:
               - { label: "Couleur principale", name: "primary_color", widget: "color" } # corrigé (i18n supprimé)
               - { label: "Couleur secondaire", name: "secondary_color", widget: "color" } # corrigé
+
 
 
