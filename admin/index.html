@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
     <title>Bluekiosktech — Admin</title>
-    <script>
-      // Empêche l'auto-init (sinon double init)
-      window.CMS_MANUAL_INIT = true;
-    </script>
+
+    <!-- Empêche l'auto-init pour éviter toute double initialisation -->
+    <script>window.CMS_MANUAL_INIT = true;</script>
+
     <style>
       .direct-login {
         position: fixed; top: 12px; right: 12px; z-index: 9999;
@@ -19,17 +19,33 @@
     </style>
   </head>
   <body>
-    <!-- Lien de secours: login direct (sans popup) -->
+    <!-- Mode sans popup (fiable même si le navigateur bloque les popups) -->
     <a class="direct-login" href="/api/oauth?provider=github">Connexion GitHub (direct)</a>
 
-    <!-- Decap CMS (version fixée) -->
+    <!-- Charge une version fixée de Decap -->
     <script src="https://unpkg.com/decap-cms@3.8.4/dist/decap-cms.js"></script>
+
     <script>
+      // 🔧 SHIM: si un token existe déjà en localStorage, on simule le message du popup
+      (function () {
+        try {
+          var raw = localStorage.getItem('decap-cms.user') || localStorage.getItem('netlify-cms.user');
+          if (raw) {
+            var u = JSON.parse(raw || '{}');
+            if (u && u.token) {
+              // Envoie les 2 formats que Decap comprend
+              window.postMessage({ token: u.token, provider: u.provider || 'github' }, window.location.origin);
+              window.postMessage('authorization:github:success:' + u.token, window.location.origin);
+            }
+          }
+        } catch (e) {}
+      })();
+
       // Initialise Decap en lisant /admin/config.yml
       CMS.init({ config: '/admin/config.yml' });
 
-      // Petit log de debug: affiche les messages OAuth si popup utilisé
-      window.addEventListener('message', e => {
+      // (facultatif) log utile pendant le debug
+      window.addEventListener('message', (e) => {
         if (e && e.data) console.log('OAUTH MESSAGE →', e.data);
       });
     </script>
