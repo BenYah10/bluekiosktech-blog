@@ -115,35 +115,30 @@
     </div>
   </footer>
 
-  <!-- JS -->
-  <script src="assets/js/i18n.js"></script>
-  <script src="assets/js/data.js"></script>
-  <script src="assets/js/render.js"></script>
-  <script src="assets/js/main.js"></script>
+<!-- [<- JS ->] -->
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/render.js"></script>
+<script src="assets/js/main.js"></script>
 
-  <div id="posts-list"></div>
-  <script defer src="/assets/js/cms-posts.js"></script>
+<div id="posts-list"></div>
+<script defer src="/assets/js/cms-posts.js"></script>
 
+<!-- Init -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (typeof applyI18N === 'function') applyI18N();
+    const PH = { fr: "Rechercher un article…", en : "Search an article…" };
+    const input = document.getElementById('searchInput');
+    if (input && typeof Lang !== 'undefined') {
+      input.placeholder = Lang.get() === 'en' ? PH.en : PH.fr;
+    }
+    if (typeof refreshPosts === 'function') refreshPosts();
+    if (typeof renderList === 'function') renderList();
+  });
+</script>
+<script type="module" src="/assets/js/fetchPosts.js"></script>
 
-  <!-- Init -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // i18n (libellés statiques)
-      if (typeof applyI18N === 'function') applyI18N();
-
-      // placeholder du champ de recherche selon la langue courante
-      const PH = { fr: "Rechercher un article…", en: "Search an article…" };
-      const input = document.getElementById('searchInput');
-      if (input && typeof Lang !== 'undefined') {
-        input.placeholder = Lang.get() === 'en' ? PH.en : PH.fr;
-      }
-
-      // affichage des articles
-      if (typeof refreshPosts === 'function') refreshPosts();
-      if (typeof renderList === 'function') renderList();
-    });
-  </script>
-  <script type="module" src="/assets/js/fetchPosts.js"></script>
 
 </body>
 </html>
