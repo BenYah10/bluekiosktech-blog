@@ -2,7 +2,7 @@ import { groq, escapeHtml, fmtDate } from './sanityClient.js';
 import { toHTML } from 'https://esm.sh/@portabletext/to-html@2';
 
 const params = new URLSearchParams(location.search);
-const slug = params.get('slug');
+const slug = params.get('slug') || params.get('id');
 
 const POST_QUERY = `
 *[_type == "post" && slug.current == $slug][0]{
