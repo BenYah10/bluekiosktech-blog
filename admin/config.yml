@@ -8,6 +8,7 @@ backend:
   repo: BenYah10/bluekiosktech-blog
   base_url: https://www.bluekiosktech.blog
   auth_endpoint: api/oauth   # <= sans slash initial
+  site_domain: www.bluekiosktech.blog
 
 media_folder: "assets/images/uploads"
 public_folder: "/assets/images/uploads"
@@ -85,6 +86,7 @@ collections:
             fields:
               - { label: "Couleur principale", name: "primary_color", widget: "color" } # corrigé (i18n supprimé)
               - { label: "Couleur secondaire", name: "secondary_color", widget: "color" } # corrigé
+
 
 
 
