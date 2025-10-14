@@ -1,4 +1,9 @@
 // Branche la liste sur blog.html (div#posts-list) et la lecture sur post.html (article#post-content)
+;(function () {
+  if (typeof window !== 'undefined' && window.FEED_SOURCE && window.FEED_SOURCE !== 'legacy') {
+    console.info('[cms-posts] neutralisé sur cette page (FEED_SOURCE=', window.FEED_SOURCE, ')');
+    return; // ↩️ stoppe l'exécution du reste du fichier sur blog.html
+  }
 
 (function () {
   const qs = (s) => document.querySelector(s);
@@ -87,3 +92,4 @@
   renderList();
   renderPost();
 })();
+
