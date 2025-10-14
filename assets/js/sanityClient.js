@@ -28,4 +28,7 @@ export function escapeHtml(s) {
 export function fmtDate(iso) {
   try { return new Date(iso).toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' }); }
   catch { return iso || ''; }
+
+  console.log('SANITY BASE =', BASE);
+
 }
