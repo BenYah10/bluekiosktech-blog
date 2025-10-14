@@ -1,6 +1,11 @@
 // js/fetchPosts.js
 import { groq, escapeHtml, fmtDate } from './sanityClient.js';
 
+// Neutralise ce script si on a choisi Sanity ou si le container legacy n'est pas présent
+(function () {
+  if (window.FEED_SOURCE && window.FEED_SOURCE !== 'legacy') return;
+  if (!document.getElementById('posts-list')) return;
+
 const POSTS_QUERY = `
 *[_type == "post"] | order(publishedAt desc) {
   _id,
