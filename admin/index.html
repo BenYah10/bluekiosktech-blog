@@ -76,12 +76,23 @@
             margin: 10px 0;
             display: none;
         }
+
+        /* Styles pour Decap CMS */
+        #nc-root {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            background: white;
+        }
     </style>
 </head>
 <body>
     <div class="container" id="container">
         <div class="logo">
-            <img src="/assets/images/logo-blog.svg" alt="BlueKioskTech" />
+            <img src="/assets/images/logo-blog.svg" alt="BlueKioskTech" onerror="this.style.display='none'" />
         </div>
         
         <h1>Administration</h1>
@@ -114,6 +125,7 @@
                 site_domain: "www.bluekiosktech.blog"
             },
             locale: "fr",
+            load_config_file: false,
             media_folder: "assets/images/uploads",
             public_folder: "/assets/images/uploads",
             collections: [

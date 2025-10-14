@@ -42,6 +42,8 @@ export default async function handler(request) {
       redirectUrl.searchParams.set('state', state);
       redirectUrl.searchParams.set('allow_signup', 'false');
 
+      console.log('🔐 Redirection vers GitHub avec state:', state);
+      
       const response = new Response(null, { status: 302 });
       response.headers.set('Location', redirectUrl.toString());
       response.headers.set('Set-Cookie', `oauth_state=${state}; Path=/; HttpOnly; SameSite=Lax; Secure; Max-Age=600`);
@@ -69,6 +71,10 @@ export default async function handler(request) {
     }
 
     const tokenData = await tokenResponse.json();
+    console.log('📦 Réponse token GitHub:', { 
+      access_token: tokenData.access_token ? 'présent' : 'absent',
+      scope: tokenData.scope 
+    });
 
     if (!tokenData.access_token) {
       throw new Error('No access token received');
