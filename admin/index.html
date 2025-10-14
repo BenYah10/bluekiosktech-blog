@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>BlueKioskTech - Administration</title>
+    <title>BlueKioskTech - Admin</title>
     
     <style>
         body {
@@ -101,6 +101,9 @@
         
         .loading {
             margin: 20px 0;
+            padding: 10px;
+            border-radius: 4px;
+            background: #f8f9fa;
         }
         
         .spinner {
@@ -162,7 +165,7 @@
         };
 
         // Configuration Decap CMS
-        const CMS_CONFIG = {
+        const config = {
             backend: {
                 name: "github",
                 repo: "BenYah10/bluekiosktech-blog",
@@ -256,7 +259,7 @@
             console.log('🚀 Initialisation de Decap CMS...');
             
             try {
-                // Mode manuel requis
+                // Mode manuel
                 window.CMS_MANUAL_INIT = true;
 
                 // Vérifier que CMS est disponible
