@@ -1,262 +1,73 @@
-// ==================================================
-// 🔐 API OAuth GitHub pour BlueKioskTech Blog
-// Version optimisée et déboguée
-// ==================================================
-
+// API OAuth GitHub pour BlueKioskTech - Version simplifiée
 const GITHUB_AUTHORIZE = 'https://github.com/login/oauth/authorize';
 const GITHUB_TOKEN = 'https://github.com/login/oauth/access_token';
 
-// Configuration
-const CONFIG = {
-  clientId: process.env.OAUTH_GITHUB_CLIENT_ID,
-  clientSecret: process.env.OAUTH_GITHUB_CLIENT_SECRET,
-  scopes: 'repo,user',
-  siteUrl: process.env.SITE_URL || 'https://www.bluekiosktech.blog',
-  cookieName: 'gh_oauth_state',
-  cookieMaxAge: 10 * 60, // 10 minutes
-};
-
-// Génération d'un state sécurisé
-function generateState() {
-  return Buffer.from(Date.now().toString() + Math.random().toString(36)).toString('base64');
-}
-
-// Parsing des cookies
-function parseCookies(request) {
-  const cookies = {};
-  const cookieHeader = request.headers.get('cookie');
-  
-  if (cookieHeader) {
-    cookieHeader.split(';').forEach(cookie => {
-      const [name, ...valueParts] = cookie.trim().split('=');
-      cookies[name] = decodeURIComponent(valueParts.join('='));
-    });
-  }
-  
-  return cookies;
-}
-
-// Configuration d'un cookie
-function setCookie(response, name, value, maxAge) {
-  const cookie = [
-    `${name}=${encodeURIComponent(value)}`,
-    'Path=/',
-    'HttpOnly',
-    'SameSite=Lax',
-    'Secure',
-    `Max-Age=${maxAge}`
-  ].join('; ');
-  
-  response.headers.append('Set-Cookie', cookie);
-}
-
-// HTML de succès
-function htmlSuccess(token) {
-  const safeToken = String(token).replace(/</g, '&lt;').replace(/'/g, '&#39;');
-  
-  return `<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Authentification réussie - BlueKioskTech</title>
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f5f5; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; }
-    .success-box { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; max-width: 500px; }
-    .checkmark { color: #28a745; font-size: 48px; margin-bottom: 20px; }
-  </style>
-</head>
-<body>
-  <div class="success-box">
-    <div class="checkmark">✓</div>
-    <h2>Authentification réussie</h2>
-    <p>Vous pouvez maintenant fermer cette fenêtre.</p>
-    <script>
-      (function() {
-        const token = '${safeToken}';
-        const payload = JSON.stringify({ 
-          token: token, 
-          provider: 'github',
-          expires: Date.now() + (8 * 60 * 60 * 1000)
-        });
-        
-        // Fonction de stockage
-        const storeToken = () => {
-          try {
-            localStorage.setItem('decap-cms.user', payload);
-            localStorage.setItem('netlify-cms.user', payload);
-            console.log('✅ Token stocké');
-          } catch (e) {
-            console.error('❌ Erreur stockage:', e);
-          }
-        };
-        
-        try {
-          if (window.opener && !window.opener.closed) {
-            // Stockage dans le parent
-            try {
-              window.opener.localStorage.setItem('decap-cms.user', payload);
-              window.opener.localStorage.setItem('netlify-cms.user', payload);
-            } catch (e) {}
-            
-            // Messages de succès
-            window.opener.postMessage({ 
-              type: 'oauth:success',
-              provider: 'github',
-              token: token 
-            }, '${CONFIG.siteUrl}');
-            
-            window.opener.postMessage('authorization:github:success:' + token, '${CONFIG.siteUrl}');
-            
-            setTimeout(() => {
-              window.close();
-            }, 500);
-          } else {
-            // Fallback
-            storeToken();
-            setTimeout(() => {
-              window.location.href = '${CONFIG.siteUrl}/admin/';
-            }, 1000);
-          }
-        } catch (error) {
-          storeToken();
-          setTimeout(() => {
-            window.location.href = '${CONFIG.siteUrl}/admin/';
-          }, 1500);
-        }
-      })();
-    </script>
-  </div>
-</body>
-</html>`;
-}
-
-// HTML d'erreur
-function htmlError(message, details = '') {
-  const safeMessage = String(message).replace(/</g, '&lt;');
-  const safeDetails = String(details).replace(/</g, '&lt;');
-  
-  return `<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Erreur d'authentification</title>
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f5f5; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; }
-    .error-box { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; max-width: 500px; border-left: 4px solid #dc3545; }
-    .error-icon { color: #dc3545; font-size: 48px; margin-bottom: 20px; }
-  </style>
-</head>
-<body>
-  <div class="error-box">
-    <div class="error-icon">❌</div>
-    <h2>Erreur d'authentification</h2>
-    <p>${safeMessage}</p>
-    ${safeDetails ? `<pre style="text-align: left; background: #f8f9fa; padding: 10px; border-radius: 4px; margin-top: 15px; font-size: 12px;">${safeDetails}</pre>` : ''}
-    <button onclick="window.location.href='${CONFIG.siteUrl}/admin/'" style="background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin-top: 15px;">
-      Retour à l'admin
-    </button>
-    <script>
-      try {
-        if (window.opener && !window.opener.closed) {
-          window.opener.postMessage({
-            type: 'oauth:error',
-            provider: 'github',
-            error: '${safeMessage}'
-          }, '*');
-        }
-      } catch (e) {}
-    </script>
-  </div>
-</body>
-</html>`;
-}
-
-// Handler principal
 export default async function handler(request) {
-  const url = new URL(request.url, CONFIG.siteUrl);
+  const url = new URL(request.url);
   
   try {
-    // Vérification de la configuration
-    if (!CONFIG.clientId || !CONFIG.clientSecret) {
-      console.error('❌ Configuration OAuth manquante');
+    const clientId = process.env.OAUTH_GITHUB_CLIENT_ID;
+    const clientSecret = process.env.OAUTH_GITHUB_CLIENT_SECRET;
+    const siteUrl = process.env.SITE_URL || 'https://www.bluekiosktech.blog';
+
+    // Vérification configuration
+    if (!clientId || !clientSecret) {
       return new Response(
-        htmlError('Configuration OAuth manquante. Vérifiez les variables d\'environnement.'),
-        { status: 500, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+        `<!DOCTYPE html>
+        <html><body>
+          <h2>Erreur Configuration</h2>
+          <p>Variables OAuth manquantes</p>
+          <script>
+            if (window.opener) {
+              window.opener.postMessage({ error: 'Configuration OAuth manquante' }, '*');
+              setTimeout(() => window.close(), 2000);
+            }
+          </script>
+        </body></html>`,
+        { status: 500, headers: { 'Content-Type': 'text/html' } }
       );
     }
 
-    const isCallback = url.searchParams.has('code');
-    const cookies = parseCookies(request);
+    const code = url.searchParams.get('code');
+    const state = url.searchParams.get('state');
 
     // ÉTAPE 1: Redirection vers GitHub
-    if (!isCallback) {
-      const state = generateState();
-      const redirectUri = new URL(GITHUB_AUTHORIZE);
+    if (!code) {
+      const state = Math.random().toString(36).substring(2);
+      const redirectUrl = new URL(GITHUB_AUTHORIZE);
       
-      redirectUri.searchParams.set('client_id', CONFIG.clientId);
-      redirectUri.searchParams.set('redirect_uri', `${CONFIG.siteUrl}/api/oauth`);
-      redirectUri.searchParams.set('scope', CONFIG.scopes);
-      redirectUri.searchParams.set('state', state);
-      redirectUri.searchParams.set('allow_signup', 'false');
+      redirectUrl.searchParams.set('client_id', clientId);
+      redirectUrl.searchParams.set('redirect_uri', `${siteUrl}/api/oauth`);
+      redirectUrl.searchParams.set('scope', 'repo,user');
+      redirectUrl.searchParams.set('state', state);
+      redirectUrl.searchParams.set('allow_signup', 'false');
 
       console.log('🔐 Redirection vers GitHub avec state:', state);
       
       const response = new Response(null, { status: 302 });
-      setCookie(response, CONFIG.cookieName, state, CONFIG.cookieMaxAge);
-      response.headers.set('Location', redirectUri.toString());
+      response.headers.set('Location', redirectUrl.toString());
+      response.headers.set('Set-Cookie', `oauth_state=${state}; Path=/; HttpOnly; SameSite=Lax; Secure; Max-Age=600`);
       
       return response;
     }
 
-    // ÉTAPE 2: Callback GitHub
-    const code = url.searchParams.get('code');
-    const state = url.searchParams.get('state');
-    const storedState = cookies[CONFIG.cookieName];
-
-    console.log('🔄 Callback GitHub reçu:', { code: code ? 'présent' : 'absent', state, storedState: storedState ? 'présent' : 'absent' });
-
-    // Validation du state
-    if (!state || !storedState || state !== storedState) {
-      console.error('❌ State invalide:', { state, storedState });
-      return new Response(
-        htmlError('State invalide ou expiré. Veuillez réessayer.'),
-        { status: 400, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
-      );
-    }
-
-    if (!code) {
-      console.error('❌ Code manquant');
-      return new Response(
-        htmlError('Code d\'autorisation manquant.'),
-        { status: 400, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
-      );
-    }
-
-    // Échange du code contre le token
-    console.log('🔄 Échange du code contre le token...');
-    
+    // ÉTAPE 2: Échange du code contre token
     const tokenResponse = await fetch(GITHUB_TOKEN, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'User-Agent': 'BlueKioskTech-Blog'
       },
       body: JSON.stringify({
-        client_id: CONFIG.clientId,
-        client_secret: CONFIG.clientSecret,
+        client_id: clientId,
+        client_secret: clientSecret,
         code: code,
-        redirect_uri: `${CONFIG.siteUrl}/api/oauth`
-      })
+        redirect_uri: `${siteUrl}/api/oauth`
+      }),
     });
 
     if (!tokenResponse.ok) {
-      const errorText = await tokenResponse.text();
-      console.error('❌ Échec échange token:', errorText);
-      return new Response(
-        htmlError('Échec de l\'échange du token GitHub', errorText),
-        { status: 502, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
-      );
+      throw new Error(`GitHub API error: ${tokenResponse.status}`);
     }
 
     const tokenData = await tokenResponse.json();
@@ -266,32 +77,91 @@ export default async function handler(request) {
     });
 
     if (!tokenData.access_token) {
-      console.error('❌ Token manquant dans la réponse:', tokenData);
-      return new Response(
-        htmlError('Token d\'accès manquant dans la réponse GitHub', JSON.stringify(tokenData, null, 2)),
-        { status: 502, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
-      );
+      throw new Error('No access token received');
     }
 
-    // SUCCÈS
-    console.log('✅ Authentification réussie, retour du token');
+    // SUCCÈS - Retour du token
     return new Response(
-      htmlSuccess(tokenData.access_token),
+      `<!DOCTYPE html>
+      <html>
+      <head>
+        <title>Authentification réussie</title>
+        <style>
+          body { font-family: -apple-system, sans-serif; padding: 40px; text-align: center; }
+          .success { color: #28a745; font-size: 48px; margin-bottom: 20px; }
+        </style>
+      </head>
+      <body>
+        <div class="success">✓</div>
+        <h2>Authentification réussie</h2>
+        <p>Vous pouvez fermer cette fenêtre.</p>
+        <script>
+          (function() {
+            const token = '${tokenData.access_token}';
+            const userData = {
+              token: token,
+              provider: 'github'
+            };
+            
+            // Stockage multiple pour compatibilité
+            try {
+              localStorage.setItem('decap-cms.user', JSON.stringify(userData));
+              localStorage.setItem('netlify-cms.user', JSON.stringify(userData));
+            } catch (e) {}
+            
+            // Communication avec la fenêtre parente
+            try {
+              if (window.opener && !window.opener.closed) {
+                window.opener.postMessage({
+                  type: 'oauth:success',
+                  token: token,
+                  provider: 'github'
+                }, '*');
+                
+                setTimeout(() => window.close(), 500);
+              } else {
+                // Fallback: redirection
+                setTimeout(() => {
+                  window.location.href = '${siteUrl}/admin/';
+                }, 1000);
+              }
+            } catch (error) {
+              console.error('Error:', error);
+              setTimeout(() => {
+                window.location.href = '${siteUrl}/admin/';
+              }, 1000);
+            }
+          })();
+        </script>
+      </body>
+      </html>`,
       { 
         status: 200, 
         headers: { 
           'Content-Type': 'text/html; charset=utf-8',
-          'Cache-Control': 'no-store, no-cache, must-revalidate'
+          'Cache-Control': 'no-store'
         } 
       }
     );
 
   } catch (error) {
-    console.error('💥 Erreur OAuth:', error);
+    console.error('OAuth Error:', error);
     
     return new Response(
-      htmlError('Erreur interne du serveur', error.message),
-      { status: 500, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+      `<!DOCTYPE html>
+      <html><body>
+        <h2>Erreur d'authentification</h2>
+        <p>${error.message}</p>
+        <script>
+          if (window.opener) {
+            window.opener.postMessage({ 
+              error: 'Authentication failed: ${error.message}' 
+            }, '*');
+            setTimeout(() => window.close(), 3000);
+          }
+        </script>
+      </body></html>`,
+      { status: 500, headers: { 'Content-Type': 'text/html' } }
     );
   }
 }

@@ -4,71 +4,39 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>BlueKioskTech - Administration</title>
+    <title>BlueKioskTech - Admin</title>
     
-    <!-- Decap CMS CSS -->
+    <!-- Decap CMS -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
             padding: 20px;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
         
-        .admin-container {
+        .container {
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             padding: 40px;
-            max-width: 500px;
-            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             text-align: center;
+            max-width: 400px;
+            width: 100%;
         }
         
         .logo {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         
         .logo img {
             height: 300px;
-            width: auto;
-        }
-        
-        .status {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 20px 0;
-            font-size: 14px;
-            text-align: left;
-        }
-        
-        .status-item {
-            display: flex;
-            justify-content: space-between;
-            margin: 8px 0;
-        }
-        
-        .status-ok {
-            color: #28a745;
-            font-weight: 600;
-        }
-        
-        .status-error {
-            color: #dc3545;
-            font-weight: 600;
         }
         
         .btn {
@@ -76,13 +44,11 @@
             color: white;
             border: none;
             padding: 12px 24px;
-            border-radius: 6px;
-            font-size: 16px;
+            border-radius: 4px;
             cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            transition: background 0.3s ease;
-            margin: 5px;
+            font-size: 16px;
+            margin: 10px 0;
+            width: 100%;
         }
         
         .btn:hover {
@@ -95,36 +61,19 @@
             border: 1px solid #007bff;
         }
         
-        .btn-ghost:hover {
-            background: #007bff;
-            color: white;
-        }
-        
-        .loading {
+        .status {
             margin: 20px 0;
+            padding: 10px;
+            border-radius: 4px;
+            background: #f8f9fa;
         }
         
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #007bff;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .error-message {
+        .error {
             background: #f8d7da;
             color: #721c24;
-            padding: 12px;
-            border-radius: 6px;
-            margin: 15px 0;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
             display: none;
         }
 
@@ -141,60 +90,35 @@
     </style>
 </head>
 <body>
-    <div class="admin-container" id="adminContainer">
-        <!-- Logo -->
+    <div class="container" id="container">
         <div class="logo">
             <img src="/assets/images/logo-blog.svg" alt="BlueKioskTech" onerror="this.style.display='none'" />
         </div>
         
-        <h1>Administration du Blog</h1>
-        <p>Interface de gestion de contenu BlueKioskTech</p>
+        <h1>Administration</h1>
+        <p>Gestion du contenu BlueKioskTech</p>
         
-        <!-- Status Panel -->
-        <div class="status" id="statusPanel">
-            <div class="status-item">
-                <span>Configuration GitHub:</span>
-                <span id="configStatus" class="status-ok">✓ Vérifiée</span>
-            </div>
-            <div class="status-item">
-                <span>API OAuth:</span>
-                <span id="oauthStatus" class="status-ok">✓ Prête</span>
-            </div>
-            <div class="status-item">
-                <span>Connexion:</span>
-                <span id="authStatus" class="status-error">● En attente</span>
-            </div>
+        <div class="status" id="status">
+            Statut: Prêt à se connecter
         </div>
         
-        <!-- Error Message -->
-        <div class="error-message" id="errorMessage"></div>
+        <div class="error" id="error"></div>
         
-        <!-- Loading -->
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>Connexion en cours...</p>
-        </div>
+        <button class="btn" onclick="initCMS()" id="loginBtn">
+            Se connecter avec GitHub
+        </button>
         
-        <!-- Actions -->
-        <div class="actions">
-            <button class="btn" onclick="initCMS()" id="loginBtn">
-                🚀 Se connecter avec GitHub
-            </button>
-            <a href="/" class="btn btn-ghost">
-                ← Retour au blog
-            </a>
-        </div>
+        <a href="/" class="btn btn-ghost">
+            Retour au blog
+        </a>
     </div>
 
-    <!-- Decap CMS -->
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-    
     <script>
         // Configuration Decap CMS
-        const CMS_CONFIG = {
+        const config = {
             backend: {
                 name: "github",
-                repo: "BenYah10/bluekiosktech-blog",
+                repo: "BenYah10/bluekiosktech-blog", 
                 branch: "main",
                 base_url: "https://www.bluekiosktech.blog",
                 auth_endpoint: "api/oauth",
@@ -212,23 +136,23 @@
                     create: true,
                     slug: "{{slug}}",
                     fields: [
-                        { label: "Titre", name: "title", widget: "string", i18n: true },
+                        { label: "Titre", name: "title", widget: "string" },
                         { label: "Date", name: "date", widget: "datetime" },
                         { label: "Auteur", name: "author", widget: "string" },
-                        { label: "Description", name: "description", widget: "text", i18n: true },
-                        { label: "Image Principale", name: "thumbnail", widget: "image", required: false },
-                        { label: "Contenu", name: "body", widget: "markdown", i18n: true },
+                        { label: "Description", name: "description", widget: "text" },
+                        { label: "Image", name: "image", widget: "image", required: false },
+                        { label: "Contenu", name: "body", widget: "markdown" },
                         { 
                             label: "Catégorie", 
                             name: "category", 
-                            widget: "select", 
+                            widget: "select",
                             options: [
                                 { label: "Hygiène & Clean-Tech", value: "hygiene" },
                                 { label: "Cas d'usage & Pilotes", value: "pilotes" },
                                 { label: "Produit & Roadmap", value: "produit" },
-                                { label: "Opérations pour gyms", value: "ops" },
-                                { label: "Durabilité & Impact", value: "durabilite" },
-                                { label: "Communauté & Actus", value: "actus" }
+                                { label: "Opérations", value: "ops" },
+                                { label: "Durabilité", value: "durabilite" },
+                                { label: "Communauté", value: "actus" }
                             ]
                         }
                     ]
@@ -236,87 +160,43 @@
             ]
         };
 
-        // Éléments DOM
-        const elements = {
-            adminContainer: document.getElementById('adminContainer'),
-            loading: document.getElementById('loading'),
-            loginBtn: document.getElementById('loginBtn'),
-            errorMessage: document.getElementById('errorMessage'),
-            authStatus: document.getElementById('authStatus')
-        };
+        function updateStatus(message, isError = false) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.style.background = isError ? '#f8d7da' : '#d4edda';
+            status.style.color = isError ? '#721c24' : '#155724';
+        }
 
-        // Fonctions d'UI
         function showError(message) {
-            elements.errorMessage.textContent = message;
-            elements.errorMessage.style.display = 'block';
-            elements.authStatus.textContent = '✗ Erreur';
-            elements.authStatus.className = 'status-error';
+            const error = document.getElementById('error');
+            error.textContent = message;
+            error.style.display = 'block';
+            updateStatus('Erreur de connexion', true);
         }
 
-        function showLoading(show) {
-            elements.loading.style.display = show ? 'block' : 'none';
-            elements.loginBtn.disabled = show;
-        }
-
-        function hideAdminInterface() {
-            elements.adminContainer.style.display = 'none';
-        }
-
-        // Vérification de la configuration
-        function checkConfig() {
-            const required = ['clientId', 'clientSecret', 'repo', 'base_url'];
-            const missing = required.filter(key => !CMS_CONFIG.backend[key] && key !== 'clientId' && key !== 'clientSecret');
-            
-            if (missing.length > 0) {
-                showError(`Configuration manquante: ${missing.join(', ')}`);
-                return false;
-            }
-            return true;
-        }
-
-        // Initialisation de Decap CMS
-        async function initCMS() {
+        function initCMS() {
             console.log('🚀 Initialisation de Decap CMS...');
             
-            if (!checkConfig()) {
-                return;
-            }
-
-            showLoading(true);
-            elements.errorMessage.style.display = 'none';
+            const loginBtn = document.getElementById('loginBtn');
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Connexion en cours...';
+            
+            updateStatus('Initialisation en cours...');
 
             try {
-                // Mode manuel requis
+                // Mode manuel
                 window.CMS_MANUAL_INIT = true;
 
-                // Initialisation de Decap CMS
-                if (typeof CMS === 'undefined') {
-                    throw new Error('Decap CMS non chargé. Vérifiez la connexion internet.');
-                }
-
-                console.log('📝 Configuration CMS:', CMS_CONFIG);
-
-                // Initialisation avec gestion d'erreurs
-                CMS.init({ config: CMS_CONFIG });
-
-                // Écoute des événements
+                // Initialisation
+                CMS.init({ config });
+                
+                // Événements
                 CMS.registerEventListener({
                     name: 'login',
                     handler: ({ user }) => {
-                        console.log('✅ Utilisateur connecté:', user);
-                        elements.authStatus.textContent = '✓ Connecté';
-                        elements.authStatus.className = 'status-ok';
-                        hideAdminInterface();
-                    }
-                });
-
-                CMS.registerEventListener({
-                    name: 'logout',
-                    handler: () => {
-                        console.log('🔒 Utilisateur déconnecté');
-                        elements.authStatus.textContent = '● Déconnecté';
-                        elements.authStatus.className = 'status-error';
-                        elements.adminContainer.style.display = 'block';
+                        console.log('✅ Connecté:', user);
+                        updateStatus('Connecté avec succès');
+                        document.getElementById('container').style.display = 'none';
                     }
                 });
 
@@ -324,62 +204,33 @@
                     name: 'error',
                     handler: ({ error }) => {
                         console.error('❌ Erreur CMS:', error);
-                        showError(`Erreur: ${error.message || 'Erreur inconnue'}`);
-                        showLoading(false);
+                        showError(error.message || 'Erreur inconnue');
+                        loginBtn.disabled = false;
+                        loginBtn.textContent = 'Se connecter avec GitHub';
                     }
                 });
 
-                // Vérification de l'état après un délai
+                // Timeout de sécurité
                 setTimeout(() => {
-                    if (elements.loading.style.display === 'block') {
-                        console.warn('⚠️ Timeout - Vérification de l\'état...');
-                        // Vérifier si CMS s'est initialisé
-                        const cmsElement = document.querySelector('#nc-root');
-                        if (!cmsElement) {
-                            showError('CMS non initialisé. Vérifiez la console pour les erreurs.');
-                            showLoading(false);
-                        }
+                    if (loginBtn.disabled) {
+                        showError('Timeout - Vérifiez la configuration OAuth');
+                        loginBtn.disabled = false;
+                        loginBtn.textContent = 'Se connecter avec GitHub';
                     }
-                }, 5000);
+                }, 10000);
 
             } catch (error) {
-                console.error('💥 Erreur lors de l\'initialisation:', error);
-                showError(`Erreur d'initialisation: ${error.message}`);
-                showLoading(false);
+                console.error('💥 Erreur initialisation:', error);
+                showError(`Erreur: ${error.message}`);
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Se connecter avec GitHub';
             }
         }
 
         // Vérification au chargement
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🔧 Admin BlueKioskTech initialisé');
-            console.log('📝 Repo:', CMS_CONFIG.backend.repo);
-            console.log('🌐 Base URL:', CMS_CONFIG.backend.base_url);
-            
-            // Masquer le loading au début
-            showLoading(false);
-            
-            // Test de l'endpoint OAuth
-            testOAuthEndpoint();
-        });
-
-        // Test de l'endpoint OAuth
-        async function testOAuthEndpoint() {
-            try {
-                const response = await fetch('/api/oauth');
-                if (response.status === 302 || response.ok) {
-                    console.log('✅ Endpoint OAuth accessible');
-                } else {
-                    console.warn('⚠️ Endpoint OAuth retourne un statut inattendu:', response.status);
-                }
-            } catch (error) {
-                console.error('❌ Endpoint OAuth inaccessible:', error);
-                showError('Endpoint OAuth non disponible');
-            }
-        }
-
-        // Gestionnaire d'erreurs global
-        window.addEventListener('error', function(e) {
-            console.error('💥 Erreur globale:', e.error);
+            console.log('🔧 Admin BlueKioskTech chargé');
+            console.log('📝 Configuration:', config.backend);
         });
     </script>
 </body>
