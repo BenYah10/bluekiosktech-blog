@@ -135,8 +135,9 @@
     if (input && typeof Lang !== 'undefined') {
       input.placeholder = Lang.get() === 'en' ? PH.en : PH.fr;
     }
-    if (typeof refreshPosts === 'function') refreshPosts();
-    if (typeof renderList === 'function') renderList();
+  if ((!window.FEED_SOURCE || window.FEED_SOURCE === 'legacy') && typeof refreshPosts === 'function') refreshPosts();
+  if ((!window.FEED_SOURCE || window.FEED_SOURCE === 'legacy') && typeof renderList   === 'function') renderList();
+
   });
 </script>
 <script type="module" src="/assets/js/fetchPosts.js"></script>
