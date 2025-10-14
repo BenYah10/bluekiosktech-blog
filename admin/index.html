@@ -6,7 +6,9 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>BlueKioskTech - Administration</title>
     
-    <!-- Styles Professionnels -->
+    <!-- Decap CMS CSS -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -39,7 +41,7 @@
         }
         
         .logo img {
-            height: 60px;
+            height: 300px;
             width: auto;
         }
         
@@ -99,7 +101,6 @@
         }
         
         .loading {
-            display: none;
             margin: 20px 0;
         }
         
@@ -126,13 +127,24 @@
             margin: 15px 0;
             display: none;
         }
+
+        /* Styles pour Decap CMS */
+        #nc-root {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            background: white;
+        }
     </style>
 </head>
 <body>
-    <div class="admin-container">
+    <div class="admin-container" id="adminContainer">
         <!-- Logo -->
         <div class="logo">
-            <img src="/assets/images/logo-blog.svg" alt="BlueKioskTech" />
+            <img src="/assets/images/logo-blog.svg" alt="BlueKioskTech" onerror="this.style.display='none'" />
         </div>
         
         <h1>Administration du Blog</h1>
@@ -178,18 +190,18 @@
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     
     <script>
-        // Configuration et initialisation
-        window.CMS_MANUAL_INIT = true;
-        
-        const config = {
+        // Configuration Decap CMS
+        const CMS_CONFIG = {
             backend: {
                 name: "github",
                 repo: "BenYah10/bluekiosktech-blog",
                 branch: "main",
                 base_url: "https://www.bluekiosktech.blog",
-                auth_endpoint: "api/oauth"
+                auth_endpoint: "api/oauth",
+                site_domain: "www.bluekiosktech.blog"
             },
             locale: "fr",
+            load_config_file: false,
             media_folder: "assets/images/uploads",
             public_folder: "/assets/images/uploads",
             collections: [
@@ -206,86 +218,168 @@
                         { label: "Description", name: "description", widget: "text", i18n: true },
                         { label: "Image Principale", name: "thumbnail", widget: "image", required: false },
                         { label: "Contenu", name: "body", widget: "markdown", i18n: true },
-                        { label: "Catégorie", name: "category", widget: "select", 
-                          options: ["hygiene", "pilotes", "produit", "ops", "durabilite", "actus"], i18n: true }
+                        { 
+                            label: "Catégorie", 
+                            name: "category", 
+                            widget: "select", 
+                            options: [
+                                { label: "Hygiène & Clean-Tech", value: "hygiene" },
+                                { label: "Cas d'usage & Pilotes", value: "pilotes" },
+                                { label: "Produit & Roadmap", value: "produit" },
+                                { label: "Opérations pour gyms", value: "ops" },
+                                { label: "Durabilité & Impact", value: "durabilite" },
+                                { label: "Communauté & Actus", value: "actus" }
+                            ]
+                        }
                     ]
                 }
             ]
         };
-        
+
+        // Éléments DOM
+        const elements = {
+            adminContainer: document.getElementById('adminContainer'),
+            loading: document.getElementById('loading'),
+            loginBtn: document.getElementById('loginBtn'),
+            errorMessage: document.getElementById('errorMessage'),
+            authStatus: document.getElementById('authStatus')
+        };
+
+        // Fonctions d'UI
         function showError(message) {
-            const errorEl = document.getElementById('errorMessage');
-            const authStatus = document.getElementById('authStatus');
-            
-            errorEl.textContent = message;
-            errorEl.style.display = 'block';
-            authStatus.textContent = '✗ Erreur';
-            authStatus.className = 'status-error';
+            elements.errorMessage.textContent = message;
+            elements.errorMessage.style.display = 'block';
+            elements.authStatus.textContent = '✗ Erreur';
+            elements.authStatus.className = 'status-error';
         }
-        
+
         function showLoading(show) {
-            document.getElementById('loading').style.display = show ? 'block' : 'none';
-            document.getElementById('loginBtn').disabled = show;
+            elements.loading.style.display = show ? 'block' : 'none';
+            elements.loginBtn.disabled = show;
         }
-        
-        async function initCMS() {
-            showLoading(true);
-            document.getElementById('errorMessage').style.display = 'none';
+
+        function hideAdminInterface() {
+            elements.adminContainer.style.display = 'none';
+        }
+
+        // Vérification de la configuration
+        function checkConfig() {
+            const required = ['clientId', 'clientSecret', 'repo', 'base_url'];
+            const missing = required.filter(key => !CMS_CONFIG.backend[key] && key !== 'clientId' && key !== 'clientSecret');
             
+            if (missing.length > 0) {
+                showError(`Configuration manquante: ${missing.join(', ')}`);
+                return false;
+            }
+            return true;
+        }
+
+        // Initialisation de Decap CMS
+        async function initCMS() {
+            console.log('🚀 Initialisation de Decap CMS...');
+            
+            if (!checkConfig()) {
+                return;
+            }
+
+            showLoading(true);
+            elements.errorMessage.style.display = 'none';
+
             try {
-                // Vérification préalable de l'endpoint OAuth
-                const testResponse = await fetch('/api/oauth');
-                if (!testResponse.ok) {
-                    throw new Error('Endpoint OAuth non disponible');
-                }
-                
+                // Mode manuel requis
+                window.CMS_MANUAL_INIT = true;
+
                 // Initialisation de Decap CMS
-                CMS.init({ config });
-                
-                // Écoute des événements d'authentification
+                if (typeof CMS === 'undefined') {
+                    throw new Error('Decap CMS non chargé. Vérifiez la connexion internet.');
+                }
+
+                console.log('📝 Configuration CMS:', CMS_CONFIG);
+
+                // Initialisation avec gestion d'erreurs
+                CMS.init({ config: CMS_CONFIG });
+
+                // Écoute des événements
                 CMS.registerEventListener({
                     name: 'login',
                     handler: ({ user }) => {
-                        document.getElementById('authStatus').textContent = '✓ Connecté';
-                        document.getElementById('authStatus').className = 'status-ok';
-                        showLoading(false);
+                        console.log('✅ Utilisateur connecté:', user);
+                        elements.authStatus.textContent = '✓ Connecté';
+                        elements.authStatus.className = 'status-ok';
+                        hideAdminInterface();
                     }
                 });
-                
+
                 CMS.registerEventListener({
                     name: 'logout',
                     handler: () => {
-                        document.getElementById('authStatus').textContent = '● Déconnecté';
-                        document.getElementById('authStatus').className = 'status-error';
+                        console.log('🔒 Utilisateur déconnecté');
+                        elements.authStatus.textContent = '● Déconnecté';
+                        elements.authStatus.className = 'status-error';
+                        elements.adminContainer.style.display = 'block';
                     }
                 });
-                
+
                 CMS.registerEventListener({
                     name: 'error',
                     handler: ({ error }) => {
-                        showError(`Erreur CMS: ${error.message || error}`);
+                        console.error('❌ Erreur CMS:', error);
+                        showError(`Erreur: ${error.message || 'Erreur inconnue'}`);
                         showLoading(false);
                     }
                 });
-                
-                // Timeout de sécurité
+
+                // Vérification de l'état après un délai
                 setTimeout(() => {
-                    if (document.getElementById('loading').style.display === 'block') {
-                        showError('Timeout de connexion. Vérifiez votre configuration OAuth.');
+                    if (elements.loading.style.display === 'block') {
+                        console.warn('⚠️ Timeout - Vérification de l\'état...');
+                        // Vérifier si CMS s'est initialisé
+                        const cmsElement = document.querySelector('#nc-root');
+                        if (!cmsElement) {
+                            showError('CMS non initialisé. Vérifiez la console pour les erreurs.');
+                            showLoading(false);
+                        }
                     }
-                }, 10000);
-                
+                }, 5000);
+
             } catch (error) {
+                console.error('💥 Erreur lors de l\'initialisation:', error);
                 showError(`Erreur d'initialisation: ${error.message}`);
                 showLoading(false);
             }
         }
-        
-        // Vérification automatique au chargement
+
+        // Vérification au chargement
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🔧 Admin BlueKioskTech initialisé');
-            console.log('📝 Repo:', config.backend.repo);
-            console.log('🌐 Base URL:', config.backend.base_url);
+            console.log('📝 Repo:', CMS_CONFIG.backend.repo);
+            console.log('🌐 Base URL:', CMS_CONFIG.backend.base_url);
+            
+            // Masquer le loading au début
+            showLoading(false);
+            
+            // Test de l'endpoint OAuth
+            testOAuthEndpoint();
+        });
+
+        // Test de l'endpoint OAuth
+        async function testOAuthEndpoint() {
+            try {
+                const response = await fetch('/api/oauth');
+                if (response.status === 302 || response.ok) {
+                    console.log('✅ Endpoint OAuth accessible');
+                } else {
+                    console.warn('⚠️ Endpoint OAuth retourne un statut inattendu:', response.status);
+                }
+            } catch (error) {
+                console.error('❌ Endpoint OAuth inaccessible:', error);
+                showError('Endpoint OAuth non disponible');
+            }
+        }
+
+        // Gestionnaire d'erreurs global
+        window.addEventListener('error', function(e) {
+            console.error('💥 Erreur globale:', e.error);
         });
     </script>
 </body>
