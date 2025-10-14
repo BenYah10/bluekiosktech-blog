@@ -6,8 +6,8 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>BlueKioskTech - Administration</title>
     
-    <!-- Decap CMS version STABLE -->
-    <script src="https://unpkg.com/decap-cms@^2.0.0/dist/decap-cms.js"></script>
+    <!-- Decap CMS version stable -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     
     <style>
         body {
@@ -40,39 +40,6 @@
             width: auto;
         }
         
-        .btn {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 10px 0;
-            width: 100%;
-            transition: background 0.3s;
-        }
-        
-        .btn:hover {
-            background: #0056b3;
-        }
-        
-        .btn:disabled {
-            background: #6c757d;
-            cursor: not-allowed;
-        }
-        
-        .btn-ghost {
-            background: transparent;
-            color: #007bff;
-            border: 1px solid #007bff;
-        }
-        
-        .btn-ghost:hover {
-            background: #007bff;
-            color: white;
-        }
-        
         .status {
             margin: 20px 0;
             padding: 15px;
@@ -93,13 +60,33 @@
             color: #721c24;
         }
         
-        .error-box {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 12px;
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
             border-radius: 6px;
-            margin: 15px 0;
-            display: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+            width: 100%;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            background: #0056b3;
+        }
+        
+        .btn-ghost {
+            background: transparent;
+            color: #007bff;
+            border: 1px solid #007bff;
+        }
+        
+        .btn-ghost:hover {
+            background: #007bff;
+            color: white;
         }
     </style>
 </head>
@@ -109,15 +96,11 @@
             <img src="/assets/images/logo-blog.svg" alt="BlueKioskTech" onerror="this.style.display='none'" />
         </div>
         
-        <h1>Administration</h1>
-        <p>Gestion du contenu BlueKioskTech</p>
+        <h1>Administration BlueKioskTech</h1>
+        <p>Interface de gestion de contenu</p>
         
         <div class="status" id="status">
-            Chargement de l'interface...
-        </div>
-        
-        <div class="error-box" id="errorBox">
-            <strong>Erreur :</strong> <span id="errorText"></span>
+            Initialisation en cours...
         </div>
         
         <a href="/" class="btn btn-ghost">
@@ -126,105 +109,54 @@
     </div>
 
     <script>
-        // Configuration Decap CMS SIMPLIFIÉE
-        const CMS_CONFIG = {
-            backend: {
-                name: "github",
-                repo: "BenYah10/bluekiosktech-blog",
-                branch: "main", 
-                base_url: "https://www.bluekiosktech.blog",
-                auth_endpoint: "api/oauth"
-            },
-            locale: "fr",
-            media_folder: "assets/images/uploads",
-            public_folder: "/assets/images/uploads",
-            collections: [
-                {
-                    name: "posts",
-                    label: "Articles",
-                    folder: "content/posts",
-                    create: true,
-                    slug: "{{slug}}",
-                    fields: [
-                        { label: "Titre", name: "title", widget: "string" },
-                        { label: "Date", name: "date", widget: "datetime" },
-                        { label: "Contenu", name: "body", widget: "markdown" }
-                    ]
-                }
-            ]
-        };
-
-        // Fonctions d'UI
-        function updateStatus(message, type = 'info') {
+        // Initialisation directe avec config externe
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔧 Chargement de Decap CMS...');
+            
             const status = document.getElementById('status');
-            status.textContent = message;
-            status.className = 'status';
-            if (type === 'success') status.classList.add('success');
-            if (type === 'error') status.classList.add('error');
-        }
-
-        function showError(message) {
-            const errorBox = document.getElementById('errorBox');
-            const errorText = document.getElementById('errorText');
-            errorText.textContent = message;
-            errorBox.style.display = 'block';
-            updateStatus('Erreur', 'error');
-        }
-
-        // Initialisation sécurisée
-        function initCMS() {
+            
+            // Vérifier que CMS est chargé
+            if (typeof CMS === 'undefined') {
+                status.textContent = '❌ Erreur: Decap CMS non chargé';
+                status.className = 'status error';
+                return;
+            }
+            
             try {
                 console.log('🚀 Initialisation de Decap CMS...');
                 
                 // Mode manuel
                 window.CMS_MANUAL_INIT = true;
                 
-                // Vérifier que CMS est disponible
-                if (typeof CMS === 'undefined') {
-                    throw new Error('Decap CMS non chargé');
-                }
-                
-                // Initialiser
-                CMS.init({ config: CMS_CONFIG });
+                // Initialiser avec le fichier config externe
+                CMS.init({
+                    config: '/admin/config.yml'
+                });
                 
                 console.log('✅ Decap CMS initialisé avec succès');
-                updateStatus('Interface chargée - Prêt à utiliser', 'success');
+                status.textContent = '✅ Interface admin chargée - Prêt à utiliser';
+                status.className = 'status success';
                 
-                // Masquer l'interface d'accueil
-                document.getElementById('container').style.display = 'none';
+                // Masquer l'interface d'accueil après un délai
+                setTimeout(() => {
+                    document.getElementById('container').style.display = 'none';
+                }, 2000);
                 
             } catch (error) {
                 console.error('❌ Erreur initialisation:', error);
-                showError(`Erreur d'initialisation: ${error.message}`);
+                status.textContent = '❌ Erreur: ' + error.message;
+                status.className = 'status error';
             }
-        }
-
-        // Attendre que tout soit chargé
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🔧 Page admin chargée');
-            
-            // Petit délai pour s'assurer que Decap CMS est chargé
-            setTimeout(() => {
-                if (typeof CMS !== 'undefined') {
-                    initCMS();
-                } else {
-                    showError('Decap CMS non chargé - Vérifiez la connexion');
-                }
-            }, 1000);
-            
-            // Timeout de sécurité
-            setTimeout(() => {
-                if (document.getElementById('status').textContent.includes('Chargement')) {
-                    showError('Timeout de chargement - Rafraîchissez la page');
-                }
-            }, 5000);
         });
 
-        // Gestionnaire d'erreurs global
-        window.addEventListener('error', function(e) {
-            console.error('💥 Erreur globale:', e.error);
-            showError(`Erreur: ${e.message}`);
-        });
+        // Fallback: si CMS échoue après 5 secondes
+        setTimeout(() => {
+            const status = document.getElementById('status');
+            if (status.textContent.includes('en cours')) {
+                status.textContent = '⚠️ Chargement lent - Réessayez ou rafraîchissez';
+                status.className = 'status error';
+            }
+        }, 5000);
     </script>
 </body>
 </html>
