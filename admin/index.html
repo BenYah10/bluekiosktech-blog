@@ -4,7 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>BlueKioskTech - Admin</title>
+    <title>BlueKioskTech - Administration</title>
+    
+    <!-- Decap CMS version STABLE -->
+    <script src="https://unpkg.com/decap-cms@^2.0.0/dist/decap-cms.js"></script>
     
     <style>
         body {
@@ -98,28 +101,6 @@
             margin: 15px 0;
             display: none;
         }
-        
-        .loading {
-            margin: 20px 0;
-            padding: 10px;
-            border-radius: 4px;
-            background: #f8f9fa;
-        }
-        
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #007bff;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
@@ -132,21 +113,12 @@
         <p>Gestion du contenu BlueKioskTech</p>
         
         <div class="status" id="status">
-            Prêt à se connecter
+            Chargement de l'interface...
         </div>
         
         <div class="error-box" id="errorBox">
             <strong>Erreur :</strong> <span id="errorText"></span>
         </div>
-        
-        <div class="loading" id="loading" style="display: none;">
-            <div class="spinner"></div>
-            <p>Chargement de Decap CMS...</p>
-        </div>
-        
-        <button class="btn" onclick="loadAndInitCMS()" id="loginBtn">
-            Se connecter avec GitHub
-        </button>
         
         <a href="/" class="btn btn-ghost">
             ← Retour au blog
@@ -154,18 +126,8 @@
     </div>
 
     <script>
-        // Éléments DOM
-        const elements = {
-            container: document.getElementById('container'),
-            status: document.getElementById('status'),
-            errorBox: document.getElementById('errorBox'),
-            errorText: document.getElementById('errorText'),
-            loading: document.getElementById('loading'),
-            loginBtn: document.getElementById('loginBtn')
-        };
-
-        // Configuration Decap CMS
-        const config = {
+        // Configuration Decap CMS SIMPLIFIÉE
+        const CMS_CONFIG = {
             backend: {
                 name: "github",
                 repo: "BenYah10/bluekiosktech-blog",
@@ -186,23 +148,7 @@
                     fields: [
                         { label: "Titre", name: "title", widget: "string" },
                         { label: "Date", name: "date", widget: "datetime" },
-                        { label: "Auteur", name: "author", widget: "string" },
-                        { label: "Description", name: "description", widget: "text" },
-                        { label: "Image", name: "image", widget: "image", required: false },
-                        { label: "Contenu", name: "body", widget: "markdown" },
-                        { 
-                            label: "Catégorie", 
-                            name: "category", 
-                            widget: "select",
-                            options: [
-                                { label: "Hygiène & Clean-Tech", value: "hygiene" },
-                                { label: "Cas d'usage & Pilotes", value: "pilotes" },
-                                { label: "Produit & Roadmap", value: "produit" },
-                                { label: "Opérations", value: "ops" },
-                                { label: "Durabilité", value: "durabilite" },
-                                { label: "Communauté", value: "actus" }
-                            ]
-                        }
+                        { label: "Contenu", name: "body", widget: "markdown" }
                     ]
                 }
             ]
@@ -210,169 +156,74 @@
 
         // Fonctions d'UI
         function updateStatus(message, type = 'info') {
-            elements.status.textContent = message;
-            elements.status.className = 'status';
-            if (type === 'success') elements.status.classList.add('success');
-            if (type === 'error') elements.status.classList.add('error');
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = 'status';
+            if (type === 'success') status.classList.add('success');
+            if (type === 'error') status.classList.add('error');
         }
 
         function showError(message) {
-            elements.errorText.textContent = message;
-            elements.errorBox.style.display = 'block';
+            const errorBox = document.getElementById('errorBox');
+            const errorText = document.getElementById('errorText');
+            errorText.textContent = message;
+            errorBox.style.display = 'block';
             updateStatus('Erreur', 'error');
         }
 
-        function showLoading(show) {
-            elements.loading.style.display = show ? 'block' : 'none';
-            elements.loginBtn.disabled = show;
-            elements.loginBtn.textContent = show ? 'Chargement...' : 'Se connecter avec GitHub';
-        }
-
-        // Chargement dynamique de Decap CMS
-        function loadDecapCMS() {
-            return new Promise((resolve, reject) => {
-                // Vérifier si CMS est déjà chargé
-                if (window.CMS) {
-                    console.log('✅ Decap CMS déjà chargé');
-                    return resolve();
-                }
-
-                console.log('📥 Chargement de Decap CMS...');
-                
-                const script = document.createElement('script');
-                script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
-                script.onload = () => {
-                    console.log('✅ Decap CMS chargé avec succès');
-                    resolve();
-                };
-                script.onerror = () => {
-                    console.error('❌ Erreur de chargement de Decap CMS');
-                    reject(new Error('Impossible de charger Decap CMS'));
-                };
-                
-                document.head.appendChild(script);
-            });
-        }
-
-        // Initialisation de Decap CMS
+        // Initialisation sécurisée
         function initCMS() {
-            console.log('🚀 Initialisation de Decap CMS...');
-            
             try {
+                console.log('🚀 Initialisation de Decap CMS...');
+                
                 // Mode manuel
                 window.CMS_MANUAL_INIT = true;
-
+                
                 // Vérifier que CMS est disponible
                 if (typeof CMS === 'undefined') {
-                    throw new Error('Decap CMS non disponible');
+                    throw new Error('Decap CMS non chargé');
                 }
-
-                // Initialisation
+                
+                // Initialiser
                 CMS.init({ config: CMS_CONFIG });
                 
-                console.log('✅ Decap CMS initialisé');
-
-                // Événements
-                CMS.registerEventListener({
-                    name: 'login',
-                    handler: ({ user }) => {
-                        console.log('✅ Utilisateur connecté:', user);
-                        updateStatus('Connecté avec succès', 'success');
-                        elements.container.style.display = 'none';
-                    }
-                });
-
-                CMS.registerEventListener({
-                    name: 'logout', 
-                    handler: () => {
-                        console.log('🔒 Utilisateur déconnecté');
-                        updateStatus('Déconnecté', 'info');
-                        elements.container.style.display = 'block';
-                    }
-                });
-
-                CMS.registerEventListener({
-                    name: 'error',
-                    handler: ({ error }) => {
-                        console.error('❌ Erreur CMS:', error);
-                        showError(error.message || 'Erreur inconnue dans CMS');
-                        showLoading(false);
-                    }
-                });
-
-                updateStatus('CMS initialisé - Prêt à se connecter', 'success');
-
+                console.log('✅ Decap CMS initialisé avec succès');
+                updateStatus('Interface chargée - Prêt à utiliser', 'success');
+                
+                // Masquer l'interface d'accueil
+                document.getElementById('container').style.display = 'none';
+                
             } catch (error) {
-                console.error('💥 Erreur lors de l\'initialisation CMS:', error);
-                throw error;
+                console.error('❌ Erreur initialisation:', error);
+                showError(`Erreur d'initialisation: ${error.message}`);
             }
         }
 
-        // Fonction principale - Chargement ET initialisation
-        async function loadAndInitCMS() {
-            console.log('🎯 Début du processus de connexion...');
-            
-            showLoading(true);
-            elements.errorBox.style.display = 'none';
-            updateStatus('Démarrage...');
-
-            try {
-                // Étape 1: Charger Decap CMS
-                updateStatus('Chargement de Decap CMS...');
-                await loadDecapCMS();
-
-                // Étape 2: Initialiser CMS
-                updateStatus('Initialisation de CMS...');
-                initCMS();
-
-                // Étape 3: La connexion OAuth se fera via l'interface CMS
-                updateStatus('Prêt - Cliquez à nouveau pour vous connecter', 'success');
-                elements.loginBtn.textContent = 'Se connecter avec GitHub';
-                elements.loginBtn.onclick = () => {
-                    // Cette fois CMS est chargé, on peut déclencher l'authentification
-                    if (window.CMS && window.CMS.netlifyIdentity) {
-                        window.CMS.netlifyIdentity.open('login');
-                    }
-                };
-
-            } catch (error) {
-                console.error('💥 Erreur critique:', error);
-                showError(`Erreur: ${error.message}`);
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        // Vérification au chargement de la page
+        // Attendre que tout soit chargé
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🔧 Page admin chargée');
-            console.log('📍 URL:', window.location.href);
-            console.log('📝 Repo:', CMS_CONFIG.backend.repo);
             
-            // Test de l'environnement
-            testEnvironment();
-        });
-
-        // Test de l'environnement
-        async function testEnvironment() {
-            try {
-                const response = await fetch('/api/oauth');
-                if (response.status === 302) {
-                    console.log('✅ Endpoint OAuth fonctionnel (redirection détectée)');
-                    updateStatus('Configuration OK - Prêt à se connecter');
+            // Petit délai pour s'assurer que Decap CMS est chargé
+            setTimeout(() => {
+                if (typeof CMS !== 'undefined') {
+                    initCMS();
                 } else {
-                    console.warn('⚠️ Endpoint OAuth retourne:', response.status);
-                    updateStatus('Configuration partielle - Vérifiez les variables d\'environnement');
+                    showError('Decap CMS non chargé - Vérifiez la connexion');
                 }
-            } catch (error) {
-                console.error('❌ Endpoint OAuth inaccessible:', error);
-                showError('Endpoint OAuth non accessible');
-            }
-        }
+            }, 1000);
+            
+            // Timeout de sécurité
+            setTimeout(() => {
+                if (document.getElementById('status').textContent.includes('Chargement')) {
+                    showError('Timeout de chargement - Rafraîchissez la page');
+                }
+            }, 5000);
+        });
 
         // Gestionnaire d'erreurs global
         window.addEventListener('error', function(e) {
             console.error('💥 Erreur globale:', e.error);
+            showError(`Erreur: ${e.message}`);
         });
     </script>
 </body>
