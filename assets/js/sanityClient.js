@@ -6,6 +6,8 @@ export const SANITY_API_VERSION = '2023-10-10';        // version stable de l'AP
 
 const BASE = `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}`;
 
+console.log('SANITY BASE =', BASE);
+
 /** Exécute une requête GROQ côté navigateur (dataset public) */
 export async function groq(query, params = {}) {
   const url = new URL(BASE);
@@ -29,6 +31,6 @@ export function fmtDate(iso) {
   try { return new Date(iso).toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' }); }
   catch { return iso || ''; }
 
-  console.log('SANITY BASE =', BASE);
+  
 
 }
