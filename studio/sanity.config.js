@@ -6,7 +6,7 @@ import schemaTypes from './schemas'
 export default defineConfig({
   name: 'bluekiosktech',
   title: 'Bluekiosktech CMS',
-  projectId: 'PASTE_PROJECT_ID',   // <- remplace par l’ID du projet (depuis Sanity Manage)
+  projectId: 'fiq9yers',   // <- remplace par l’ID du projet (depuis Sanity Manage)
   dataset: 'production',
   plugins: [deskTool(), visionTool()],
   schema: { types: schemaTypes }
