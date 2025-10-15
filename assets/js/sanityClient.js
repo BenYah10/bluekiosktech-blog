@@ -48,3 +48,5 @@ export function fmtDate(iso) {
 
 // Log base pour débogage rapide (visible une fois sur post.html / blog.html)
 console.log('[sanity] BASE =', BASE);
+console.log('[GROQ]', query, params);
+
