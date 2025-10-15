@@ -1,66 +1,26 @@
-// /assets/js/fetchPost.js
-import { groq, escapeHtml, fmtDate } from './sanityClient.js';
-import { toHTML } from 'https://esm.sh/@portabletext/to-html@2';
+// assets/js/fetchPost.js
+import { groq } from './sanityClient.js';
 
-function $(id){ return document.getElementById(id); }
+/**
+ * Récupère un post par son slug (ex: "immunite-collective-hygiene").
+ * IMPORTANT: on compare "slug.current" au param $slug (pas $slug.current).
+ */
+export async function fetchPost({ slug, locale = 'fr' }) {
+  if (!slug || typeof slug !== 'string') {
+    throw new Error('fetchPost: "slug" (string) est requis');
+  }
 
-const qs = new URLSearchParams(location.search);
-let slug =
-  qs.get('slug') ||
-  qs.get('id') ||
-  qs.get('post') ||
-  qs.get('s') || '';
-
-slug = decodeURIComponent(String(slug)).trim();
-
-const $title = $('post-title');
-const $meta  = $('post-meta');
-const $cover = $('post-cover');
-const $body  = $('post-body');
-
-if (!$body) {
-  console.warn('[post] #post-body introuvable');
-} else if (!slug) {
-  $body.innerHTML = '<p>Article introuvable (slug manquant).</p>';
-} else {
-  const QUERY = `
+  const query = `
 *[_type == "post" && slug.current == $slug][0]{
-  title,
+  _id,
   "slug": slug.current,
+  title,
   excerpt,
-  "coverUrl": cover.asset->url,
-  "author": author->{ name, "avatarUrl": avatar.asset->url },
-  "categories": categories[]-> { title, "slug": slug.current },
-  publishedAt,
-  body
+  body,
+  _createdAt
 }`;
 
-  (async () => {
-    try {
-      const post = await groq(QUERY, { slug });
-      if (!post) {
-        $body.innerHTML = '<p>Article introuvable.</p>';
-        return;
-      }
+  const { result } = await groq(query, { slug, locale });
 
-      if ($title) $title.textContent = post.title || '';
-      if ($meta)  $meta.textContent  = `${fmtDate(post.publishedAt)}${post?.author?.name ? ` · ${escapeHtml(post.author.name)}` : ''}`;
-      if ($cover && post.coverUrl) $cover.innerHTML = `<img src="${post.coverUrl}?w=1200&fit=max&auto=format" alt="">`;
-      $body.innerHTML = toHTML(post.body || []);
-
-      // SEO basique
-      const url = `${location.origin}${location.pathname}?slug=${encodeURIComponent(post.slug)}`;
-      const set = (sel, attr, val) => { const n = document.querySelector(sel); if (n) n.setAttribute(attr, val); };
-      document.title = post.title ? `${post.title} — BlueKioskTech` : 'Article — BlueKioskTech';
-      set('link[rel="canonical"]#canonicalLink','href',url);
-      set('meta[name="description"]#postDescTag','content', post.excerpt || '');
-      set('meta[property="og:title"]#ogTitle','content', document.title);
-      set('meta[property="og:description"]#ogDesc','content', post.excerpt || '');
-      set('meta[property="og:url"]#ogUrl','content', url);
-      if (post.coverUrl) set('meta[property="og:image"]#ogImage','content', `${post.coverUrl}?w=1200&fit=max&auto=format`);
-    } catch (e) {
-      console.error('[post] erreur:', e);
-      $body.innerHTML = '<p style="color:#b00020">Erreur de chargement de l’article.</p>';
-    }
-  })();
+  return result || null;
 }
