@@ -4,19 +4,14 @@ import { toHTML } from 'https://esm.sh/@portabletext/to-html@2';
 
 function $(id){ return document.getElementById(id); }
 
-// Détection TRES tolérante du slug
 const qs = new URLSearchParams(location.search);
 let slug =
   qs.get('slug') ||
-  qs.get('id') ||            // compat ancien schéma
+  qs.get('id') ||
   qs.get('post') ||
   qs.get('s') || '';
 
 slug = decodeURIComponent(String(slug)).trim();
-
-console.log('[post] href=', location.href);
-console.log('[post] queryString=', qs.toString());
-console.log('[post] slug=', slug);
 
 const $title = $('post-title');
 const $meta  = $('post-meta');
@@ -29,17 +24,16 @@ if (!$body) {
   $body.innerHTML = '<p>Article introuvable (slug manquant).</p>';
 } else {
   const QUERY = `
-    *[_type == "post" && slug.current == $slug][0]{
-      title,
-      "slug": slug.current,
-      excerpt,
-      "coverUrl": cover.asset->url,
-      "author": author->{ name, "avatarUrl": avatar.asset->url },
-      "categories": categories[]-> { title, "slug": slug.current },
-      publishedAt,
-      body
-    }
-  `;
+*[_type == "post" && slug.current == $slug][0]{
+  title,
+  "slug": slug.current,
+  excerpt,
+  "coverUrl": cover.asset->url,
+  "author": author->{ name, "avatarUrl": avatar.asset->url },
+  "categories": categories[]-> { title, "slug": slug.current },
+  publishedAt,
+  body
+}`;
 
   (async () => {
     try {
@@ -65,7 +59,7 @@ if (!$body) {
       set('meta[property="og:url"]#ogUrl','content', url);
       if (post.coverUrl) set('meta[property="og:image"]#ogImage','content', `${post.coverUrl}?w=1200&fit=max&auto=format`);
     } catch (e) {
-      console.error(e);
+      console.error('[post] erreur:', e);
       $body.innerHTML = '<p style="color:#b00020">Erreur de chargement de l’article.</p>';
     }
   })();

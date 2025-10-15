@@ -1,32 +1,50 @@
 // /assets/js/sanityClient.js
-export const SANITY_PROJECT_ID  = 'fiq9yers';
-export const SANITY_DATASET     = 'production';
-export const SANITY_API_VERSION = '2023-10-10';
+// Client léger pour Sanity (GROQ via fetch)
+
+export const SANITY_PROJECT_ID  = 'fiq9yers';     // <- ton Project ID
+export const SANITY_DATASET     = 'production';   // <- dataset public choisi
+export const SANITY_API_VERSION = '2023-10-10';   // version stable de l’API
 
 const BASE = `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}`;
 
+/**
+ * Appelle l’API data/query de Sanity.
+ * @param {string} query - requête GROQ
+ * @param {object} [params] - variables GROQ
+ * @returns {Promise<any>}
+ */
 export async function groq(query, params = {}) {
   const url = new URL(BASE);
   url.searchParams.set('query', query);
   if (params && Object.keys(params).length) {
+    // IMPORTANT: Sanity attend un JSON encodé dans "params"
     url.searchParams.set('params', JSON.stringify(params));
   }
 
-  // CORS public
+  // Pas de cookies -> pas besoin d’autoriser les credentials côté CORS
   const res = await fetch(url.toString(), { mode: 'cors', credentials: 'omit' });
 
-  let body = null;
-  try { body = await res.json(); } catch (_) {}
+  // On tente toujours de décoder le JSON pour loguer proprement les erreurs
+  const json = await res.json().catch(() => ({}));
 
   if (!res.ok) {
-    console.error('Sanity query failed', res.status, body);
-    throw new Error('Sanity query failed');
+    console.error('[sanity] HTTP', res.status, json);
+    throw new Error(`Sanity query failed (${res.status})`);
   }
-  return body?.result;
+
+  return json.result;
 }
 
-// utilitaires déjà présents chez toi
-export function escapeHtml(s=''){ return String(s).replace(/[&<>"]/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' })[m]); }
-export function fmtDate(iso){ try{ return new Date(iso).toLocaleDateString('fr-FR',{ day:'2-digit', month:'short', year:'numeric'});}catch{ return '';} }
+// Petits utilitaires UI
+export function escapeHtml(s = '') {
+  return String(s)
+    .replace(/[&<>'"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m]));
+}
 
-console.log('SANITY BASE =', BASE);
+export function fmtDate(iso) {
+  try { return new Date(iso).toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' }); }
+  catch { return ''; }
+}
+
+// Log base pour débogage rapide (visible une fois sur post.html / blog.html)
+console.log('[sanity] BASE =', BASE);
