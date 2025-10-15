@@ -1,5 +1,5 @@
 // /assets/js/sanityClient.js
-export const SANITY_PROJECT_ID  = 'fiq9vers';
+export const SANITY_PROJECT_ID  = 'fiq9yers';
 export const SANITY_DATASET     = 'production';
 export const SANITY_API_VERSION = '2023-10-10';
 
