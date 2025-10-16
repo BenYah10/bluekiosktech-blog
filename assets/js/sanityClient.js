@@ -38,6 +38,7 @@ function buildGroqUrl(query, params) {
 }
 
 /**
+/* 
  * Appelle Sanity avec une requête GROQ.
  * @param {string} query - GROQ string (pas d’interpolation JS crue !)
  * @param {object} [params] - variables GROQ (ex: {slug:"..."}), encodées JSON
