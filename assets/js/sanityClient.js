@@ -1,12 +1,12 @@
 // assets/js/sanityClient.js
 // Client ultra-léger pour interroger l'API Sanity via GROQ.
 
-/* ==== CONFIG ==== 
+/* ==== CONFIG ==== */
 export const SANITY_PROJECT_ID = 'fiq9yers';     // <- ton Project ID
 export const SANITY_DATASET    = 'production';   // <- dataset public
-export const SANITY_API_VERSION = '2023-10-10';  // version d'API stable  */
+export const SANITY_API_VERSION = '2023-10-10';  // version d'API stable
 
-/* ==== UTILS ==== 
+/* ==== UTILS ==== */
 export function escapeHtml(s = '') {
   return String(s)
     .replaceAll('&', '&amp;')
@@ -24,9 +24,9 @@ export function fmtDate(iso) {
   } catch {
     return '';
   }
-}  */
+}
 
-/* ==== GROQ FETCH ==== 
+/* ==== GROQ FETCH ==== */
 function buildGroqUrl(query, params) {
   const base = `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}`;
   const usp = new URLSearchParams();
@@ -38,14 +38,11 @@ function buildGroqUrl(query, params) {
 }
 
 /**
-/* 
  * Appelle Sanity avec une requête GROQ.
  * @param {string} query - GROQ string (pas d’interpolation JS crue !)
  * @param {object} [params] - variables GROQ (ex: {slug:"..."}), encodées JSON
  * @returns {Promise<{result:any, ms?:number, query?:string}>}
- 
  */
-/*
 export async function groq(query, params = {}) {
   const url = buildGroqUrl(query, params);
 
@@ -74,6 +71,5 @@ export async function groq(query, params = {}) {
     throw new Error(`[sanity] ${msg}`);
   }
 
-  return payload; // {query, result, ms, ...} 
-   
-} */
+  return payload; // {query, result, ms, ...}
+}
