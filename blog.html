@@ -3,43 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- Titre & description -->
-  <title>BlueKioskTech — Blog</title>
-  <meta name="description" content="Hygiène clean-tech, études de cas et roadmap produit : nos articles et actualités BlueKioskTech." />
-
-  <!-- Styles -->
+  <title>Articles — Bluekiosktech</title>
+  <meta name="description" content="Tous les articles : hygiène clean-tech, cas d’usage, produit & roadmap, opérations pour gyms, durabilité et communauté." />
   <link rel="stylesheet" href="assets/css/main.css" />
-
-  <!-- Canonical -->
-  <link rel="canonical" href="https://www.bluekiosktech.blog/blog.html" />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="BlueKioskTech — Blog" />
-  <meta property="og:description" content="Hygiène clean-tech, études de cas et roadmap produit : nos articles et actualités BlueKioskTech." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.bluekiosktech.blog/blog.html" />
-  <meta property="og:image" content="https://www.bluekiosktech.blog/assets/images/og-blog.jpg" />
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <!-- JSON-LD : page de collection du blog -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": "BlueKioskTech — Blog",
-    "url": "https://www.bluekiosktech.blog/blog.html",
-    "inLanguage": "fr",
-    "image": "https://www.bluekiosktech.blog/assets/images/og-blog.jpg",
-    "isPartOf": {
-      "@type": "WebSite",
-      "name": "Bluekiosktech Blog",
-      "url": "https://www.bluekiosktech.blog/"
-    }
-  }
-  </script>
 </head>
 <body class="theme-light">
   <header class="site-header">
@@ -64,7 +30,7 @@
         <button id="menuToggle" class="only-mobile" aria-label="Menu" type="button">☰</button>
       </div>
 
-      <!-- SWITCH LANG -->
+      <!-- SWITCH LANG sous le header (à droite) -->
       <div class="lang-switch lang--header" aria-label="Language switch">
         <button id="lang-fr" class="is-active" aria-pressed="true">FR</button>
         <button id="lang-en" aria-pressed="false">EN</button>
@@ -78,9 +44,8 @@
     <div class="toolbar row wrap gap">
       <input id="searchInput" class="input" type="search" placeholder="Rechercher un article…" />
 
-      <!-- Catégories (value=all pour ne pas filtrer) -->
       <select id="categoryFilter" class="input">
-        <option value="all" data-i18n="all_categories">Toutes catégories</option>
+        <option value="" data-i18n="all_categories">Toutes catégories</option>
         <option value="hygiene" data-i18n="cat_hygiene">Hygiène &amp; Clean-Tech</option>
         <option value="pilotes" data-i18n="cat_pilotes">Cas d’usage &amp; Pilotes</option>
         <option value="produit" data-i18n="cat_produit">Produit &amp; Roadmap</option>
@@ -89,59 +54,48 @@
         <option value="actus" data-i18n="cat_actus">Communauté &amp; Actus</option>
       </select>
 
-      <!-- Tri (valeurs alignées avec render.js : newest/oldest) -->
-      <select id="sortSelect" class="input">
-        <option value="newest" data-i18n="sort_recent">Plus récents</option>
-        <option value="oldest" data-i18n="sort_oldest">Plus anciens</option>
+      <select id="sortBy" class="input">
+        <option value="date_desc" data-i18n="sort_recent">Plus récents</option>
+        <option value="date_asc" data-i18n="sort_oldest">Plus anciens</option>
+        <option value="popular_desc" data-i18n="sort_popular">Les plus lus</option>
       </select>
     </div>
-    <div id="posts" class="posts-grid"></div>
 
-
-    <!-- ⚠️ ID aligné avec render.js -->
-    <div id="postsList" class="grid cards"></div>
+    <div id="postList" class="grid cards"></div>
     <div id="pagination" class="pagination"></div>
   </main>
 
   <footer class="site-footer">
     <div class="container row between">
-      <p>© <span id="year"></span> Bluekiosktech.
-        <span data-i18n="footer_copy">Tous droits réservés.</span>
-      </p>
-
-      <p>
-        <a href="privacy.html" data-i18n="footer_privacy">Politique de confidentialité</a>
-      </p>
+      <p>© <span id="year"></span> Bluekiosktech. <span data-i18n="footer_copy">Tous droits réservés.</span></p>
     </div>
   </footer>
-  
-<script>window.FEED_SOURCE = 'sanity';</script>
 
-<!-- [<- JS ->] -->
-<script src="assets/js/i18n.js"></script>
-<script src="assets/js/data.js"></script>
-<script src="assets/js/render.js"></script>
-<script src="assets/js/main.js"></script>
+  <!-- JS -->
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/render.js"></script>
+  <script src="assets/js/main.js"></script>
 
-<div id="posts-list"></div>
-<!-- <script defer src="/assets/js/cms-posts.js"></script> -->
-
-<!-- Init -->
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
+  <!-- Initialisation i18n + placeholders -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    // appliquer les libellés statiques
     if (typeof applyI18N === 'function') applyI18N();
-    const PH = { fr: "Rechercher un article…", en : "Search an article…" };
+
+    // placeholder du champ de recherche selon la langue courante
+    const PH = { fr: "Rechercher un article…", en: "Search an article…" };
     const input = document.getElementById('searchInput');
     if (input && typeof Lang !== 'undefined') {
       input.placeholder = Lang.get() === 'en' ? PH.en : PH.fr;
     }
-  if ((!window.FEED_SOURCE || window.FEED_SOURCE === 'legacy') && typeof refreshPosts === 'function') refreshPosts();
-  if ((!window.FEED_SOURCE || window.FEED_SOURCE === 'legacy') && typeof renderList   === 'function') renderList();
 
-  });
-</script>
-<!-- <script type="module" src="/assets/js/fetchPosts.js"></script> -->
+    // afficher la liste d'articles
+    if (typeof refreshPosts === 'function') refreshPosts();
+    if (typeof renderList === 'function') renderList();
 
-
+      
+    });
+  </script>
 </body>
 </html>
