@@ -21,7 +21,12 @@ async function loadPosts() {
       }
   `;
 
-  const { result = [] } = await groq(query);
+  let result = [];
+  try {
+    ({ result = [] } = await groq(query));
+  } catch (e) {
+    console.error('[posts] Failed to load', e);
+  }
 
   const $list = document.getElementById('posts-list');
   if (!$list) return;
