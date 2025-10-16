@@ -7,9 +7,11 @@ function getSlug() {
 }
 
 function renderPortableText(blocks = []) {
-  // Rendu minimaliste du Portable Text (paragraphe uniquement)
+  // Rendu minimaliste du Portable Text (paragraphes)
   return blocks
-    .map(b => (b._type === 'block' ? `<p>${escapeHtml(b.children?.map(c => c.text).join('') || '')}</p>` : ''))
+    .map(b => (b._type === 'block'
+      ? `<p>${escapeHtml(b.children?.map(c => c.text).join('') || '')}</p>`
+      : ''))
     .join('');
 }
 
@@ -32,9 +34,17 @@ async function loadPost() {
     }
   `;
 
-  const { result: post } = await groq(query, { slug });
+  let post;
+  try {
+    const payload = await groq(query, { slug });
+    post = payload?.result;
+  } catch (e) {
+    console.error('[post] Failed to load', e);
+  }
+
   if (!post) {
-    document.getElementById('post-body')?.insertAdjacentHTML('beforeend', '<p>Article introuvable.</p>');
+    document.getElementById('post-body')
+      ?.insertAdjacentHTML('beforeend', '<p>Article introuvable.</p>');
     return;
   }
 
@@ -45,6 +55,7 @@ async function loadPost() {
   const $cover = document.getElementById('post-cover');
 
   if ($title) $title.textContent = post.title || 'Sans titre';
+
   if ($meta) {
     const parts = [];
     if (post.category) parts.push(escapeHtml(post.category));
@@ -52,10 +63,12 @@ async function loadPost() {
     parts.push(`${fmtDate(post.date)} · ${post.readTime} min`);
     $meta.textContent = parts.join(' · ');
   }
+
   if ($cover && post.coverUrl) {
     $cover.src = post.coverUrl;
     $cover.alt = post.title || '';
   }
+
   if ($body) $body.innerHTML = renderPortableText(post.body);
 }
 
