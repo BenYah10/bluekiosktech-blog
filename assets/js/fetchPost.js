@@ -1,91 +1,62 @@
-// /assets/js/fetchPost.js
+// assets/js/fetchPost.js
 import { groq, escapeHtml, fmtDate } from './sanityClient.js';
-import { toHTML } from 'https://esm.sh/@portabletext/to-html@2';
 
-function $(id){ return document.getElementById(id); }
+function getSlug() {
+  const url = new URL(location.href);
+  return url.searchParams.get('id') || url.searchParams.get('slug');
+}
 
-// Récup du slug avec pas mal de tolérance (compat ancien code)
-const qs = new URLSearchParams(location.search);
-let slug =
-  qs.get('slug') ||
-  qs.get('id') ||            // compat ancien param
-  qs.get('post') ||
-  qs.get('s') || '';
-slug = decodeURIComponent(String(slug)).trim();
+function renderPortableText(blocks = []) {
+  // Rendu minimaliste du Portable Text (paragraphe uniquement)
+  return blocks
+    .map(b => (b._type === 'block' ? `<p>${escapeHtml(b.children?.map(c => c.text).join('') || '')}</p>` : ''))
+    .join('');
+}
 
-(async function loadPost() {
-  const $title = $('post-title');
-  const $meta  = $('post-meta');
-  const $body  = $('post-body');
+async function loadPost() {
+  const slug = getSlug();
+  if (!slug) return;
 
-  if (!slug) {
-    if ($title) $title.textContent = 'Slug manquant.';
-    if ($body)  $body.innerHTML = '<p>Impossible d’identifier l’article.</p>';
-    return;
-  }
-
-  // 1) Charger l’article par son slug
-  const postQuery = `
+  const query = `
     *[_type=="post" && slug.current==$slug][0]{
       "id": _id,
-      "title": coalesce(title, "Sans titre"),
+      "title": title,
       "slug": slug.current,
       "excerpt": excerpt,
       "date": publishedAt,
       "readTime": max(1, round(length(pt::text(body)) / 1300)),
-      "category": coalesce(categories[0]->title, ""),
+      "category": category->title,
       "author": author->name,
-      "coverUrl": cover.asset->url,
-      "body": body
+      "coverUrl": coalesce(cover.asset->url, ""),
+      body
     }
   `;
-  const params = { slug };
 
-  try {
-    const { result: post } = await groq(postQuery, params);
-    if (!post) throw new Error('Article introuvable pour ce slug');
-
-    // 2) Rendu
-    if ($title) $title.textContent = post.title;
-    if ($meta) {
-      const bits = [
-        post.author ? `par ${escapeHtml(post.author)}` : '',
-        post.date   ? fmtDate(post.date) : '',
-        `${post.readTime} min`
-      ].filter(Boolean);
-      $meta.textContent = bits.join(' · ');
-    }
-
-    if ($body) {
-      // portable text -> HTML sécurisé (respecte les types autorisés de ton schema)
-      const html = toHTML(post.body || []);
-      $body.innerHTML = html;
-
-      // ancre éventuelle au hash (#…) après rendu
-      if (location.hash) {
-        const el = document.getElementById(location.hash.slice(1));
-        if (el) el.scrollIntoView({behavior:'smooth'});
-      }
-    }
-
-    // 3) (Optionnel) MAJ SEO de base si tu as déjà ces balises avec des id
-    const url = location.href.split('#')[0];
-    const set = (sel, attr, val) => {
-      const n = document.querySelector(sel);
-      if (n) n.setAttribute(attr, val);
-    };
-    document.title = post.title ? `${post.title} — BlueKioskTech` : 'Article — BlueKioskTech';
-    set('link[rel="canonical"]#canonicalLink','href',url);
-    set('meta[name="description"]#postDescTag','content', post.excerpt || '');
-    set('meta[property="og:title"]#ogTitle','content', document.title);
-    set('meta[property="og:description"]#ogDesc','content', post.excerpt || '');
-    set('meta[property="og:url"]#ogUrl','content', url);
-    if (post.coverUrl) {
-      set('meta[property="og:image"]#ogImage','content', `${post.coverUrl}?w=1200&fit=max&auto=format`);
-    }
-  } catch (e) {
-    console.error(e);
-    if ($title) $title.textContent = 'Erreur de chargement de l’article';
-    if ($body)  $body.innerHTML = '<p style="color:#b00020">Erreur de chargement de l’article.</p>';
+  const { result: post } = await groq(query, { slug });
+  if (!post) {
+    document.getElementById('post-body')?.insertAdjacentHTML('beforeend', '<p>Article introuvable.</p>');
+    return;
   }
-})();
+
+  // Remplissage du DOM
+  const $title = document.getElementById('post-title');
+  const $meta  = document.getElementById('post-meta');
+  const $body  = document.getElementById('post-body');
+  const $cover = document.getElementById('post-cover');
+
+  if ($title) $title.textContent = post.title || 'Sans titre';
+  if ($meta) {
+    const parts = [];
+    if (post.category) parts.push(escapeHtml(post.category));
+    if (post.author)   parts.push(escapeHtml(post.author));
+    parts.push(`${fmtDate(post.date)} · ${post.readTime} min`);
+    $meta.textContent = parts.join(' · ');
+  }
+  if ($cover && post.coverUrl) {
+    $cover.src = post.coverUrl;
+    $cover.alt = post.title || '';
+  }
+  if ($body) $body.innerHTML = renderPortableText(post.body);
+}
+
+document.addEventListener('DOMContentLoaded', loadPost);

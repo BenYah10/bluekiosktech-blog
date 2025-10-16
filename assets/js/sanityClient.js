@@ -6,6 +6,7 @@ export const SANITY_DATASET     = 'production';   // <- dataset public choisi
 export const SANITY_API_VERSION = '2023-10-10';   // version stable de l’API
 
 const BASE = `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}`;
+const DEBUG = false; // passe à true si tu veux voir les logs des requêtes
 
 /**
  * Appelle l’API data/query de Sanity.
@@ -21,6 +22,11 @@ export async function groq(query, params = {}) {
     url.searchParams.set('params', JSON.stringify(params));
   }
 
+  if (DEBUG) {
+    console.log('[sanity] BASE =', BASE);
+    console.log('[GROQ]', query, params);
+  }
+
   // Pas de cookies -> pas besoin d’autoriser les credentials côté CORS
   const res = await fetch(url.toString(), { mode: 'cors', credentials: 'omit' });
 
@@ -32,7 +38,8 @@ export async function groq(query, params = {}) {
     throw new Error(`Sanity query failed (${res.status})`);
   }
 
-  return json.result;
+  // Sanity renvoie {result: ...}
+  return json.result ?? null;
 }
 
 // Petits utilitaires UI
@@ -42,11 +49,9 @@ export function escapeHtml(s = '') {
 }
 
 export function fmtDate(iso) {
-  try { return new Date(iso).toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' }); }
-  catch { return ''; }
+  try {
+    return new Date(iso).toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' });
+  } catch {
+    return '';
+  }
 }
-
-// Log base pour débogage rapide (visible une fois sur post.html / blog.html)
-console.log('[sanity] BASE =', BASE);
-console.log('[GROQ]', query, params);
-
