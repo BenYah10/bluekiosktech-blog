@@ -1,57 +1,75 @@
-// /assets/js/sanityClient.js
-// Client léger pour Sanity (GROQ via fetch)
+// assets/js/sanityClient.js
+// Client ultra-léger pour interroger l'API Sanity via GROQ.
 
-export const SANITY_PROJECT_ID  = 'fiq9yers';     // <- ton Project ID
-export const SANITY_DATASET     = 'production';   // <- dataset public choisi
-export const SANITY_API_VERSION = '2023-10-10';   // version stable de l’API
+/* ==== CONFIG ==== */
+export const SANITY_PROJECT_ID = 'fiq9yers';     // <- ton Project ID
+export const SANITY_DATASET    = 'production';   // <- dataset public
+export const SANITY_API_VERSION = '2023-10-10';  // version d'API stable
 
-const BASE = `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}`;
-const DEBUG = false; // passe à true si tu veux voir les logs des requêtes
-
-/**
- * Appelle l’API data/query de Sanity.
- * @param {string} query - requête GROQ
- * @param {object} [params] - variables GROQ
- * @returns {Promise<any>}
- */
-export async function groq(query, params = {}) {
-  const url = new URL(BASE);
-  url.searchParams.set('query', query);
-  if (params && Object.keys(params).length) {
-    // IMPORTANT: Sanity attend un JSON encodé dans "params"
-    url.searchParams.set('params', JSON.stringify(params));
-  }
-
-  if (DEBUG) {
-    console.log('[sanity] BASE =', BASE);
-    console.log('[GROQ]', query, params);
-  }
-
-  // Pas de cookies -> pas besoin d’autoriser les credentials côté CORS
-  const res = await fetch(url.toString(), { mode: 'cors', credentials: 'omit' });
-
-  // On tente toujours de décoder le JSON pour loguer proprement les erreurs
-  const json = await res.json().catch(() => ({}));
-
-  if (!res.ok) {
-    console.error('[sanity] HTTP', res.status, json);
-    throw new Error(`Sanity query failed (${res.status})`);
-  }
-
-  // Sanity renvoie {result: ...}
-  return json.result ?? null;
-}
-
-// Petits utilitaires UI
+/* ==== UTILS ==== */
 export function escapeHtml(s = '') {
   return String(s)
-    .replace(/[&<>'"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m]));
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
 }
 
 export function fmtDate(iso) {
   try {
-    return new Date(iso).toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' });
+    return new Date(iso).toLocaleDateString('fr-FR', {
+      day: '2-digit', month: 'short', year: 'numeric'
+    });
   } catch {
     return '';
   }
+}
+
+/* ==== GROQ FETCH ==== */
+function buildGroqUrl(query, params) {
+  const base = `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}`;
+  const usp = new URLSearchParams();
+  usp.set('query', query);
+  if (params && Object.keys(params).length) {
+    usp.set('params', JSON.stringify(params));
+  }
+  return `${base}?${usp.toString()}`;
+}
+
+/**
+ * Appelle Sanity avec une requête GROQ.
+ * @param {string} query - GROQ string (pas d’interpolation JS crue !)
+ * @param {object} [params] - variables GROQ (ex: {slug:"..."}), encodées JSON
+ * @returns {Promise<{result:any, ms?:number, query?:string}>}
+ */
+export async function groq(query, params = {}) {
+  const url = buildGroqUrl(query, params);
+
+  // Log de debug très utile pendant les tests
+  console.debug('[sanity] GET', url);
+
+  const res = await fetch(url, {
+    // pas de cookies -> CORS simple
+    method: 'GET',
+    mode: 'cors',
+    credentials: 'omit',
+    headers: { 'Accept': 'application/json' }
+  });
+
+  let payload;
+  try {
+    payload = await res.json();
+  } catch {
+    throw new Error(`[sanity] HTTP ${res.status} — réponse illisible`);
+  }
+
+  // Sanity renvoie {statusCode, error, message} en cas d’erreur
+  if (!res.ok || payload?.statusCode >= 400) {
+    const msg = payload?.message || payload?.error || `HTTP ${res.status}`;
+    console.error('[sanity] Query failed', { url, query, params, payload });
+    throw new Error(`[sanity] ${msg}`);
+  }
+
+  return payload; // {query, result, ms, ...}
 }
