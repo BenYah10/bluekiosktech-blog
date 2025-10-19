@@ -55,9 +55,8 @@
       </select>
 
       <select id="sortBy" class="input">
-        <option value="date_desc" data-i18n="sort_recent">Plus récents</option>
-        <option value="date_asc" data-i18n="sort_oldest">Plus anciens</option>
-        <option value="popular_desc" data-i18n="sort_popular">Les plus lus</option>
+        <option value="newest" data-i18n="sort_recent">Plus récents</option>
+        <option value="oldest" data-i18n="sort_oldest">Plus anciens</option>
       </select>
     </div>
 
@@ -80,21 +79,19 @@
   <!-- Initialisation i18n + placeholders -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-    // appliquer les libellés statiques
-    if (typeof applyI18N === 'function') applyI18N();
+      // appliquer les libellés statiques
+      if (typeof applyI18N === 'function') applyI18N();
 
-    // placeholder du champ de recherche selon la langue courante
-    const PH = { fr: "Rechercher un article…", en: "Search an article…" };
-    const input = document.getElementById('searchInput');
-    if (input && typeof Lang !== 'undefined') {
-      input.placeholder = Lang.get() === 'en' ? PH.en : PH.fr;
-    }
+      // placeholder du champ de recherche selon la langue courante
+      const PH = { fr: "Rechercher un article…", en: "Search an article…" };
+      const input = document.getElementById('searchInput');
+      if (input && typeof Lang !== 'undefined') {
+        input.placeholder = Lang.get() === 'en' ? PH.en : PH.fr;
+      }
 
-    // afficher la liste d'articles
-    if (typeof refreshPosts === 'function') refreshPosts();
-    if (typeof renderList === 'function') renderList();
-
-      
+      // afficher la liste d'articles
+      if (typeof refreshPosts === 'function') refreshPosts();
+      if (typeof renderList === 'function') renderList();
     });
   </script>
 </body>

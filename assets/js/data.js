@@ -7,9 +7,93 @@
 
 /* --- Articles FR --- */
 const POSTS_FR = [
-  /* ───────────── Article #3 — Check-list d’implantation (NOUVEAU) ───────────── */
+
+/* ───────────── Article #1 — Immunité d’hier vs aujourd’hui (NOUVEAU) ───────────── */
+{
+  id: "immunite-hier-vs-aujourdhui", order: 1,
+  image640: "assets/images/posts/immunite-hier-vs-aujourdhui/thumb-640.png",
+  image960: "assets/images/posts/immunite-hier-vs-aujourdhui/thumb-960.png",
+
+  // Hero (shown above #postTitle)
+  imageLarge: "assets/images/posts/immunite-hier-vs-aujourdhui/thumb-960.png",
+  imageAlt:    "Illustration : une main arrête des virus (immunité)",
+
+  title: "🧬 Immunité d’hier vs réalité d’aujourd’hui : pourquoi nous ne sommes plus protégés comme nos grands-parents",
+  description:
+    "Le monde a changé : pollution, aliments ultra-transformés, stress et ondes. Notre immunité ne faiblit pas par l’hygiène, elle est mise à l’épreuve par la vie moderne.",
+  excerpt:
+    "Non, l’hygiène n’affaiblit pas l’immunité. C’est l’environnement moderne (polluants, aliments transformés, stress, ondes) qui fragilise nos défenses. D’où l’importance d’une hygiène intelligente — notamment pour les gourdes.",
+  date: "2025-10-17",
+  category: "hygiene",
+  readTime: 9,
+  views: 0,
+
+  content: `
+<h2>🌍 Un environnement radicalement différent</h2>
+<p>Nos ancêtres vivaient dans un monde moins industrialisé, moins pollué, et surtout… moins transformé. Aujourd’hui :</p>
+<ul>
+  <li><strong>L’air</strong> est plus chargé en polluants (particules fines, gaz, perturbateurs endocriniens).</li>
+  <li><strong>Les aliments</strong> sont plus <em>ultra-transformés</em> (conservateurs, colorants, émulsifiants, additifs).</li>
+  <li><strong>Fruits et légumes</strong> souvent traités (pesticides, engrais, hors-sol).</li>
+  <li><strong>Viandes</strong> issues d’élevages intensifs, antibiotiques, hormones.</li>
+</ul>
+<p>Ces facteurs altèrent le <strong>microbiote</strong>, perturbent le métabolisme et rendent le système immunitaire plus vulnérable.</p>
+
+<h2>🧠 Stress, ondes et mode de vie : nouveaux ennemis invisibles</h2>
+<ul>
+  <li><strong>Stress chronique</strong> : le cortisol affaiblit l’immunité.</li>
+  <li><strong>Sommeil perturbé</strong> : écrans, horaires irréguliers.</li>
+  <li><strong>Sédentarité</strong> : moins d’activité, plus de temps assis.</li>
+  <li><strong>Exposition aux ondes</strong> : Wi-Fi, Bluetooth, 4G/5G (impacts encore étudiés).</li>
+</ul>
+<p>Résultat : le corps reste en <em>alerte</em>, ce qui épuise ses défenses.</p>
+
+<h2>🧪 L’immunité ne se transmet pas, elle se construit</h2>
+<p>Nos grands-parents étaient plus exposés aux microbes, mais ils avaient aussi :</p>
+<ul>
+  <li>Une <strong>alimentation</strong> plus naturelle,</li>
+  <li>Moins de <strong>stress technologique</strong>,</li>
+  <li>Un environnement <strong>moins toxique</strong>.</li>
+</ul>
+<p>On ne peut pas se comparer : croire que « moins d’hygiène = plus de résistance » est une <strong>erreur dangereuse</strong>.</p>
+
+<h2>💧 Et les gourdes dans tout ça ?</h2>
+<ul>
+  <li>Elles sont souvent <strong>mal nettoyées</strong>.</li>
+  <li>Elles peuvent abriter des <strong>milliers de germes</strong> invisibles.</li>
+  <li>Les zones <strong>humides et fermées</strong> favorisent les bactéries.</li>
+</ul>
+<p>Boire « comme avant » ne justifie pas de négliger l’hygiène aujourd’hui.</p>
+
+<h2>🚀 BlueKioskTech : une réponse technologique</h2>
+<ul>
+  <li><strong>Désinfection &lt; 2 minutes</strong> en libre-service,</li>
+  <li><strong>Élimination</strong> des bactéries et germes invisibles,</li>
+  <li><strong>Sans chimie</strong>, respect de la santé et de l’écologie.</li>
+</ul>
+<p>Prendre soin de soi, c’est aussi penser à ce qu’on ne voit pas.</p>
+
+<h2>📚 Sources</h2>
+<ul>
+  <li><a href="https://www.nature.com/" target="_blank" rel="noopener noreferrer">Nature — Your diet can change your immune system</a></li>
+  <li><a href="https://www.frontiersin.org/journals/immunology" target="_blank" rel="noopener noreferrer">Frontiers in Immunology — Modern Lifestyle and Health</a></li>
+  <li><a href="https://healthylifewithdrshaista.com/" target="_blank" rel="noopener noreferrer">Healthy Life with Dr. Shaista — Impact of Modern Lifestyle on Immune System</a></li>
+  <li><a href="https://www.freddabranyon.com/blog/how-lifestyle-choices-affect-your-immune-system/" target="_blank" rel="noopener noreferrer">Dr. Fredda Branyon — How Lifestyle Choices Affect Your Immune System</a></li>
+</ul>
+  `
+},
+
+
+
+  /* ───────────── Article #4 — Check-list d’implantation (NOUVEAU) ───────────── */
   {
-    id: "checklist-implantation-gym", order: 3, 
+    id: "checklist-implantation-gym", order: 4, 
+    image640: "assets/images/posts/checklist-implantation/thumb-640.png",
+    image960: "assets/images/posts/checklist-implantation/thumb-960.png",
+    // HERO au-dessus du H1 (grâce à render.js)
+    imageLarge: "assets/images/posts/checklist-implantation/hero-960.png",
+    // Accessibilité / SEO
+    imageAlt:    "Bannière BlueKioskTech.blog : bureaux, gym, campus",
     title: "📋 Check-list d’implantation en salle : flux, emplacements, adoption",
     description:
       "Intégrer BlueKioskTech de façon fluide : flux utilisateurs, emplacements types (gyms, bureaux, campus), signalétique et plan de lancement。",
@@ -68,9 +152,13 @@ Rejoignez notre programme pilote et testez BlueKioskTech en avant-première : un
     `
   },
 
-  /* ───────────── Article #1 — Immunité & hygiène ───────────── */
+  /* ───────────── Article #2 — Immunité & hygiène ───────────── */
   {
-    id: "immunite-collective-hygiene", order: 1, 
+    image: "assets/images/posts/immunite-collective-hygiene/hero.svg",
+     imageLarge: "assets/images/posts/immunite-collective-hygiene/hero.svg",
+      imageAlt: "Variabilité de l’immunité et responsabilité collective",
+
+    id: "immunite-collective-hygiene", order: 2, 
     title:
       "🧬 Se sentir en bonne santé ne suffit pas : notre immunité est unique… et notre responsabilité collective.",
     description:
@@ -123,9 +211,13 @@ Parce que l’immunité est personnelle… <strong>mais l’hygiène est univers
     `
   },
 
-  /* ───────────── Article #2 — Gourdes & contamination ───────────── */
+  /* ───────────── Article #3 — Gourdes & contamination ───────────── */
   {
-    id: "hygiene-gourdes-99-2min", order: 2, 
+    id: "hygiene-gourdes-99-2min", order: 3,
+    image640: "assets/images/posts/hygiene-gourdes-99-2min/thumb-640.png",
+    image960: "assets/images/posts/hygiene-gourdes-99-2min/thumb-960.png",
+    imageAlt:    "Bactéries visibles sur une gourde réutilisable (bouchon, bec, filetage)",
+    imageLarge: "assets/images/posts/hygiene-gourdes-99-2min/thumb-960.png",
     title:
       "🧴 Votre gourde est un nid à bactéries : Le saviez-vous, votre gourde peut être jusqu'à 40 000 fois plus sale qu'un siège de toilette 🚽?",
     description:
@@ -137,6 +229,7 @@ Parce que l’immunité est personnelle… <strong>mais l’hygiène est univers
     readTime: 8,
     views: 0,
     content: `
+    
 <h2>Résumé (≈150 mots)</h2>
 <p>
 Les gourdes réutilisables sont formidables pour l’environnement… mais la chaleur, l’humidité et les résidus organiques en font un terrain idéal pour les bactéries.
@@ -166,7 +259,7 @@ Le rinçage élimine les débris visibles, mais <strong>n’inactive pas</strong
 (filetage, sous le bec, intérieur du bouchon). Une désinfection <em>complète, reproductible et validée</em> est nécessaire pour ramener la charge microbienne à un niveau sûr.
 </p>
 
-<h2>La réponse BlueKioskTech : technologie VUCS</h2>
+<h2>La réponse BlueKioskTech : technologie <Mark>VUCS</Mark> </h2>
 <p>
 BlueKioskTech a développé une machine <strong>self-service</strong> qui désinfecte le corps de la gourde <em>et</em> son bouchon en <strong>&lt; 2 minutes</strong>,
 <strong>sans chimie</strong>, grâce à une combinaison brevetée et coordonnée de trois phases — <strong>VUCS</strong> — conçue pour atteindre une
@@ -186,9 +279,9 @@ Parce que l’hygiène ne devrait pas être une contrainte : <strong>elle doit �
     `
   },
 
-  /* ───────────── Article #4 — Normes & certifications (placeholder) ───────────── */
+  /* ───────────── Article #5 — Normes & certifications (placeholder) ───────────── */
   {
-    id: "normes-certifications", order: 4, 
+    id: "normes-certifications", order: 5, 
     title:
       "Normes & certifications : mesurer (vraiment) la désinfection 99,99%",
     description:
@@ -206,10 +299,89 @@ Parce que l’hygiène ne devrait pas être une contrainte : <strong>elle doit �
 ];
 
 /* --- Articles EN --- */
+
 const POSTS_EN = [
-  /* ───────────── Article #3 — Rollout checklist (NEW) ───────────── */
+
+  /* ───────────── Article #1 — Yesterday’s immunity vs today’s reality (NEW) ───────────── */
   {
-    id: "checklist-implantation-gym", order: 3, 
+    id: "immunite-hier-vs-aujourdhui", order: 1,
+    imageAlt: "Illustration : une personne arrête des virus avec la main (immunité)",
+    imageAlt_en: "Concept image: person blocking viruses with hand (immunity)",
+    imageLarge: "assets/images/posts/immunite-hier-vs-aujourdhui/thumb-960.png",
+    imageAlt_en: "Concept: hand blocking viruses (immunity)",
+    title: "🧬 Yesterday’s immunity vs today’s reality: why we’re not protected like our grandparents",
+    description:
+      "The world changed: pollution, ultra-processed foods, stress and electromagnetic exposure. Hygiene doesn’t weaken immunity — modern life challenges it.",
+    excerpt_en:
+      "No, hygiene doesn’t weaken immunity. It’s the modern environment (pollutants, ultra-processed foods, stress, EM exposure) that strains our defenses — hence the need for smart hygiene, including for bottles.",
+    date: "2025-10-17",
+    category: "hygiene",
+    readTime: 9,
+    views: 0,
+    content: `
+<h2>🌍 A radically different environment</h2>
+<p>Our ancestors lived in a less industrialized, less polluted and far less transformed world. Today:</p>
+<ul>
+  <li><strong>Air</strong> is saturated with pollutants (fine particles, gases, endocrine disruptors).</li>
+  <li><strong>Food</strong> is more <em>ultra-processed</em> (preservatives, colorants, emulsifiers, additives).</li>
+  <li><strong>Fruit & vegetables</strong> are often treated (pesticides, synthetic fertilizers, soilless culture).</li>
+  <li><strong>Meat</strong> comes from intensive farming with antibiotics and growth hormones.</li>
+</ul>
+<p>These factors disrupt the <strong>microbiome</strong>, alter metabolism and make the immune system more vulnerable.</p>
+
+<h2>🧠 Stress, EM exposure & lifestyle: new invisible enemies</h2>
+<ul>
+  <li><strong>Chronic stress</strong>: cortisol directly weakens immunity.</li>
+  <li><strong>Sleep disruption</strong>: screens and irregular schedules.</li>
+  <li><strong>Sedentary habits</strong>: less activity, more sitting.</li>
+  <li><strong>Wireless exposure</strong>: Wi-Fi, Bluetooth, 4G/5G — still being studied, yet concerning.</li>
+</ul>
+<p>Result: a <strong>constant alert state</strong> that depletes natural defenses.</p>
+
+<h2>🧪 Immunity isn’t inherited — it’s built</h2>
+<p>Yes, grandparents faced more microbes, but they also had:</p>
+<ul>
+  <li>More <strong>natural food</strong>,</li>
+  <li>Less <strong>tech-driven stress</strong>,</li>
+  <li>A <strong>less toxic</strong> environment overall.</li>
+</ul>
+<p>We can’t compare ourselves to them. Believing that “less hygiene = stronger immunity” is a <strong>dangerous misconception</strong>.</p>
+
+<h2>💧 What about bottles?</h2>
+<ul>
+  <li>Reusable bottles are often <strong>poorly cleaned</strong>.</li>
+  <li>They can harbor <strong>thousands of invisible germs</strong>.</li>
+  <li>Moist, closed areas favor <strong>pathogenic bacteria</strong>.</li>
+</ul>
+<p>Drinking “like in the old days” doesn’t justify neglecting hygiene today.</p>
+
+<h2>🚀 BlueKioskTech: a clean-tech answer</h2>
+<ul>
+  <li><strong>&lt; 2-minute disinfection</strong> in self-serve format,</li>
+  <li><strong>Eliminates</strong> bacteria and invisible germs,</li>
+  <li><strong>Chemical-free</strong>, protecting health and the environment.</li>
+</ul>
+<p>Taking care of yourself isn’t just sport or diet — it’s also about <strong>what you can’t see</strong>.</p>
+
+<h2>📚 Sources</h2>
+<ul>
+  <li><a href="https://www.nature.com/" target="_blank" rel="noopener noreferrer">Nature — Your diet can change your immune system</a></li>
+  <li><a href="https://www.frontiersin.org/journals/immunology" target="_blank" rel="noopener noreferrer">Frontiers in Immunology — Modern Lifestyle and Health</a></li>
+  <li><a href="https://healthylifewithdrshaista.com/" target="_blank" rel="noopener noreferrer">Healthy Life with Dr. Shaista — Impact of Modern Lifestyle on Immune System</a></li>
+  <li><a href="https://www.freddabranyon.com/blog/how-lifestyle-choices-affect-your-immune-system/" target="_blank" rel="noopener noreferrer">Dr. Fredda Branyon — How Lifestyle Choices Affect Your Immune System</a></li>
+</ul>
+    `
+  },
+
+  /* ───────────── Article #4 — Rollout checklist (NEW) ───────────── */
+  {
+    id: "checklist-implantation-gym", order: 4,
+    image640: "assets/images/posts/checklist-implantation/thumb-640.png",
+    image960: "assets/images/posts/checklist-implantation/thumb-960.png", 
+    // HERO au-dessus du H1 (grâce à render.js)
+    imageLarge: "assets/images/posts/checklist-implantation/thumb-960.png",
+    // Accessibilité / SEO
+    imageAlt_en: "BlueKioskTech.blog banner: offices, gym, campus",
     title: "📋 Rollout checklist: flow, placement, adoption",
     description:
       "Seamless integration of BlueKioskTech: user flow, placement (gyms, offices, campuses), signage and a two-week launch plan.",
@@ -268,9 +440,13 @@ a <strong>&lt; 2-minute</strong>, <strong>chemical-free</strong> disinfection ro
     `
   },
 
-  /* ───────────── Article #1 — Immunity & hygiene ───────────── */
+  /* ───────────── Article #2 — Immunity & hygiene ───────────── */
   {
-    id: "immunite-collective-hygiene", order: 1, 
+    image: "assets/images/posts/immunite-collective-hygiene/hero.svg",
+      imageLarge: "assets/images/posts/immunite-collective-hygiene/hero.svg",
+       imageAlt_en: "Immune variability and our collective responsibility",
+    id: "immunite-collective-hygiene", order: 2, 
+
     title:
       "🧬 Feeling healthy isn’t enough: immunity is personal… and hygiene is collective.",
     description:
@@ -322,9 +498,16 @@ Immunity is personal… <strong>but hygiene is universal</strong>.
     `
   },
 
-  /* ───────────── Article #2 — Bottle contamination ───────────── */
+  /* ───────────── Article #3 — Bottle contamination ───────────── */
   {
-    id: "hygiene-gourdes-99-2min", order: 2,
+    
+    id: "hygiene-gourdes-99-2min", order: 3,
+    image640: "assets/images/posts/hygiene-gourdes-99-2min/thumb-640.png",
+    image960: "assets/images/posts/hygiene-gourdes-99-2min/thumb-960.png",
+    imageAlt:    "Bactéries visibles sur une gourde réutilisable (bouchon, bec, filetage)",
+    imageAlt_en: "Bacteria hotspots on a reusable bottle (cap, spout, threads)",
+    imageLarge: "assets/images/posts/hygiene-gourdes-99-2min/thumb-960.png",
+
     title:
       "🧴 Your bottle is a bacteria nest: Did you know your water bottle can be up to 40,000 times dirtier than a toilet  🚽?",
     description:
@@ -336,7 +519,8 @@ Immunity is personal… <strong>but hygiene is universal</strong>.
     readTime: 8,
     views: 0,
     content: `
-<h2>Summary (~150 words)</h2>
+
+   <h2>Summary (~150 words)</h2>
 <p>
 Reusable bottles are great for the planet, but warmth, moisture and organic residues make them a perfect breeding ground for microbes.
 A study reported by <em>WaterFilterGuru</em> shows that some reusable bottles can host up to <strong>40,000× more bacteria than a toilet seat</strong> —
@@ -364,7 +548,7 @@ Rinsing removes visible debris but <strong>doesn’t inactivate</strong> adheren
 You need <em>complete, consistent and validated</em> disinfection to reduce microbial load to a safe level.
 </p>
 
-<h2>BlueKioskTech’s answer: VUCS technology</h2>
+<h2>BlueKioskTech’s answer: <Mark>VUCS</Mark> technology</h2>
 <p>
 BlueKioskTech has developed a <strong>self-serve</strong> machine that disinfects both the bottle body <em>and</em> its cap in <strong>under 2 minutes</strong>,
 <strong>without chemicals</strong>, using a patented, coordinated three-phase process — <strong>VUCS</strong> — engineered to deliver
@@ -384,9 +568,9 @@ Because hygiene shouldn’t be a burden — it should be <strong>smart, collecti
     `
   },
 
-  /* ───────────── Article #4 — Standards & certifications (placeholder) ───────────── */
+  /* ───────────── Article #5 — Standards & certifications (placeholder) ───────────── */
   {
-    id: "normes-certifications", order: 4, 
+    id: "normes-certifications", order: 5, 
     title: "Standards & certifications: truly measuring 99.99% disinfection",
     description:
       "Reliability, compliance and test protocols made simple.",
