@@ -12,29 +12,16 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.bluekiosktech.blog/" />
   <meta property="og:image" content="https://www.bluekiosktech.blog/assets/images/og-blog.jpg" />
-  <!-- 1) Organization = la marque -->
- <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "BlueKioskTech",
-  "url": "https://www.bluekiosktech.blog/",
-  "logo": "https://www.bluekiosktech.blog/assets/images/logo.png"
-}
-</script>
-
-  <!-- 2) WebSite = le site / blog -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Bluekiosktech Blog",
-  "url": "https://www.bluekiosktech.blog/",
-  "publisher": { "@type": "Organization", "name": "BlueKioskTech" },
-  "inLanguage": "fr"
-}
-</script>
-
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Bluekiosktech Blog",
+    "url": "/",
+    "description": "Hygiène clean-tech, études de cas et roadmap produit.",
+    "publisher": { "@type": "Organization", "name": "Bluekiosktech" }
+  }
+  </script>
 </head>
 <body class="theme-light">
   <header class="site-header">
@@ -72,7 +59,6 @@
   <main>
     <!-- HERO -->
     <section class="hero">
-       
       <div class="container">
         <h1 data-i18n="hero_title">Hygiène clean-tech, sans friction</h1>
         <p data-i18n="hero_sub">
@@ -107,30 +93,28 @@
     </section>
   </main>
 
-    <!-- FOOTER -->
-    <footer class="site-footer">
-      <div class="container row between">
-       <p>© <span id="year"></span> Bluekiosktech.
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container row between">
+      <p>© <span id="year"></span> Bluekiosktech.
         <span data-i18n="footer_copy">Tous droits réservés.</span>
-       </p>
-
-       <p>
+      </p>
+      <p>
         <a href="privacy.html" data-i18n="footer_privacy">Politique de confidentialité</a>
-       </p>
+      </p>
+    </div>
+
+    <div class="container">
+      <div class="card" style="margin-top:12px">
+        <h3 data-i18n="cta_pilot_title">Devenir site pilote</h3>
+        <p data-i18n="cta_pilot_desc">Vous gérez un gym, un campus ou un bureau ? Testez BlueKiosk en avant-première.</p>
+        <p>
+          <a class="btn primary" href="https://bluekiosktech.ca/?utm_source=blog&utm_medium=footer&utm_campaign=waitlist" data-i18n="cta_waitlist">Rejoindre la liste d’attente</a>
+          <a class="btn ghost" href="https://www.bluekiosk.tech/?utm_source=blog&utm_medium=footer&utm_campaign=feedback" data-i18n="cta_feedback">Donner votre avis</a>
+        </p>
       </div>
-
-        <div class="container">
-          <div class="card" style="margin-top:12px">
-           <h3 data-i18n="cta_pilot_title">Devenir site pilote</h3>
-           <p data-i18n="cta_pilot_desc">Vous gérez un gym, un campus ou un bureau ? Testez BlueKiosk en avant-première.</p>
-           <p>
-            <a class="btn primary" href="https://bluekiosktech.ca/?utm_source=blog&utm_medium=footer&utm_campaign=waitlist" data-i18n="cta_waitlist">Rejoindre la liste d’attente</a>
-            <a class="btn ghost" href="https://www.bluekiosk.tech/?utm_source=blog&utm_medium=footer&utm_campaign=feedback" data-i18n="cta_feedback">Donner votre avis</a>
-           </p>
-          </div>
-        </div>
-    </footer>
-
+    </div>
+  </footer>
 
   <!-- JS -->
   <script src="assets/js/i18n.js"></script>
@@ -138,13 +122,13 @@
   <script src="assets/js/render.js"></script>
   <script src="assets/js/main.js"></script>
 
-  <!-- Initialisation i18n minimale (au cas où main.js ne l’inclut pas déjà) -->
+  <!-- Initialisation i18n minimale -->
   <script>
-  document.addEventListener('DOMContentLoaded', function(){
-    if (typeof applyI18N==='function') applyI18N();
-    if (typeof refreshPosts==='function') refreshPosts();
-    if (typeof renderHome==='function') renderHome();
-  });
-</script>
+    document.addEventListener('DOMContentLoaded', function(){
+      if (typeof applyI18N==='function') applyI18N();
+      if (typeof refreshPosts==='function') refreshPosts();
+      if (typeof renderHome==='function') renderHome();
+    });
+  </script>
 </body>
 </html>
