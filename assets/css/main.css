@@ -10,16 +10,17 @@
   --card:#111827;
   --brand:#60a5fa;
   --brand2:#22d3ee;
+  --accent-green:#07f860;
   --bd:#1f2937;
   --shadow:0 10px 20px rgba(0,0,0,.25);
 
   /* Header */
-  --header-h: 100px;          /* desktop */
-  --header-h-mobile: 78px;    /* mobile */
+  --header-h: 76px;          /* desktop */
+  --header-h-mobile: 64px;    /* mobile */
 
   /* Logo (taille indépendante du header) */
-  --logo-h: 250px;            /* ajuste selon ton rendu désiré */
-  --logo-h-mobile: 200px;
+  --logo-h: 255px;            /* ajuste selon ton rendu désiré */
+  --logo-h-mobile: 180px;
 
   /* Switch langue (couleur pastille active) */
   --lang-active:#10b981;
@@ -138,6 +139,14 @@ a{ color:var(--brand); text-decoration:none }
 .lang-switch.lang--header button.is-active{
   background:var(--lang-active); color:#0b1222;
 }
+
+/* Pastille FR bleu foncé uniquement en thème clair */
+body.theme-light .lang-switch.lang--header #lang-fr.is-active{
+  background: #1e3a8a;  /* bleu foncé */
+  color: #ffffff;       /* texte lisible */
+}
+
+
 .lang-switch.lang--header button:hover{ filter:brightness(1.08) }
 
 /* ========== 6) Hero ========== */
@@ -160,13 +169,71 @@ a{ color:var(--brand); text-decoration:none }
   .post-hero{ aspect-ratio: 4 / 3; }  /* optionnel : ratio plus haut sur mobile */
 }
 
-.hero{
-  position:relative;
-  padding:56px 0;
-  background:
-    radial-gradient(1200px 400px at 10% -10%,rgba(96,165,250,.25),transparent),
-    radial-gradient(1200px 600px at 90% -20%,rgba(34,211,238,.2),transparent);
+/* --- HERO avec image plein-largeur + halo couleur existant --- */
+/* ============ HERO — vidéo plein écran ============ */
+
+/* === HERO: centre le contenu et adapte la vidéo === */
+.hero{ position:relative; overflow:hidden; min-height: clamp(520px, 72vh, 860px); }
+.hero > .hero-video{
+  position:absolute; inset:0; display:block; z-index:0;
+  width:100%; height:100%; object-fit:cover;
 }
+.hero > .container{
+  position:relative; z-index:1;
+  min-height:inherit;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  text-align:center;
+  padding: calc(var(--header-h) + 12px) 16px 28px;
+}
+.hero h1{ margin:0 0 8px; font-size:clamp(28px, 6vw, 56px); line-height:1.1 }
+.hero p{ margin:0 0 16px; }
+
+/* Couleur demandée pour le sous-titre */
+.hero p[data-i18n="hero_sub"]{ color: var(--accent-green); font-weight:600; }
+.hero .hero-cta{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
+
+/* Tweak desktop souhaité: vidéo un peu zoomée (width:108%, height:86%) */
+@media (min-width: 1024px){
+  .hero > .hero-video{
+    width:108%; height:86%;
+    left:-4%; top:7%; right:auto; bottom:auto;
+    object-fit:cover;
+  }
+}
+
+/* Mobile: remplir entièrement, pas de débordement */
+@media (max-width: 760px){
+  .hero > .container{ padding-top: calc(var(--header-h-mobile) + 8px); }
+  .hero > .hero-video{ inset:0; width:100%; height:100%; left:0; top:0; }
+}
+
+.hero{
+  position: relative;          /* Contexte pour la vidéo en absolu */
+  overflow: hidden;            /* Coupe ce qui dépasse */
+  /* garde tes overlays/couleurs existants ici */
+}
+
+.hero > .hero-video{
+  position: absolute;
+  inset: 0;                    /* top/right/bottom/left à 0 */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;           /* couvre toute la zone sans déformer */
+  display: block;
+  z-index: 0;                  /* sous le contenu, au-dessus du background */
+}
+
+.hero > .container{
+  position: relative;
+  z-index: 1;                  /* le texte passe AU-DESSUS de la vidéo */
+}
+
+/* (optionnel) un minimum de hauteur pour que le hero respire */
+@media (min-width: 768px){
+  .hero{ min-height: 38vh; }   /* ajuste si besoin (48–64vh) */
+}
+
 .hero h1{ font-size:40px; margin:0 0 6px }
 .hero p{ color:var(--muted); margin:0 0 18px }
 
@@ -273,6 +340,11 @@ body.theme-light{
   --bd:#e2e8f0;
 }
 
+/* H1 du hero en blanc uniquement en thème clair */
+body.theme-light .hero h1{
+  color: #ffffff;
+}
+
 /* Ajustements d’UI en mode clair pour les éléments qui avaient des couleurs fixes */
 body.theme-light .site-header,
 body.theme-light .lang-switch.lang--header{
@@ -371,4 +443,19 @@ body.theme-dark{
 /* Mobile : ratio un peu plus haut (optionnel) */
 @media (max-width:760px){
   .card-media{ aspect-ratio: 4 / 3; }
+}
+
+
+/* === Mobile: hero plein écran et vidéo couvrante === */
+@media (max-width:760px){
+  .hero{ min-height: 92vh; }                 /* occupe quasi tout l'écran */
+  .hero > .hero-video{ inset:0; width:100%; height:100%; left:0; top:0; object-fit:cover; }
+  .hero > .container{
+    min-height: inherit;
+    display:flex; align-items:center; justify-content:center;
+    padding: calc(var(--header-h-mobile) + 8px) 16px 24px;
+    text-align:center;
+  }
+  .hero h1{ font-size: clamp(24px, 8vw, 36px); line-height:1.15; margin:0 0 8px; }
+  .hero p{ font-size: clamp(14px, 3.8vw, 16px); }
 }
