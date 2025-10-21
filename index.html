@@ -23,7 +23,7 @@
   }
   </script>
 </head>
-<body class="theme-light">
+<body class="theme-dark">
   <header class="site-header">
     <div class="container row between center">
 
@@ -59,6 +59,15 @@
   <main>
     <!-- HERO -->
     <section class="hero">
+      <!-- ★ Vidéo de fond : place le fichier à assets/videos/index-background.webm -->
+      <video class="hero-video" autoplay muted loop playsinline
+             poster="assets/images/index-blog-image.png">
+        <source src="assets/videos/index-background.webm" type="video/webm" />
+        <!-- Optionnel si tu ajoutes une version MP4 :-->
+        <source src="assets/videos/index-background.mp4" type="video/mp4" />
+        
+      </video>
+
       <div class="container">
         <h1 data-i18n="hero_title">Hygiène clean-tech, sans friction</h1>
         <p data-i18n="hero_sub">
@@ -67,8 +76,8 @@
         </p>
         <div class="hero-cta">
           <a class="btn primary" href="blog.html" data-i18n="cta_read">Lire les articles</a>
-          <a class="btn ghost" href="https://bluekiosktech.ca/?utm_source=blog&utm_medium=hero&utm_campaign=waitlist" data-i18n="cta_waitlist">Rejoindre la liste d’attente</a>
-          <a class="btn ghost" href="https://www.bluekiosk.tech/?utm_source=blog&utm_medium=hero&utm_campaign=feedback" data-i18n="cta_feedback">Donner votre avis</a>
+          <a class="btn ghost" href="https://bluekiosktech.ca/?utm_source=blog&amp;utm_medium=hero&amp;utm_campaign=waitlist" data-i18n="cta_waitlist">Rejoindre la liste d’attente</a>
+          <a class="btn ghost" href="https://www.bluekiosk.tech/?utm_source=blog&amp;utm_medium=hero&amp;utm_campaign=feedback" data-i18n="cta_feedback">Donner votre avis</a>
         </div>
       </div>
     </section>
@@ -109,8 +118,8 @@
         <h3 data-i18n="cta_pilot_title">Devenir site pilote</h3>
         <p data-i18n="cta_pilot_desc">Vous gérez un gym, un campus ou un bureau ? Testez BlueKiosk en avant-première.</p>
         <p>
-          <a class="btn primary" href="https://bluekiosktech.ca/?utm_source=blog&utm_medium=footer&utm_campaign=waitlist" data-i18n="cta_waitlist">Rejoindre la liste d’attente</a>
-          <a class="btn ghost" href="https://www.bluekiosk.tech/?utm_source=blog&utm_medium=footer&utm_campaign=feedback" data-i18n="cta_feedback">Donner votre avis</a>
+          <a class="btn primary" href="https://bluekiosktech.ca/?utm_source=blog&amp;utm_medium=footer&amp;utm_campaign=waitlist" data-i18n="cta_waitlist">Rejoindre la liste d’attente</a>
+          <a class="btn ghost" href="https://www.bluekiosk.tech/?utm_source=blog&amp;utm_medium=footer&amp;utm_campaign=feedback" data-i18n="cta_feedback">Donner votre avis</a>
         </p>
       </div>
     </div>

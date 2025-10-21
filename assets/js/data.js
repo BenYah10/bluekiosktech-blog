@@ -293,8 +293,9 @@ Parce que l’hygiène ne devrait pas être une contrainte : <strong>elle doit �
     readTime: 9,
     views: 0,
     content: `
-<p><strong>Résumé (180 mots).</strong> Que signifie 99,99 % ? Normes, protocoles, réduction log, conditions d’essai, reproductibilité et preuves d’adoption — pourquoi cela compte pour la fiabilité et l’adoption utilisateur.</p>
-    `
+         <p><strong>Bientôt disponible :</strong> toutes les informations sur nos machines — leur efficacité, leur fonctionnement et leurs protocoles de test. 
+         Les certificats officiels et les évaluations indépendantes seront publiés dès validation, pour une transparence totale sur la fiabilité et la performance.</p>
+          `,
   }
 ];
 
@@ -581,8 +582,9 @@ Because hygiene shouldn’t be a burden — it should be <strong>smart, collecti
     readTime: 9,
     views: 0,
     content: `
-<p><strong>Summary (~180 words).</strong> What does “99.99%” actually mean? Norms, test protocols, log reduction, conditions and reproducibility, plus why adoption matters for reliability.</p>
-    `
+          <p><strong>Coming soon:</strong> comprehensive information about our machines — including their efficiency, operating principles, and testing protocols. 
+           All official certificates and independent evaluations will be made public upon validation to ensure complete transparency on reliability and performance.</p>
+            `
   }
 ];
 
