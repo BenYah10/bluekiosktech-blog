@@ -8,9 +8,41 @@
 /* --- Articles FR --- */
 const POSTS_FR = [
 
-/* ───────────── Article #1 — Immunité d’hier vs aujourd’hui (NOUVEAU) ───────────── */
+/* ───────────── Article #1 — comprendre-bacteries-mental-physique (NOUVEAU) ───────────── */
 {
-  id: "immunite-hier-vs-aujourdhui", order: 1,
+  id: "comprendre-bacteries-mental-physique",
+  order: 1,
+  category: "hygiene",
+  date: "2025-11-03",
+  thumbnail: "assets/images/posts/comprendre-bacteries/thumb-640.png",
+  imageLarge: "assets/images/posts/comprendre-bacteries/thumb-960.png",
+  title: "🧠💧 Comprendre les bactéries : une clé pour protéger notre santé mentale et physique",
+  excerpt: "Découvrez comment notre microbiome influence la digestion, l’immunité et même la santé mentale — et pourquoi une gourde propre peut faire toute la différence.",
+  content: `
+    <h2>Le microbiome, ce monde invisible qui nous gouverne</h2>
+    <p>Saviez-vous que notre corps abrite des trillions de bactéries, notamment dans notre intestin ? Ce microbiome intestinal joue un rôle fondamental dans notre digestion, notre immunité, et même notre santé mentale. Des organismes comme la Fondation canadienne pour la santé digestive (CDHF) et le programme Humans & the Microbiome de CIFAR confirment que comprendre les bactéries est essentiel pour préserver notre bien-être.</p>
+
+    <h2>🧬 Bactéries bénéfiques vs bactéries pathogènes : pourquoi faire la différence ?</h2>
+    <p>Toutes les bactéries ne sont pas mauvaises. Certaines sont indispensables à notre équilibre :</p>
+    <ul>
+      <li>Elles aident à digérer les aliments, produire des vitamines et renforcer notre système immunitaire.</li>
+      <li>Elles influencent la production de neurotransmetteurs comme la sérotonine, qui régule notre humeur et notre stress.</li>
+      <li>Elles protègent contre les agents pathogènes en occupant l’espace et en maintenant l’intégrité de la muqueuse intestinale.</li>
+    </ul>
+    <p>Mais d’autres bactéries, lorsqu’elles sont introduites dans notre corps par des objets contaminés, peuvent provoquer des infections, des troubles digestifs ou des inflammations chroniques.</p>
+
+    <h2>🧴💥 Et votre gourde dans tout ça ?</h2>
+    <p>C’est ici que l’hygiène quotidienne devient cruciale. Une gourde mal nettoyée peut contenir des milliers de bactéries nocives, qui migrent directement vers votre système digestif. Contrairement à un siège de toilette, vous introduisez son contenu dans votre corps — ce qui rend son nettoyage encore plus important.</p>
+
+    <h2>💡 Ce que nous faisons chez BlueKioskTech</h2>
+    <p>Chez BlueKioskTech, nous avons transformé ces données scientifiques en action concrète. Nous avons conçu un dispositif d’hygiène en libre-service spécialement pensé pour les centres de fitness, afin de protéger votre microbiome dès la première gorgée.</p>
+  `
+  },
+
+
+/* ───────────── Article #2 — Immunité d’hier vs aujourd’hui (NOUVEAU) ───────────── */
+{
+  id: "immunite-hier-vs-aujourdhui", order: 2,
   image640: "assets/images/posts/immunite-hier-vs-aujourdhui/thumb-640.png",
   image960: "assets/images/posts/immunite-hier-vs-aujourdhui/thumb-960.png",
 
@@ -152,13 +184,13 @@ Rejoignez notre programme pilote et testez BlueKioskTech en avant-première : un
     `
   },
 
-  /* ───────────── Article #2 — Immunité & hygiène ───────────── */
+  /* ───────────── Article #3 — Immunité & hygiène ───────────── */
   {
     image: "assets/images/posts/immunite-collective-hygiene/hero.svg",
      imageLarge: "assets/images/posts/immunite-collective-hygiene/hero.svg",
       imageAlt: "Variabilité de l’immunité et responsabilité collective",
 
-    id: "immunite-collective-hygiene", order: 2, 
+    id: "immunite-collective-hygiene", order: 3, 
     title:
       "🧬 Se sentir en bonne santé ne suffit pas : notre immunité est unique… et notre responsabilité collective.",
     description:
@@ -211,9 +243,9 @@ Parce que l’immunité est personnelle… <strong>mais l’hygiène est univers
     `
   },
 
-  /* ───────────── Article #3 — Gourdes & contamination ───────────── */
+  /* ───────────── Article #4 — Gourdes & contamination ───────────── */
   {
-    id: "hygiene-gourdes-99-2min", order: 3,
+    id: "hygiene-gourdes-99-2min", order: 4,
     image640: "assets/images/posts/hygiene-gourdes-99-2min/thumb-640.png",
     image960: "assets/images/posts/hygiene-gourdes-99-2min/thumb-960.png",
     imageAlt:    "Bactéries visibles sur une gourde réutilisable (bouchon, bec, filetage)",
@@ -279,9 +311,9 @@ Parce que l’hygiène ne devrait pas être une contrainte : <strong>elle doit �
     `
   },
 
-  /* ───────────── Article #5 — Normes & certifications (placeholder) ───────────── */
+  /* ───────────── Article #6 — Normes & certifications (placeholder) ───────────── */
   {
-    id: "normes-certifications", order: 5, 
+    id: "normes-certifications", order: 6, 
     title:
       "Normes & certifications : mesurer (vraiment) la désinfection 99,99%",
     description:
@@ -302,10 +334,42 @@ Parce que l’hygiène ne devrait pas être une contrainte : <strong>elle doit �
 /* --- Articles EN --- */
 
 const POSTS_EN = [
+  /* ───────────── Article #1 — The Microbiome: The Invisible World Governing Us (NEW) ───────────── */
 
-  /* ───────────── Article #1 — Yesterday’s immunity vs today’s reality (NEW) ───────────── */
+{
+  id: "comprendre-bacteries-mental-physique",
+  order: 1,
+  category: "hygiene",
+  date: "2025-11-03",
+  thumbnail: "assets/images/posts/comprendre-bacteries/thumb-640.png",
+  imageLarge: "assets/images/posts/comprendre-bacteries/thumb-960.png",
+  title: "🧠💧 Understanding Bacteria: A Key to Protecting Our Mental and Physical Health",
+  excerpt: "Learn how your microbiome shapes digestion, immunity, and mental health — and why a clean bottle can make all the difference.",
+
+ content: `
+    <h2>The Microbiome: The Invisible World Governing Us</h2>
+    <p>Did you know that your body hosts trillions of bacteria, especially in your gut? This gut microbiome plays a key role in digestion, immunity, and even mental health. Organizations like the Canadian Digestive Health Foundation (CDHF) and CIFAR’s Humans & the Microbiome program confirm that understanding bacteria is essential for overall well-being.</p>
+
+    <h2>🧬 Good vs Bad Bacteria: Why the Difference Matters</h2>
+    <p>Not all bacteria are harmful — some are essential to our balance:</p>
+    <ul>
+      <li>They help digest food, produce vitamins, and strengthen the immune system.</li>
+      <li>They influence neurotransmitter production like serotonin, which regulates mood and stress.</li>
+      <li>They protect against pathogens by maintaining the gut barrier and occupying microbial space.</li>
+    </ul>
+    <p>However, harmful bacteria introduced through contaminated objects can cause infections, inflammation, or disrupt the microbiome, leading to fatigue and mental imbalance.</p>
+
+    <h2>🧴💥 And Your Water Bottle?</h2>
+    <p>This is where daily hygiene becomes critical. A poorly cleaned bottle can harbor thousands of harmful bacteria that go straight into your digestive system. Unlike a toilet seat, you directly consume its content — making hygiene even more crucial.</p>
+
+    <h2>💡 What We Do at BlueKioskTech</h2>
+    <p>At BlueKioskTech, we turn science into action. Our self-service hygiene device, designed for fitness centers, helps protect your microbiome — one sip at a time.</p>
+  `
+},
+
+  /* ───────────── Article #2 — Yesterday’s immunity vs today’s reality (NEW) ───────────── */
   {
-    id: "immunite-hier-vs-aujourdhui", order: 1,
+    id: "immunite-hier-vs-aujourdhui", order: 2,
     imageAlt: "Illustration : une personne arrête des virus avec la main (immunité)",
     imageAlt_en: "Concept image: person blocking viruses with hand (immunity)",
     imageLarge: "assets/images/posts/immunite-hier-vs-aujourdhui/thumb-960.png",
@@ -441,12 +505,12 @@ a <strong>&lt; 2-minute</strong>, <strong>chemical-free</strong> disinfection ro
     `
   },
 
-  /* ───────────── Article #2 — Immunity & hygiene ───────────── */
+  /* ───────────── Article #3 — Immunity & hygiene ───────────── */
   {
     image: "assets/images/posts/immunite-collective-hygiene/hero.svg",
       imageLarge: "assets/images/posts/immunite-collective-hygiene/hero.svg",
        imageAlt_en: "Immune variability and our collective responsibility",
-    id: "immunite-collective-hygiene", order: 2, 
+    id: "immunite-collective-hygiene", order: 3, 
 
     title:
       "🧬 Feeling healthy isn’t enough: immunity is personal… and hygiene is collective.",
@@ -499,10 +563,10 @@ Immunity is personal… <strong>but hygiene is universal</strong>.
     `
   },
 
-  /* ───────────── Article #3 — Bottle contamination ───────────── */
+  /* ───────────── Article #5 — Bottle contamination ───────────── */
   {
     
-    id: "hygiene-gourdes-99-2min", order: 3,
+    id: "hygiene-gourdes-99-2min", order: 5,
     image640: "assets/images/posts/hygiene-gourdes-99-2min/thumb-640.png",
     image960: "assets/images/posts/hygiene-gourdes-99-2min/thumb-960.png",
     imageAlt:    "Bactéries visibles sur une gourde réutilisable (bouchon, bec, filetage)",
@@ -569,9 +633,9 @@ Because hygiene shouldn’t be a burden — it should be <strong>smart, collecti
     `
   },
 
-  /* ───────────── Article #5 — Standards & certifications (placeholder) ───────────── */
+  /* ───────────── Article #6 — Standards & certifications (placeholder) ───────────── */
   {
-    id: "normes-certifications", order: 5, 
+    id: "normes-certifications", order: 6, 
     title: "Standards & certifications: truly measuring 99.99% disinfection",
     description:
       "Reliability, compliance and test protocols made simple.",

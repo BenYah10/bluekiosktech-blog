@@ -85,9 +85,9 @@
   // normalisation pour comparer des titres (accents/espaces/apostrophes)
   function norm(s){
     return String(s || "")
-      .replace(/[’']/g, "'")                  // apostrophes uniformisées
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // enlève les accents
-      .replace(/[^\w\s'-]/g, "")              // retire emojis/punctuations exotiques
+      .replace(/[’']/g, "'")
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^\w\s'-]/g, "")
       .toLowerCase()
       .replace(/\s+/g," ")
       .trim();
@@ -100,7 +100,6 @@
     const h2s = contentRoot.querySelectorAll("h2");
     for (const h2 of h2s){
       const hay = norm(h2.textContent);
-      // correspondance tolérante (partielle possible)
       if (hay.includes(wanted) || wanted.includes(hay)){
         const fig = document.createElement("figure");
         fig.id = id;
@@ -130,11 +129,29 @@
     }
   }
 
+  // insère un bloc HTML juste AVANT un <h2> dont le texte correspond
+  function insertBeforeH2(contentRoot, headingText, html, id = "postInlineBeforeH2"){
+    if (!contentRoot || document.getElementById(id)) return;
+    const wanted = norm(headingText);
+    const h2s = contentRoot.querySelectorAll("h2");
+    for (const h2 of h2s){
+      const hay = norm(h2.textContent);
+      if (hay.includes(wanted) || wanted.includes(hay)){
+        const fig = document.createElement("figure");
+        fig.id = id;
+        fig.className = "post-inline";
+        fig.innerHTML = html;
+        h2.insertAdjacentElement("beforebegin", fig);
+        break;
+      }
+    }
+  }
+
   /** Tri éditorial: order prioritaire, puis date (desc/asc) */
   function comparePosts(a, b, dir = "desc") {
     const ao = Number.isFinite(a.order) ? a.order : Infinity;
     const bo = Number.isFinite(b.order) ? b.order : Infinity;
-    if (ao !== bo) return ao - bo; // plus petit "order" en premier
+    if (ao !== bo) return ao - bo;
 
     const ad = new Date(a.date).getTime();
     const bd = new Date(b.date).getTime();
@@ -150,15 +167,13 @@
 
   /** URL vers un post en propageant TOUJOURS la langue courante */
   function postURL(post) {
-    const lang = currentLang(); // "fr" ou "en"
+    const lang = currentLang();
     const base = `post.html?id=${encodeURIComponent(post.id)}`;
     return `${base}&lang=${lang}`;
   }
 
   /* ============ Vignettes (cards) ============ */
-  // Génère la vignette d’une card (ou rien si pas d’image)
   function cardMediaHTML(post){
-    // préférence 640 comme src (net + léger), avec srcset
     const base = post.image640 || post.image320 || post.image || post.image960 || post.imageLarge;
     if (!base) return "";
 
@@ -182,10 +197,10 @@
   /* ============ Accueil ============ */
   function renderHome() {
     const grid = document.getElementById("latestGrid");
-    if (!grid) return; // pas sur Accueil
+    if (!grid) return;
 
     const posts = allPosts()
-      .sort(comparePosts)   // ← ordre éditorial puis date (desc)
+      .sort(comparePosts)
       .slice(0, 3);
 
     grid.innerHTML = posts.map((p) => `
@@ -205,13 +220,12 @@
     const qEl   = document.getElementById("searchInput");
     const catEl = document.getElementById("categoryFilter");
     const sortEl= document.getElementById("sortSelect") || document.getElementById("sortBy");
-    if (!wrap) return; // pas sur la page liste
+    if (!wrap) return;
 
     const q    = (qEl && qEl.value.trim().toLowerCase()) || "";
     const catRaw  = (catEl && catEl.value) || "";
     const cat = catRaw || "all";
 
-    // on accepte aussi les valeurs "date_asc"/"date_desc" en plus de newest/oldest
     const sortRaw = (sortEl && sortEl.value) || "newest";
     const sort = (sortRaw === "oldest" || sortRaw === "date_asc") ? "oldest" : "newest";
 
@@ -228,7 +242,6 @@
       posts = posts.filter((p) => ((p.category || "") + "").toLowerCase() === cat.toLowerCase());
     }
 
-    // tri (respecte l'ordre éditorial, puis la date selon le select)
     posts.sort((a, b) => comparePosts(a, b, sort === "oldest" ? "asc" : "desc"));
 
     wrap.innerHTML = posts.map((p) => `
@@ -241,7 +254,6 @@
       </article>
     `).join("");
 
-    // Placeholder recherche selon langue
     if (qEl) {
       if (typeof Lang !== "undefined" && typeof Lang.t === "function") {
         qEl.placeholder = Lang.t("search_ph");
@@ -255,7 +267,7 @@
   function renderPost() {
     const titleEl   = document.getElementById("postTitle");
     const contentEl = document.getElementById("postContent");
-    if (!titleEl && !contentEl) return; // pas sur post.html
+    if (!titleEl && !contentEl) return;
 
     const params = new URLSearchParams(location.search);
     const id = params.get("id");
@@ -274,7 +286,6 @@
     try {
       const imgSrc = post.imageLarge || post.image;
       if (imgSrc && titleEl && titleEl.parentNode) {
-        // retirer un ancien hero si on a re-rendu
         const old = document.getElementById("postHero");
         if (old) old.remove();
 
@@ -286,7 +297,6 @@
 
         titleEl.parentNode.insertBefore(fig, titleEl);
 
-        // Meta pour partage social
         setMeta("og:image", imgSrc);
         setMeta("twitter:image", imgSrc, "name");
       }
@@ -302,13 +312,11 @@
                             alt="${esc('What you drink should hydrate you, not contaminate you')}"
                             loading="lazy" decoding="async">`;
 
-        // On retire une éventuelle ancienne insertion
         ["postInlineHG99FR", "postInlineHG99EN"].forEach(id => {
           const el = document.getElementById(id);
           if (el) el.remove();
         });
 
-        // FR — après "La réponse BlueKioskTech : technologie VUCS"
         insertAfterH2(
           contentEl,
           "La réponse BlueKioskTech : technologie VUCS",
@@ -316,7 +324,6 @@
           "postInlineHG99FR"
         );
 
-        // EN — après "BlueKioskTech’s answer: VUCS technology"
         insertAfterH2(
           contentEl,
           "BlueKioskTech’s answer: VUCS technology",
@@ -333,7 +340,6 @@
                               alt="${esc(currentLang()==='en' ? 'BlueKiosk machine disinfecting a bottle' : 'Machine BlueKiosk désinfectant une gourde')}"
                               loading="lazy" decoding="async">`;
 
-        // Français
         insertAfterH2(
           contentEl,
           "Ce que cela signifie pour l'hygiène au quotidien",
@@ -341,7 +347,6 @@
           "postInlineQuotidien"
         );
 
-        // Anglais
         insertAfterH2(
           contentEl,
           "What this means for everyday hygiene",
@@ -354,7 +359,6 @@
     // --- IMAGES inline pour l'article checklist-implantation-gym (FR & EN)
     try {
       if (post.id === "checklist-implantation-gym" || post.slug === "checklist-implantation-gym") {
-        // 4.png -> gym.png (après H2 "Recommended placements" / "Emplacements recommandés")
         const imgGym = `
           <img src="assets/images/posts/checklist-implantation/gym.png"
                alt="${esc(currentLang()==='en'
@@ -362,7 +366,6 @@
                  : 'Exemple de zones en salle de sport pour le placement de l’unité')}"
                loading="lazy" decoding="async">`;
 
-        // 5.png -> office.png (avant H3 "In offices & workplaces" / "Dans les bureaux & espaces professionnels")
         const imgOffice = `
           <img src="assets/images/posts/checklist-implantation/office.png"
                alt="${esc(currentLang()==='en'
@@ -370,7 +373,6 @@
                  : 'Exemples d’espaces bureaux pour le placement de l’unité')}"
                loading="lazy" decoding="async">`;
 
-        // 6.png -> compus.png (avant H3 "On campuses & universities" / "Campus & universités")
         const imgCampus = `
           <img src="assets/images/posts/checklist-implantation/compus.png"
                alt="${esc(currentLang()==='en'
@@ -378,21 +380,73 @@
                  : 'Exemples d’espaces campus & universités pour le placement de l’unité')}"
                loading="lazy" decoding="async">`;
 
-        // Nettoyage d'anciennes insertions si rerender
         ["chkGymAfterH2EN","chkGymAfterH2FR","chkOfficeBeforeEN","chkOfficeBeforeFR","chkCampusBeforeEN","chkCampusBeforeFR"]
           .forEach(id => { const n = document.getElementById(id); if (n) n.remove(); });
 
-        // 1) Après H2
         insertAfterH2(contentEl, "Recommended placements", imgGym, "chkGymAfterH2EN");
         insertAfterH2(contentEl, "Emplacements recommandés", imgGym, "chkGymAfterH2FR");
 
-        // 2) Avant H3 — Offices
         insertBeforeH3(contentEl, "In offices & workplaces", imgOffice, "chkOfficeBeforeEN");
         insertBeforeH3(contentEl, "Dans les bureaux & espaces professionnels", imgOffice, "chkOfficeBeforeFR");
 
-        // 3) Avant H3 — Campus
         insertBeforeH3(contentEl, "On campuses & universities", imgCampus, "chkCampusBeforeEN");
         insertBeforeH3(contentEl, "Campus & universités", imgCampus, "chkCampusBeforeFR");
+      }
+    } catch (_) {}
+
+    /* --- NOUVEAU : Bannière avant le H2 "Et votre gourde..." (FR/EN)
+       • Aucune dépendance à l'id du post : si ce H2 est présent, on injecte.
+       • Mets tes fichiers au chemin ci-dessous (ou adapte les chemins). */
+    try {
+      const imgFR = `<img src="assets/images/posts/microbiome-bottle-risk/40K-fr.png"
+                         alt="${esc('Votre gourde pourrait être 40 000 fois plus contaminée qu’un siège de toilette — et vous buvez dedans chaque jour')}"
+                         loading="lazy" decoding="async">`;
+      const imgEN = `<img src="assets/images/posts/microbiome-bottle-risk/40K-en.png"
+                         alt="${esc('Your water bottle could be 40,000× dirtier than a toilet seat — and you drink from it daily')}"
+                         loading="lazy" decoding="async">`;
+
+      ["bottleBannerFR", "bottleBannerEN"].forEach(id => { const n = document.getElementById(id); if (n) n.remove(); });
+
+      insertBeforeH2(contentEl, "Et votre gourde dans tout ça ?", imgFR, "bottleBannerFR");
+      insertBeforeH2(contentEl, "And your water bottle in all this?", imgEN, "bottleBannerEN");
+      insertBeforeH2(contentEl, "And your bottle in all this?", imgEN, "bottleBannerEN");
+    } catch (_) {}
+
+    /* === NOUVEAU : premier article — image après le 2e H2 "Ce que nous faisons…" / "What we do…" === */
+    try {
+      if (post.id === "comprendre-bacteries-mental-physique") {
+        const lang = (new URLSearchParams(location.search).get('lang') || 'fr').toLowerCase();
+        const h2s = contentEl.querySelectorAll('h2');
+        if (h2s.length) {
+          // cibler le 2e h2 si possible, sinon on cherche par texte
+          let targetH2 = h2s[1] || null;
+
+          const expectedFR = "ce que nous faisons chez bluekiosktech";
+          const expectedEN = "what we do at bluekiosktech";
+          const wanted = (lang === 'en') ? expectedEN : expectedFR;
+
+          const isMatch = targetH2 && norm(targetH2.textContent).includes(wanted);
+          if (!isMatch) {
+            targetH2 = Array.from(h2s).find(h => norm(h.textContent).includes(wanted)) || targetH2;
+          }
+
+          if (targetH2) {
+            const existing = targetH2.nextElementSibling;
+            if (!(existing && existing.classList && existing.classList.contains('post-inline'))) {
+              const src = (lang === 'en')
+                ? 'assets/images/posts/hygiene-gourdes-99-2min/Couverture-Fb-en.png'
+                : 'assets/images/posts/hygiene-gourdes-99-2min/Couverture-Fb-fr.png';
+              const alt = (lang === 'en')
+                ? 'What you drink should hydrate you, not contaminate you'
+                : 'Ce que tu bois devrait t’hydrater, pas te contaminer';
+
+              const fig = document.createElement('figure');
+              fig.className = 'post-inline';
+              fig.innerHTML = `<img src="${src}" alt="${esc(alt)}" loading="lazy" decoding="async">`;
+              targetH2.insertAdjacentElement('afterend', fig);
+            }
+          }
+        }
       }
     } catch (_) {}
 
@@ -409,21 +463,17 @@
 
   /* ============ Boot + Listeners ============ */
   function rerenderAll() {
-    // i18n statique
     if (typeof applyI18N === "function") applyI18N();
-    // s’il existe un refresh côté data.js (pour re-pointer POSTS FR/EN)
     if (typeof window.refreshPosts === "function") window.refreshPosts();
-    // rendu UI
     renderHome();
     renderList();
     renderPost();
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    syncLangFromQuery();   // 1) applique ?lang= dès l’arrivée
-    rerenderAll();         // 2) rend tout
+    syncLangFromQuery();
+    rerenderAll();
 
-    // Pré-sélection de la catégorie via ?cat=...
     const p = new URLSearchParams(location.search);
     const cat = (p.get("cat") || "").toLowerCase();
     const sel = document.getElementById("categoryFilter");
@@ -432,7 +482,6 @@
     }
     if (typeof renderList === "function") renderList();
 
-    // Filtres liste
     const qEl   = document.getElementById("searchInput");
     const catEl = document.getElementById("categoryFilter");
     const sortEl= document.getElementById("sortSelect") || document.getElementById("sortBy");
@@ -440,7 +489,6 @@
     if (catEl) catEl.addEventListener("change",renderList);
     if (sortEl)sortEl.addEventListener("change",renderList);
 
-    // Switch langue
     const fr = document.getElementById("lang-fr");
     const en = document.getElementById("lang-en");
     const onSwitch = (code) => {
