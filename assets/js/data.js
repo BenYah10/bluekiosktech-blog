@@ -117,9 +117,9 @@ const POSTS_FR = [
 
 
 
-  /* ───────────── Article #4 — Check-list d’implantation (NOUVEAU) ───────────── */
+  /* ───────────── Article #5 — Check-list d’implantation (NOUVEAU) ───────────── */
   {
-    id: "checklist-implantation-gym", order: 4, 
+    id: "checklist-implantation-gym", order: 5, 
     image640: "assets/images/posts/checklist-implantation/thumb-640.png",
     image960: "assets/images/posts/checklist-implantation/thumb-960.png",
     // HERO au-dessus du H1 (grâce à render.js)
@@ -243,9 +243,9 @@ Parce que l’immunité est personnelle… <strong>mais l’hygiène est univers
     `
   },
 
-  /* ───────────── Article #4 — Gourdes & contamination ───────────── */
+  /* ───────────── Article #5 — Gourdes & contamination ───────────── */
   {
-    id: "hygiene-gourdes-99-2min", order: 4,
+    id: "hygiene-gourdes-99-2min", order: 5,
     image640: "assets/images/posts/hygiene-gourdes-99-2min/thumb-640.png",
     image960: "assets/images/posts/hygiene-gourdes-99-2min/thumb-960.png",
     imageAlt:    "Bactéries visibles sur une gourde réutilisable (bouchon, bec, filetage)",
@@ -438,9 +438,9 @@ const POSTS_EN = [
     `
   },
 
-  /* ───────────── Article #4 — Rollout checklist (NEW) ───────────── */
+  /* ───────────── Article #5 — Rollout checklist (NEW) ───────────── */
   {
-    id: "checklist-implantation-gym", order: 4,
+    id: "checklist-implantation-gym", order: 5,
     image640: "assets/images/posts/checklist-implantation/thumb-640.png",
     image960: "assets/images/posts/checklist-implantation/thumb-960.png", 
     // HERO au-dessus du H1 (grâce à render.js)
@@ -563,10 +563,10 @@ Immunity is personal… <strong>but hygiene is universal</strong>.
     `
   },
 
-  /* ───────────── Article #5 — Bottle contamination ───────────── */
+  /* ───────────── Article #4 — Bottle contamination ───────────── */
   {
     
-    id: "hygiene-gourdes-99-2min", order: 5,
+    id: "hygiene-gourdes-99-2min", order: 4,
     image640: "assets/images/posts/hygiene-gourdes-99-2min/thumb-640.png",
     image960: "assets/images/posts/hygiene-gourdes-99-2min/thumb-960.png",
     imageAlt:    "Bactéries visibles sur une gourde réutilisable (bouchon, bec, filetage)",
