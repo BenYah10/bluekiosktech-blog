@@ -8,10 +8,77 @@
 /* --- Articles FR --- */
 const POSTS_FR = [
 
-/* ───────────── Article #1 — comprendre-bacteries-mental-physique (NOUVEAU) ───────────── */
-{
-  id: "comprendre-bacteries-mental-physique",
+  {
+  id: "hidden-dangers-dirty-bottles",
   order: 1,
+  category: "hygiene",
+  date: "2025-11-15",
+  image640: "assets/images/posts/Common-Harmful-Bacteria/thumb-960.png",
+  imageLarge: "assets/images/posts/Common-Harmful-Bacteria/post-hero.png",
+  imageAlt: "Dangers bactériens dans les gourdes mal nettoyées",
+  title: "🧴 Dangers cachés dans votre gourde : les bactéries qui s’y développent sans nettoyage adéquat",
+  excerpt: "Les gourdes réutilisables sont durables — mais sans nettoyage, elles peuvent héberger des bactéries nuisibles (jusqu’à 40 000× plus qu’un siège de toilette). Voici les plus fréquentes, pourquoi elles prolifèrent et comment s’en protéger.",
+  content: ` <p>Les gourdes réutilisables sont un choix intelligent et durable — mais sans nettoyage approprié, elles peuvent devenir un terrain idéal pour des bactéries nocives. Des études montrent que certaines gourdes contiennent jusqu’à <strong>40&nbsp;000&nbsp;fois plus de bactéries qu’un siège de toilette</strong>. Ces microbes prospèrent dans les milieux humides et riches en nutriments — bouchons, pailles, joints — surtout après des boissons protéinées ou sucrées.</p>
+    <p>Chez <strong>BlueKioskTech</strong>, nous pensons que l’hydratation ne doit jamais s’accompagner de risques invisibles. C’est pourquoi nous sensibilisons à ces dangers — et concevons des solutions pour les éliminer.</p>
+
+    <h2>🦠 Les bactéries nuisibles les plus fréquentes dans les gourdes mal nettoyées</h2>
+    <p>Voici un récapitulatif des espèces les plus souvent détectées dans les gourdes réutilisables, d’après <em>des études de laboratoire et des données de santé publique</em>&nbsp;:</p>
+
+    <!-- Tableau FR -->
+    <table class="bk-table">
+      <thead>
+        <tr><th>Bactérie</th><th>Risques pour la santé</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><em>Escherichia coli</em> (E. coli)</td><td>Contamination fécale&nbsp;: diarrhée, crampes, infections intestinales</td></tr>
+        <tr><td><em>Staphylococcus aureus</em></td><td>Infections cutanées, toxi-infections alimentaires, abcès, cas sévères&nbsp;: sepsis</td></tr>
+        <tr><td><em>Streptococcus</em> spp.</td><td>Angines, infections respiratoires, fièvre</td></tr>
+        <tr><td><em>Pseudomonas aeruginosa</em></td><td>Pathogène opportuniste&nbsp;: infections pulmonaires, urinaires, plaies</td></tr>
+        <tr><td><em>Enterobacter</em> spp.</td><td>Troubles gastro-intestinaux, risque accru chez les personnes immunodéprimées</td></tr>
+        <tr><td><em>Bacillus</em> spp.</td><td>Certaines espèces produisent des toxines responsables d’intoxications alimentaires</td></tr>
+        <tr><td>Coliformes fécaux</td><td>Indicateurs de contamination fécale (incluent E. coli, Enterobacter, Klebsiella)</td></tr>
+        <tr><td>Moisissures & spores</td><td>Allergies, irritations respiratoires, formation de biofilms</td></tr>
+      </tbody>
+    </table>
+
+    <h2>🧪 Pourquoi ces bactéries prolifèrent dans les gourdes</h2>
+    <ul>
+      <li><strong>Humidité + nutriments</strong>&nbsp;: restes de shakes protéinés, boissons sucrées ou salive = carburant microbien.</li>
+      <li><strong>Zones difficiles à nettoyer</strong>&nbsp;: bouchons, pailles, joints retiennent l’humidité et les <em>biofilms</em>.</li>
+      <li><strong>Exposition environnementale</strong>&nbsp;: sols de gym, bancs, mains non lavées = transferts de pathogènes.</li>
+    </ul>
+
+    <h2>🧼 La prévention commence par une meilleure hygiène</h2>
+    <ul>
+      <li>Lavez votre gourde <strong> à l'eau chaude après chaque usage</strong> — surtout après l'avoir utiliser pour autre chose que de l’eau.</li>
+      <li>Utilisez une brosse pour atteindre <strong>bouchons, pailles, joints</strong>.</li>
+      <li>Laissez-la <strong>sécher complètement à l’air libre, à l’envers et avec le bouchon retiré</strong> pendant au moins 4 à 6 heures — idéalement toute la nuit — avant de la refermer.</li>
+      <li>Évitez de partager votre gourde et de la poser sur des surfaces non désinfectées.</li>
+    </ul>
+
+    <h2>💡 La solution BlueKioskTech&nbsp;: désinfection rapide et accessible</h2>
+    <p>Nous développons une station en libre-service qui élimine <strong>99,99&nbsp;%</strong> des bactéries des gourdes et bouchons en <strong>moins de 2&nbsp;minutes</strong> — sans produits chimiques. Idéale pour <strong>gyms, écoles et espaces publics</strong> où l’hygiène compte.</p>
+    <p><em>L’eau propre mérite un contenant propre.</em></p>
+
+    <h2>🔗 Sources</h2>
+    <ul>
+      <li><a href="https://www.earth.com" target="_blank" rel="noopener">Earth.com – Reusable bottles and fecal bacteria</a></li>
+      <li><a href="https://studyfinds.org" target="_blank" rel="noopener">StudyFinds – Bacteria levels in reusable bottles</a></li>
+      <li><a href="https://gethealthyu.com" target="_blank" rel="noopener">GetHealthyU – Why your bottle may be dirtier than a toilet seat</a></li>
+      <li><a href="https://my.clevelandclinic.org" target="_blank" rel="noopener">Cleveland Clinic – Mold and bacteria in bottles</a></li>
+      <li><a href="https://www.techtimes.com" target="_blank" rel="noopener">TechTimes – How to clean contaminated bottles</a></li>
+      <li><a href="https://www.drymeister.com/post/how-to-dry-reusable-water-bottles-wine-glasses-and-baby-bottles" target="_blank" rel="noopener">DryMeister – How to dry reusable bottles</a></li>
+  <li><a href="https://brisasystems.com/blogs/news/the-importance-of-completely-drying-your-reusable-water-bottle" target="_blank" rel="noopener">Brisa Systems – Importance of drying bottles</a></li>
+    </ul>
+   `
+ },           
+
+
+/* ───────────── Article #2 — comprendre-bacteries-mental-physique (NOUVEAU) ───────────── */
+{
+
+  id: "comprendre-bacteries-mental-physique",
+  order: 2,
   category: "hygiene",
   date: "2025-11-03",
   thumbnail: "assets/images/posts/comprendre-bacteries/thumb-640.png",
@@ -40,9 +107,9 @@ const POSTS_FR = [
   },
 
 
-/* ───────────── Article #2 — Immunité d’hier vs aujourd’hui (NOUVEAU) ───────────── */
+/* ───────────── Article #3 — Immunité d’hier vs aujourd’hui (NOUVEAU) ───────────── */
 {
-  id: "immunite-hier-vs-aujourdhui", order: 2,
+  id: "immunite-hier-vs-aujourdhui", order: 3,
   image640: "assets/images/posts/immunite-hier-vs-aujourdhui/thumb-640.png",
   image960: "assets/images/posts/immunite-hier-vs-aujourdhui/thumb-960.png",
 
@@ -117,9 +184,9 @@ const POSTS_FR = [
 
 
 
-  /* ───────────── Article #4 — Check-list d’implantation (NOUVEAU) ───────────── */
+  /* ───────────── Article #6 — Check-list d’implantation (NOUVEAU) ───────────── */
   {
-    id: "checklist-implantation-gym", order: 4, 
+    id: "checklist-implantation-gym", order: 6, 
     image640: "assets/images/posts/checklist-implantation/thumb-640.png",
     image960: "assets/images/posts/checklist-implantation/thumb-960.png",
     // HERO au-dessus du H1 (grâce à render.js)
@@ -243,9 +310,9 @@ Parce que l’immunité est personnelle… <strong>mais l’hygiène est univers
     `
   },
 
-  /* ───────────── Article #4 — Gourdes & contamination ───────────── */
+  /* ───────────── Article #5 — Gourdes & contamination ───────────── */
   {
-    id: "hygiene-gourdes-99-2min", order: 4,
+    id: "hygiene-gourdes-99-2min", order: 5,
     image640: "assets/images/posts/hygiene-gourdes-99-2min/thumb-640.png",
     image960: "assets/images/posts/hygiene-gourdes-99-2min/thumb-960.png",
     imageAlt:    "Bactéries visibles sur une gourde réutilisable (bouchon, bec, filetage)",
@@ -311,9 +378,9 @@ Parce que l’hygiène ne devrait pas être une contrainte : <strong>elle doit �
     `
   },
 
-  /* ───────────── Article #6 — Normes & certifications (placeholder) ───────────── */
+  /* ───────────── Article #7 — Normes & certifications (placeholder) ───────────── */
   {
-    id: "normes-certifications", order: 6, 
+    id: "normes-certifications", order: 7, 
     title:
       "Normes & certifications : mesurer (vraiment) la désinfection 99,99%",
     description:
@@ -334,11 +401,78 @@ Parce que l’hygiène ne devrait pas être une contrainte : <strong>elle doit �
 /* --- Articles EN --- */
 
 const POSTS_EN = [
-  /* ───────────── Article #1 — The Microbiome: The Invisible World Governing Us (NEW) ───────────── */
+
+{
+  id: "hidden-dangers-dirty-bottles",
+  order: 1,
+  category: "hygiene",
+  date: "2025-11-15",
+  image640: "assets/images/posts/Common-Harmful-Bacteria/thumb-640.png",
+  imageLarge: "assets/images/posts/Common-Harmful-Bacteria/post-hero.png",
+  imageAlt: "Bacteria risks in poorly cleaned reusable bottles",
+  title: "🧴 Hidden Dangers in Your Bottle: The Bacteria Lurking in Poorly Cleaned Reusable Bottles",
+  excerpt: "Reusable bottles are sustainable — but without proper cleaning, they can harbor harmful bacteria (up to 40,000× more than a toilet seat). See the most common culprits, why they thrive, and how to prevent them.",
+  content: `<p>Reusable water bottles are a smart, sustainable choice — but without proper cleaning, they can become a breeding ground for harmful bacteria. Studies show some bottles harbor up to <strong>40,000× more bacteria than a toilet seat</strong>. These microbes thrive in moist, nutrient-rich areas — caps, straws, and seals — especially after protein shakes or sugary drinks.</p>
+    <p>At <strong>BlueKioskTech</strong>, hydration should never come with hidden risks. We raise awareness about these invisible threats — and build solutions to eliminate them.</p>
+
+    <h2>🦠 The Most Common Harmful Bacteria Found in Dirty Bottles</h2>
+    <p>Here’s a breakdown of the most frequently detected bacteria in reusable bottles, based on <em>laboratory studies and public health data</em>:</p>
+
+    <!-- Table EN -->
+    <table class="bk-table">
+      <thead>
+        <tr><th>Bacterium</th><th>Health risks</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><em>Escherichia coli</em> (E. coli)</td><td>Fecal contamination; diarrhea, cramps, intestinal infections</td></tr>
+        <tr><td><em>Staphylococcus aureus</em></td><td>Skin infections, food poisoning, abscesses; severe cases: sepsis</td></tr>
+        <tr><td><em>Streptococcus</em> spp.</td><td>Sore throat, respiratory infections, fever</td></tr>
+        <tr><td><em>Pseudomonas aeruginosa</em></td><td>Opportunistic; lung, urinary, and wound infections</td></tr>
+        <tr><td><em>Enterobacter</em> spp.</td><td>Gastrointestinal issues; higher risk in immunocompromised individuals</td></tr>
+        <tr><td><em>Bacillus</em> spp.</td><td>Some species produce toxins causing foodborne illness</td></tr>
+        <tr><td>Fecal coliforms</td><td>Indicators of fecal contamination (incl. E. coli, Enterobacter, Klebsiella)</td></tr>
+        <tr><td>Molds & spores</td><td>Trigger allergies, respiratory irritation, and biofilm formation</td></tr>
+      </tbody>
+    </table>
+
+    <h2>🧪 Why These Bacteria Thrive in Bottles</h2>
+    <ul>
+      <li><strong>Moisture + nutrients</strong>: leftover protein shakes, sugary drinks, or saliva fuel bacterial growth.</li>
+      <li><strong>Hard-to-clean areas</strong>: caps, straws, and seals trap moisture and resistant <em>biofilms</em>.</li>
+      <li><strong>Environmental exposure</strong>: gym floors, benches, or unwashed hands transfer pathogens.</li>
+    </ul>
+
+    <h2>🧼 Prevention Starts with Better Hygiene</h2>
+    <ul>
+      <li>Wash your bottle <strong>after every use</strong> — especially after anything other than water.</li>
+      <li>Use a brush to clean <strong>caps, straws, and seals</strong>.</li>
+       <li>Let your bottle <strong>air dry completely — upside down, with the cap off</strong> for at least 4 to 6 hours, ideally overnight, before sealing.</li>
+      <li>Avoid sharing bottles or placing them on unsanitized surfaces.</li>
+    </ul>
+
+    <h2>💡 BlueKioskTech’s Solution: Fast, Accessible Disinfection</h2>
+    <p>We’re building a self-service station that eliminates <strong>99.99%</strong> of harmful bacteria from bottles and caps in <strong>under 2 minutes</strong> — no chemicals, no hassle. Designed for <strong>gyms, schools, and public spaces</strong> where hygiene matters most.</p>
+    <p><em>Because clean water deserves a clean container.</em></p>
+
+    <h2>🔗 Sources</h2>
+    <ul>
+      <li><a href="https://www.earth.com" target="_blank" rel="noopener">Earth.com – Reusable bottles and fecal bacteria</a></li>
+      <li><a href="https://studyfinds.org" target="_blank" rel="noopener">StudyFinds – Bacteria levels in reusable bottles</a></li>
+      <li><a href="https://gethealthyu.com" target="_blank" rel="noopener">GetHealthyU – Why your bottle may be dirtier than a toilet seat</a></li>
+      <li><a href="https://my.clevelandclinic.org" target="_blank" rel="noopener">Cleveland Clinic – Mold and bacteria in bottles</a></li>
+      <li><a href="https://www.techtimes.com" target="_blank" rel="noopener">TechTimes – How to clean contaminated bottles</a></li>
+      <li><a href="https://www.drymeister.com/post/how-to-dry-reusable-water-bottles-wine-glasses-and-baby-bottles" target="_blank" rel="noopener">DryMeister – How to dry reusable bottles</a></li>
+  <li><a href="https://brisasystems.com/blogs/news/the-importance-of-completely-drying-your-reusable-water-bottle" target="_blank" rel="noopener">Brisa Systems – Importance of drying bottles</a></li>
+    </ul>`           
+},
+
+
+
+  /* ───────────── Article #2 — The Microbiome: The Invisible World Governing Us (NEW) ───────────── */
 
 {
   id: "comprendre-bacteries-mental-physique",
-  order: 1,
+  order: 2,
   category: "hygiene",
   date: "2025-11-03",
   thumbnail: "assets/images/posts/comprendre-bacteries/thumb-640.png",
@@ -367,9 +501,9 @@ const POSTS_EN = [
   `
 },
 
-  /* ───────────── Article #2 — Yesterday’s immunity vs today’s reality (NEW) ───────────── */
+  /* ───────────── Article #3 — Yesterday’s immunity vs today’s reality (NEW) ───────────── */
   {
-    id: "immunite-hier-vs-aujourdhui", order: 2,
+    id: "immunite-hier-vs-aujourdhui", order: 3,
     imageAlt: "Illustration : une personne arrête des virus avec la main (immunité)",
     imageAlt_en: "Concept image: person blocking viruses with hand (immunity)",
     imageLarge: "assets/images/posts/immunite-hier-vs-aujourdhui/thumb-960.png",
@@ -438,9 +572,9 @@ const POSTS_EN = [
     `
   },
 
-  /* ───────────── Article #4 — Rollout checklist (NEW) ───────────── */
+  /* ───────────── Article #6 — Rollout checklist (NEW) ───────────── */
   {
-    id: "checklist-implantation-gym", order: 4,
+    id: "checklist-implantation-gym", order: 6,
     image640: "assets/images/posts/checklist-implantation/thumb-640.png",
     image960: "assets/images/posts/checklist-implantation/thumb-960.png", 
     // HERO au-dessus du H1 (grâce à render.js)
@@ -505,12 +639,12 @@ a <strong>&lt; 2-minute</strong>, <strong>chemical-free</strong> disinfection ro
     `
   },
 
-  /* ───────────── Article #3 — Immunity & hygiene ───────────── */
+  /* ───────────── Article #4 — Immunity & hygiene ───────────── */
   {
     image: "assets/images/posts/immunite-collective-hygiene/hero.svg",
       imageLarge: "assets/images/posts/immunite-collective-hygiene/hero.svg",
        imageAlt_en: "Immune variability and our collective responsibility",
-    id: "immunite-collective-hygiene", order: 3, 
+    id: "immunite-collective-hygiene", order: 4, 
 
     title:
       "🧬 Feeling healthy isn’t enough: immunity is personal… and hygiene is collective.",
@@ -633,9 +767,9 @@ Because hygiene shouldn’t be a burden — it should be <strong>smart, collecti
     `
   },
 
-  /* ───────────── Article #6 — Standards & certifications (placeholder) ───────────── */
+  /* ───────────── Article #7 — Standards & certifications (placeholder) ───────────── */
   {
-    id: "normes-certifications", order: 6, 
+    id: "normes-certifications", order: 7, 
     title: "Standards & certifications: truly measuring 99.99% disinfection",
     description:
       "Reliability, compliance and test protocols made simple.",
