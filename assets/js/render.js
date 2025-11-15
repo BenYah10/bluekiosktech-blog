@@ -445,7 +445,7 @@
 
         const videoHtml = `
           <video
-            src="assets/videos/immunity.webm"
+            src="assets/videos/Immunity.webm"
             autoplay
             muted
             loop
