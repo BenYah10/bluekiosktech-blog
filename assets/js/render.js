@@ -475,10 +475,10 @@
 
         // EN : adapter EXACTEMENT au texte du H2 anglais si tu l'as
         insertAfterH2(
-          contentEl,
-          "Stress, waves and lifestyle: new invisible enemies",
-          videoHtml,
-          "postInlineImmunityEN"
+         contentEl,
+         "Stress, EM exposure & lifestyle: new invisible enemies",
+         videoHtml,
+         "postInlineImmunityEN"
         );
       }
     } catch (_) {}
