@@ -302,6 +302,88 @@
       }
     } catch (_) {}
 
+        // --- VIDÉO inline pour l'article hidden-dangers-dirty-bottles (FR & EN) ---
+    try {
+      if (post.id === "hidden-dangers-dirty-bottles" || post.slug === "hidden-dangers-dirty-bottles") {
+        const videoHtml = `
+          <video
+            src="assets/videos/bacteria.webm"
+            loop
+            muted
+            playsinline
+            controls
+            preload="auto"
+            aria-label="${esc(
+              currentLang() === 'en'
+                ? 'Animated visualization of harmful bacteria developing inside a poorly cleaned reusable bottle'
+                : 'Animation montrant la prolifération de bactéries dans une gourde mal nettoyée'
+            )}"
+            style="display:block;margin-left:auto;margin-right:auto;height:auto;width:100%;max-width:880px;border-radius:12px;"
+          ></video>`;
+
+        // Nettoyage si on rerend plusieurs fois (changement de langue, etc.)
+        ["postInlineBacteriaVideoFR", "postInlineBacteriaVideoEN"].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.remove();
+        });
+
+        // FR : sous le H2 « Les bactéries nuisibles… »
+        insertAfterH2(
+          contentEl,
+          "Les bactéries nuisibles les plus fréquentes dans les gourdes mal nettoyées",
+          videoHtml,
+          "postInlineBacteriaVideoFR"
+        );
+
+        // EN : sous le H2 « The Most Common Harmful Bacteria… »
+        insertAfterH2(
+          contentEl,
+          "The Most Common Harmful Bacteria Found in Dirty Bottles",
+          videoHtml,
+          "postInlineBacteriaVideoEN"
+        );
+      }
+    } catch (_) {}
+
+        // --- Image APRES le H2 "La solution BlueKioskTech..." (FR/EN)
+    //     pour l'article hidden-dangers-dirty-bottles
+    try {
+      if (post.id === "hidden-dangers-dirty-bottles" || post.slug === "hidden-dangers-dirty-bottles") {
+        const imgHtml = `
+          <img
+            src="assets/images/posts/Common-Harmful-Bacteria/Solution-BKT-GYM.png"
+            alt="${esc(
+              currentLang() === 'en'
+                ? 'BlueKioskTech self-service disinfection station in a gym'
+                : 'Station de désinfection BlueKioskTech en libre-service dans un gym'
+            )}"
+            loading="lazy"
+            decoding="async">
+        `;
+
+        // On supprime l’ancienne version si jamais elle existe déjà
+        const old = document.getElementById("postInlineSolutionBKT");
+        if (old) old.remove();
+
+        // FR : juste sous le H2 "La solution BlueKioskTech..."
+        insertAfterH2(
+          contentEl,
+          "La solution BlueKioskTech : désinfection rapide et accessible",
+          imgHtml,
+          "postInlineSolutionBKT"
+        );
+
+        // EN : sous le H2 équivalent en anglais (si tu as la version EN)
+        insertAfterH2(
+          contentEl,
+          "BlueKioskTech’s Solution: Fast, Accessible Disinfection",
+          imgHtml,
+          "postInlineSolutionBKT"
+        );
+      }
+    } catch (_) {}
+
+
     // --- Image APRES le H2 "VUCS technology" (FR/EN) pour l'article hygiene-gourdes-99-2min
     try {
       if (post.id === "hygiene-gourdes-99-2min" || post.slug === "hygiene-gourdes-99-2min") {
@@ -352,6 +434,89 @@
           "What this means for everyday hygiene",
           imgHtml,
           "postInlineQuotidienEN"
+        );
+      }
+    } catch (_) {}
+
+
+         // --- VIDEO inline pour l'article immunite-hier-vs-aujourdhui (FR & EN) ---
+    try {
+      if (post.id === "immunite-hier-vs-aujourdhui" || post.slug === "immunite-hier-vs-aujourdhui") {
+
+        const videoHtml = `
+          <video
+            src="assets/videos/immunity.webm"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            aria-label="${esc(
+              currentLang() === 'en'
+                ? 'Animated explanation of how stress, waves and modern lifestyle impact immunity'
+                : 'Animation expliquant comment le stress, les ondes et le mode de vie moderne impactent l’immunité'
+            )}"
+            style="display:block;width:100%;max-width:880px;margin:20px auto;border-radius:12px;"
+          ></video>`;
+
+        // Nettoyage si la page est rerendue (changement de langue, etc.)
+        ["postInlineImmunityFR", "postInlineImmunityEN"].forEach((id) => {
+          const existing = document.getElementById(id);
+          if (existing) existing.remove();
+        });
+
+        // FR : sous le H2 "Stress, ondes et mode de vie : nouveaux ennemis invisibles"
+        insertAfterH2(
+          contentEl,
+          "Stress, ondes et mode de vie : nouveaux ennemis invisibles",
+          videoHtml,
+          "postInlineImmunityFR"
+        );
+
+        // EN : adapter EXACTEMENT au texte du H2 anglais si tu l'as
+        insertAfterH2(
+          contentEl,
+          "Stress, waves and lifestyle: new invisible enemies",
+          videoHtml,
+          "postInlineImmunityEN"
+        );
+      }
+    } catch (_) {}
+
+
+         // --- VIDÉO inline pour l'article hidden-dangers-dirty-bottles (FR & EN)
+    try {
+      if (post.id === "hidden-dangers-dirty-bottles" || post.slug === "hidden-dangers-dirty-bottles") {
+        const videoHtml = `
+          <video
+            src="assets/videos/bacteria.webm"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            aria-label="${esc(
+              currentLang() === 'en'
+                ? 'Animated visualization of bacterial growth in a dirty bottle'
+                : 'Animation montrant la prolifération de bactéries dans une gourde mal nettoyée'
+            )}"
+            style="display:block;width:100%;max-width:880px;margin:0 auto;border-radius:12px;"
+          ></video>`;
+
+        // FR : sous le H2 "Les bactéries nuisibles les plus fréquentes dans les gourdes mal nettoyées"
+        insertAfterH2(
+          contentEl,
+          "Les bactéries nuisibles les plus fréquentes dans les gourdes mal nettoyées",
+          videoHtml,
+          "postInlineBacteriaVideoFR"
+        );
+
+        // EN : sous le H2 "The Most Common Harmful Bacteria Found in Dirty Bottles"
+        insertAfterH2(
+          contentEl,
+          "The Most Common Harmful Bacteria Found in Dirty Bottles",
+          videoHtml,
+          "postInlineBacteriaVideoEN"
         );
       }
     } catch (_) {}
@@ -459,16 +624,53 @@
         meta.setAttribute("content", raw.replace(/<[^>]+>/g, "").slice(0, 160));
       }
     } catch (_) {}
-  }
 
-  /* ============ Boot + Listeners ============ */
+    }
+
+        /* ============ À propos (about.html) ============ */
+  function renderAbout() {
+    // H1 "Notre mission" (clé i18n about_mission_title)
+    const h1 = document.querySelector('h1[data-i18n="about_mission_title"]');
+    if (!h1) return; // on n'est pas sur about.html
+
+    // Évite les doublons si on rerend (changement de langue, etc.)
+    const existing = document.getElementById("aboutMissionVideo");
+    if (existing) existing.remove();
+
+    const fig = document.createElement("figure");
+    fig.id = "aboutMissionVideo";
+    fig.className = "post-inline";
+    fig.innerHTML = `
+      <video
+        src="assets/videos/notre-mission.webm"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        aria-label="${esc(
+          currentLang() === "en"
+            ? "Animated presentation of BlueKioskTech’s mission"
+            : "Présentation animée de la mission de BlueKioskTech"
+        )}"
+        style="display:block;width:100%;max-width:880px;margin:1.5rem auto;border-radius:12px;"
+      ></video>
+    `;
+
+    // On insère la vidéo juste après le H1
+    h1.insertAdjacentElement("afterend", fig);
+   }
+
+   /* ============ Boot + Listeners ============ */
   function rerenderAll() {
     if (typeof applyI18N === "function") applyI18N();
     if (typeof window.refreshPosts === "function") window.refreshPosts();
     renderHome();
     renderList();
     renderPost();
+    renderAbout(); // ← appel ajouté ici
   }
+
 
   document.addEventListener("DOMContentLoaded", () => {
     syncLangFromQuery();
@@ -499,6 +701,6 @@
     if (en) en.addEventListener("click", () => onSwitch("en"));
   });
 
-  // Expose pour debug (optionnel)
-  window.BKRender = { renderHome, renderList, renderPost, rerenderAll };
+   // Expose pour debug (optionnel)
+  window.BKRender = { renderHome, renderList, renderPost, renderAbout, rerenderAll };
 })();
