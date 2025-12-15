@@ -308,10 +308,10 @@
         const videoHtml = `
           <video
             src="assets/videos/bacteria.webm"
+            autoplay
             loop
             muted
             playsinline
-            controls
             preload="auto"
             aria-label="${esc(
               currentLang() === 'en'
@@ -474,11 +474,11 @@
         );
 
         // EN : adapter EXACTEMENT au texte du H2 anglais si tu l'as
-        insertAfterH2(
-         contentEl,
-         "Stress, EM exposure & lifestyle: new invisible enemies",
-         videoHtml,
-         "postInlineImmunityEN"
+       insertAfterH2(
+            contentEl,
+           "Stress, EM exposure & lifestyle: new invisible enemies",
+           videoHtml,
+           "postInlineImmunityEN"
         );
       }
     } catch (_) {}

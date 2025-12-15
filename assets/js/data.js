@@ -5,14 +5,173 @@
    - Maintient window.POSTS pour compatibilité avec render.js
    ============================================================ */
 
-/* --- Articles FR --- */
+
+
+
+   
+/* --- Articles 1  FR --- */
+
 const POSTS_FR = [
 
-  {
-  id: "hidden-dangers-dirty-bottles",
+      {
+  id: "bacterie-intestinale-sep-hygiene-microbienne",
   order: 1,
   category: "hygiene",
-  date: "2025-11-15",
+  date: "2025-12-15",
+  image640: "assets/images/posts/SEP/Bcteria-SEP-fr.png",
+  imageLarge: "assets/images/posts/SEP/Bcteria-SEP-fr.png",
+  imageAlt: "Microbiote intestinal, sclérose en plaques et hygiène microbienne au quotidien",
+  title: "🧬 Quand une bactérie intestinale bouleverse notre compréhension de la sclérose en plaques — et ce que cela révèle sur l’importance de l’hygiène microbienne au quotidien",
+  excerpt: "Deux genres bactériens intestinaux sont suspectés de favoriser une réaction auto-immune liée à la SEP — un rappel fort de l’importance de l’hygiène microbienne au quotidien.",
+  readTime: 9,
+  views: 0,
+
+  content: ` <h2>Introduction</h2>
+
+    <p>Pendant des décennies, les chercheurs soupçonnaient que certaines infections pouvaient jouer un rôle dans le déclenchement de la sclérose en plaques (SEP). 👉 La SEP est une maladie auto-immune chronique où le système immunitaire attaque la myéline, la gaine protectrice des neurones, entraînant des troubles moteurs, sensoriels et cognitifs.</p>
+
+    <h2>La sclérose en plaques</h2>
+<figure id="postInlineSepVideoFR" class="post-inline">
+  <video
+    src="assets/videos/Bacteria-SEP.webm"
+    loop
+    muted
+    playsinline
+    controls
+    preload="auto"
+    aria-label="Vidéo BlueKioskTech : la sclérose en plaques"
+    style="display:block;margin-left:auto;margin-right:auto;height:auto;width:100%;max-width:880px;border-radius:12px;"
+  ></video>
+</figure>
+
+    <p>Mais aucune piste n’avait jamais été confirmée. Aujourd’hui, une avancée scientifique majeure change la donne : des équipes internationales ont identifié des bactéries intestinales spécifiques capables d’activer une réaction auto-immune menant le corps à attaquer son propre système nerveux.</p>
+
+    <p>Ces découvertes, issues notamment d’études sur des jumeaux identiques, ouvrent une nouvelle ère dans la compréhension du lien entre microbiote, immunité et maladies chroniques.</p>
+
+    <p>Et elles rappellent une vérité essentielle : 👉 Les microbes qui nous entourent — et ceux que nous ingérons — influencent profondément notre santé.</p>
+
+    <p>C’est précisément dans cette perspective que s’inscrit la mission de <strong>BlueKioskTech</strong> : réduire l’exposition quotidienne aux bactéries nocives grâce à des solutions innovantes comme <strong>VUCS</strong>, la première machine de désinfection de gourdes en libre-service.</p>
+
+    <h2>🧠 1. Une découverte majeure : deux bactéries intestinales suspectées de déclencher la SEP</h2>
+    <p>Des études récentes ont mis en lumière deux bactéries intestinales retrouvées en plus grande abondance chez les personnes atteintes de sclérose en plaques (SEP), notamment dans des analyses menées sur des jumeaux identiques — un modèle idéal pour isoler les facteurs environnementaux :</p>
+
+    <ul>
+      <li><strong>Eisenbergiella tayi</strong></li>
+      <li><strong>Lachnoclostridium sp.</strong></li>
+    </ul>
+
+    <p>Ces deux genres bactériens attirent l’attention des chercheurs parce qu’ils semblent capables de produire des molécules imitant la myéline, la gaine protectrice entourant les neurones.</p>
+
+    <h2>✅ Le mécanisme clé : le mimétisme moléculaire</h2>
+    <ul>
+      <li>Ces bactéries produisent des fragments qui ressemblent à ceux de la myéline.</li>
+      <li>Le système immunitaire réagit contre ces bactéries.</li>
+      <li>En parallèle, il se met à attaquer la myéline elle-même, croyant qu’il s’agit du même “ennemi”.</li>
+      <li>Cela déclenche l’inflammation et les lésions caractéristiques de la SEP.</li>
+    </ul>
+
+    <p>Cette découverte ne désigne pas une seule bactérie coupable, mais plutôt un ensemble de microbes capables de perturber l’équilibre immunitaire. Elle renforce l’idée que la SEP pourrait être, au moins en partie, une maladie liée à une dysbiose du microbiote intestinal.</p>
+
+    <h2>🔄 2. Un changement de paradigme : traiter la SEP en ciblant le microbiote</h2>
+    <p>Jusqu’ici, les traitements de la SEP visaient principalement : le cerveau, la moelle épinière ou la modulation du système immunitaire.</p>
+    <p>Mais cette découverte ouvre une nouvelle voie : 👉 agir directement sur le microbiote intestinal.</p>
+
+    <p>Les pistes envisagées incluent :</p>
+    <ul>
+      <li>vaccins ciblant les bactéries identifiées</li>
+      <li>antibiotiques spécifiques</li>
+      <li>probiotiques pour rééquilibrer le microbiote</li>
+      <li>interventions nutritionnelles</li>
+    </ul>
+
+    <p>Pour la première fois, la prévention de la SEP devient une possibilité réelle.</p>
+
+    <h2>🦠 3. Ce que cela révèle : les bactéries du quotidien ne sont jamais “banales”</h2>
+    <p>Ces recherches montrent que de simples bactéries intestinales, invisibles à l’œil nu, peuvent déclencher des maladies graves.</p>
+
+    <p>Cela rappelle une vérité souvent sous-estimée : 👉 Les microbes que nous ingérons au quotidien — via l’eau, les mains, les surfaces, les objets — influencent directement notre microbiote et donc notre santé.</p>
+
+    <p>Et parmi les objets les plus contaminés de notre quotidien, un se démarque : la gourde réutilisable.</p>
+
+    <h2>💧 4. La gourde : un réservoir microbien sous-estimé</h2>
+
+    <figure id="postInlineGourdeSepVideoFR" class="post-inline">
+  <video
+    src="assets/videos/Gourde-SEP.mp4"
+    autoplay=""
+    loop=""
+    muted=""
+    playsinline=""
+    controls=""
+    preload="auto"
+    aria-label="Vidéo BlueKioskTech : la gourde et l’hygiène microbienne"
+    style="display:block;margin-left:auto;margin-right:auto;height:auto;width:100%;max-width:880px;border-radius:12px;"
+  ></video>
+</figure>
+
+    <p>Des analyses indépendantes montrent que certaines gourdes contiennent plus de bactéries qu’une cuvette de toilettes. Pourquoi ?</p>
+
+    <ul>
+      <li>humidité stagnante</li>
+      <li>résidus de salive</li>
+      <li>contact avec les mains</li>
+      <li>surfaces contaminées (gym, transport, école, travail)</li>
+      <li>nettoyage irrégulier ou insuffisant</li>
+    </ul>
+
+    <p>Les bactéries retrouvées dans les gourdes incluent souvent :</p>
+    <ul>
+      <li>streptocoques</li>
+      <li>staphylocoques</li>
+      <li>coliformes</li>
+      <li>levures et moisissures</li>
+    </ul>
+
+    <p>Certaines peuvent perturber le microbiote intestinal lorsqu’elles sont ingérées régulièrement.</p>
+
+    <h2>✅ Lien scientifique renforcé</h2>
+    <p>Certaines bactéries intestinales, comme <strong>Lachnoclostridium</strong>, sont aujourd’hui étudiées pour leur rôle potentiel dans des maladies auto-immunes. Cette découverte rappelle que notre microbiote est extrêmement sensible à ce que nous ingérons. Ainsi, les bactéries présentes dans une gourde mal désinfectée — même si elles ne sont pas les mêmes — peuvent perturber cet équilibre fragile.</p>
+
+    <p>Dans un monde où l’on comprend de mieux en mieux le rôle du microbiote dans l’immunité, l’énergie, la digestion et même la santé mentale, négliger la propreté de sa gourde n’est plus une option.</p>
+
+    <h2>🚀 5. VUCS by BlueKioskTech : une réponse innovante à un enjeu invisible</h2>
+    <p>Face à ces risques microbiens, <strong>BlueKioskTech</strong> a développé <strong>VUCS</strong>, la première machine de désinfection de gourdes en libre-service.</p>
+
+    <ul>
+      <li><strong>✅ Désinfection en moins de 2 minutes</strong> : grâce à une technologie sans produits chimiques, VUCS élimine 99,99 % des bactéries.</li>
+      <li><strong>✅ Accessible partout</strong> : gym, campus, entreprises, centres sportifs, lieux publics.</li>
+      <li><strong>✅ Protection du microbiote</strong> : en réduisant l’exposition quotidienne à des bactéries potentiellement nocives.</li>
+      <li><strong>✅ Un geste simple pour une santé durable</strong> : parce que l’hydratation ne devrait jamais être une source de contamination.</li>
+    </ul>
+
+    <h2>🌍 6. Pourquoi cette découverte scientifique renforce la mission de BlueKioskTech</h2>
+    <p>Les études sur la SEP montrent que :</p>
+    <ul>
+      <li>certaines bactéries peuvent déclencher des maladies auto-immunes</li>
+      <li>le microbiote est un acteur central de notre santé</li>
+      <li>les microbes du quotidien peuvent avoir des effets disproportionnés</li>
+    </ul>
+
+    <p>Cela valide une conviction profonde de BlueKioskTech : 👉 La prévention commence par la maîtrise de notre exposition microbienne.</p>
+
+    <p><strong>VUCS</strong> n’est pas seulement une machine. C’est une barrière sanitaire, un outil de prévention, un moyen concret de protéger le microbiote — et donc la santé globale — de millions de personnes.</p>
+
+    <p>Parce que chaque gorgée d’eau devrait être synonyme de sécurité — pas de contamination.</p>
+
+    <h2>✅ Conclusion</h2>
+    <p>La découverte de bactéries intestinales impliquées dans la sclérose en plaques marque un tournant majeur dans la compréhension du lien entre microbes et maladies auto-immunes. Elle rappelle que les bactéries qui nous entourent ne sont jamais anodines.</p>
+
+    <p>Dans ce contexte, des solutions comme <strong>VUCS by BlueKioskTech</strong> deviennent essentielles pour réduire l’exposition quotidienne aux microbes indésirables, protéger le microbiote et promouvoir une santé durable.</p>
+  `
+  },
+
+
+/* --- Articles 2  FR --- */
+  {
+  id: "hidden-dangers-dirty-bottles",
+  order: 2,
+  category: "hygiene",
+  date: "2025-11-13",
   image640: "assets/images/posts/Common-Harmful-Bacteria/thumb-960.png",
   imageLarge: "assets/images/posts/Common-Harmful-Bacteria/post-hero.png",
   imageAlt: "Dangers bactériens dans les gourdes mal nettoyées",
@@ -74,11 +233,11 @@ const POSTS_FR = [
  },           
 
 
-/* ───────────── Article #2 — comprendre-bacteries-mental-physique (NOUVEAU) ───────────── */
+/* ───────────── Article #3 — comprendre-bacteries-mental-physique (NOUVEAU) ───────────── */
 {
 
   id: "comprendre-bacteries-mental-physique",
-  order: 2,
+  order: 3,
   category: "hygiene",
   date: "2025-11-03",
   thumbnail: "assets/images/posts/comprendre-bacteries/thumb-640.png",
@@ -107,9 +266,9 @@ const POSTS_FR = [
   },
 
 
-/* ───────────── Article #3 — Immunité d’hier vs aujourd’hui (NOUVEAU) ───────────── */
+/* ───────────── Article #4 — Immunité d’hier vs aujourd’hui (NOUVEAU) ───────────── */
 {
-  id: "immunite-hier-vs-aujourdhui", order: 3,
+  id: "immunite-hier-vs-aujourdhui", order: 4,
   image640: "assets/images/posts/immunite-hier-vs-aujourdhui/thumb-640.png",
   image960: "assets/images/posts/immunite-hier-vs-aujourdhui/thumb-960.png",
 
@@ -184,9 +343,9 @@ const POSTS_FR = [
 
 
 
-  /* ───────────── Article #6 — Check-list d’implantation (NOUVEAU) ───────────── */
+  /* ───────────── Article #7 — Check-list d’implantation (NOUVEAU) ───────────── */
   {
-    id: "checklist-implantation-gym", order: 6, 
+    id: "checklist-implantation-gym", order: 7, 
     image640: "assets/images/posts/checklist-implantation/thumb-640.png",
     image960: "assets/images/posts/checklist-implantation/thumb-960.png",
     // HERO au-dessus du H1 (grâce à render.js)
@@ -251,13 +410,13 @@ Rejoignez notre programme pilote et testez BlueKioskTech en avant-première : un
     `
   },
 
-  /* ───────────── Article #3 — Immunité & hygiène ───────────── */
+  /* ───────────── Article #4 — Immunité & hygiène ───────────── */
   {
     image: "assets/images/posts/immunite-collective-hygiene/hero.svg",
      imageLarge: "assets/images/posts/immunite-collective-hygiene/hero.svg",
       imageAlt: "Variabilité de l’immunité et responsabilité collective",
 
-    id: "immunite-collective-hygiene", order: 3, 
+    id: "immunite-collective-hygiene", order: 4, 
     title:
       "🧬 Se sentir en bonne santé ne suffit pas : notre immunité est unique… et notre responsabilité collective.",
     description:
@@ -310,9 +469,9 @@ Parce que l’immunité est personnelle… <strong>mais l’hygiène est univers
     `
   },
 
-  /* ───────────── Article #5 — Gourdes & contamination ───────────── */
+  /* ───────────── Article #6 — Gourdes & contamination ───────────── */
   {
-    id: "hygiene-gourdes-99-2min", order: 5,
+    id: "hygiene-gourdes-99-2min", order: 6,
     image640: "assets/images/posts/hygiene-gourdes-99-2min/thumb-640.png",
     image960: "assets/images/posts/hygiene-gourdes-99-2min/thumb-960.png",
     imageAlt:    "Bactéries visibles sur une gourde réutilisable (bouchon, bec, filetage)",
@@ -378,9 +537,9 @@ Parce que l’hygiène ne devrait pas être une contrainte : <strong>elle doit �
     `
   },
 
-  /* ───────────── Article #7 — Normes & certifications (placeholder) ───────────── */
+  /* ───────────── Article #8 — Normes & certifications (placeholder) ───────────── */
   {
-    id: "normes-certifications", order: 7, 
+    id: "normes-certifications", order: 8, 
     title:
       "Normes & certifications : mesurer (vraiment) la désinfection 99,99%",
     description:
@@ -403,10 +562,164 @@ Parce que l’hygiène ne devrait pas être une contrainte : <strong>elle doit �
 const POSTS_EN = [
 
 {
-  id: "hidden-dangers-dirty-bottles",
+  id: "bacterie-intestinale-sep-hygiene-microbienne",
   order: 1,
   category: "hygiene",
-  date: "2025-11-15",
+  date: "2025-12-15",
+  image640: "assets/images/posts/SEP/Bcteria-SEP-en.png",
+  imageLarge: "assets/images/posts/SEP/Bcteria-SEP-en.png",
+  imageAlt: "Gut microbiome, multiple sclerosis, and everyday microbial hygiene",
+  title: "🧬 When a Gut Bacterium Disrupts Our Understanding of Multiple Sclerosis — and What It Reveals About the Importance of Everyday Microbial Hygiene",
+  excerpt: "Research highlights two gut bacterial genera potentially involved in MS—reinforcing why everyday microbial hygiene matters.",
+  readTime: 9,
+  views: 0,
+
+  content: ` <h2>Introduction</h2>
+
+    <p>For decades, researchers suspected that certain infections could play a role in triggering multiple sclerosis (MS). 👉 MS is a chronic autoimmune disease in which the immune system attacks myelin—the protective sheath around neurons—leading to motor, sensory, and cognitive symptoms.</p>
+
+    <h2>Multiple Sclerosis (MS)</h2>
+<figure id="postInlineSepVideoEN" class="post-inline">
+  <video
+    src="assets/videos/Bacteria-SEP.webm"
+    loop
+    muted
+    playsinline
+    controls
+    preload="auto"
+    aria-label="BlueKioskTech video: Multiple Sclerosis (MS)"
+    style="display:block;margin-left:auto;margin-right:auto;height:auto;width:100%;max-width:880px;border-radius:12px;"
+  ></video>
+</figure>
+
+
+    <p>But no single lead had ever been clearly confirmed. Today, major scientific advances are shifting the picture: international teams have identified specific gut bacteria that may activate an autoimmune response—ultimately pushing the body to attack its own nervous system.</p>
+
+    <p>These findings, including evidence from identical twin studies, open a new era in understanding the relationship between the microbiome, immunity, and chronic disease.</p>
+
+    <p>They also reinforce a key truth: 👉 The microbes around us—and the microbes we ingest—can deeply influence our health.</p>
+
+    <p>This is exactly the lens through which <strong>BlueKioskTech</strong> operates: reducing everyday exposure to harmful bacteria with innovative solutions like <strong>VUCS</strong>, the first self-service bottle disinfection machine.</p>
+
+    <h2>🧠 1. A major discovery: two gut bacteria suspected of triggering MS</h2>
+    <p>Recent studies have highlighted two gut bacteria found in higher abundance among people with MS—particularly in analyses of identical twins, a strong model for isolating environmental factors:</p>
+
+    <ul>
+      <li><strong>Eisenbergiella tayi</strong></li>
+      <li><strong>Lachnoclostridium sp.</strong></li>
+    </ul>
+
+    <p>These bacterial genera are drawing attention because they appear capable of producing molecules that resemble myelin, the protective sheath surrounding neurons.</p>
+
+    <h2>✅ The key mechanism: molecular mimicry</h2>
+    <ul>
+      <li>These bacteria produce fragments that look similar to myelin components.</li>
+      <li>The immune system reacts against the bacteria.</li>
+      <li>In parallel, it begins attacking myelin itself, believing it is the same “enemy.”</li>
+      <li>This triggers inflammation and the lesions characteristic of MS.</li>
+    </ul>
+
+    <p>This discovery does not point to a single “guilty” bacterium, but rather to a set of microbes capable of disrupting immune balance. It supports the idea that MS could be, at least in part, linked to gut microbiome dysbiosis.</p>
+
+    <h2>🔄 2. A paradigm shift: treating MS by targeting the microbiome</h2>
+    <p>Until now, MS treatments have primarily focused on the brain, the spinal cord, or broad immune modulation.</p>
+    <p>But these findings open a new path: 👉 acting directly on the gut microbiome.</p>
+
+    <p>Potential approaches include:</p>
+    <ul>
+      <li>vaccines targeting the identified bacteria</li>
+      <li>specific antibiotics</li>
+      <li>probiotics to rebalance the microbiome</li>
+      <li>nutrition-based interventions</li>
+    </ul>
+
+    <p>For the first time, MS prevention may become a realistic possibility.</p>
+
+    <h2>🦠 3. What this reveals: everyday bacteria are never “trivial”</h2>
+    <p>This research shows that invisible gut bacteria can contribute to serious autoimmune disease.</p>
+
+    <p>It also reminds us: 👉 The microbes we ingest daily—through water, hands, surfaces, and objects—can influence our microbiome and therefore our health.</p>
+
+    <p>Among the most overlooked everyday objects? The reusable water bottle.</p>
+
+    <h2>💧 4. The bottle: an underestimated microbial reservoir</h2>
+
+    <figure id="postInlineGourdeSepVideoEN" class="post-inline">
+  <video
+    src="assets/videos/Gourde-SEP.mp4"
+    loop=""
+    autoplay=""
+    muted=""
+    playsinline=""
+    controls=""
+    preload="auto"
+    aria-label="BlueKioskTech video: the bottle and microbial hygiene"
+    style="display:block;margin-left:auto;margin-right:auto;height:auto;width:100%;max-width:880px;border-radius:12px;"
+  ></video>
+</figure>
+
+    <p>Independent analyses have found that some bottles can harbor more bacteria than a toilet bowl. Common reasons include:</p>
+
+    <ul>
+      <li>stagnant moisture</li>
+      <li>saliva residue</li>
+      <li>hand contact</li>
+      <li>contaminated environments (gym, transit, school, workplace)</li>
+      <li>infrequent or insufficient cleaning</li>
+    </ul>
+
+    <p>Microbes commonly found in bottles include:</p>
+    <ul>
+      <li>streptococci</li>
+      <li>staphylococci</li>
+      <li>coliforms</li>
+      <li>yeasts and molds</li>
+    </ul>
+
+    <p>Some of these can disrupt the gut microbiome when ingested repeatedly.</p>
+
+    <h2>✅ Stronger scientific link</h2>
+    <p>Some gut bacteria—such as <strong>Lachnoclostridium</strong>—are now being investigated for their potential role in autoimmune diseases. This discovery is a reminder that our microbiome is highly sensitive to what we ingest. As a result, bacteria present in a poorly disinfected bottle—even if they are not the same species—can still disrupt this fragile balance.</p>
+
+    <p>As we learn more about how the microbiome influences immunity, energy, digestion, and even mental well-being, neglecting bottle hygiene is no longer an option.</p>
+
+    <h2>🚀 5. VUCS by BlueKioskTech: an innovative response to an invisible risk</h2>
+    <p>To address everyday microbial exposure, <strong>BlueKioskTech</strong> developed <strong>VUCS</strong>, the first self-service bottle disinfection machine.</p>
+
+    <ul>
+      <li><strong>✅ Disinfection in under 2 minutes</strong>: using chemical-free technology, VUCS eliminates 99.99% of bacteria.</li>
+      <li><strong>✅ Accessible anywhere</strong>: gyms, campuses, companies, sports centers, public spaces.</li>
+      <li><strong>✅ Microbiome protection</strong>: by reducing exposure to potentially harmful bacteria.</li>
+      <li><strong>✅ A simple habit for long-term health</strong>: hydration should never become a contamination risk.</li>
+    </ul>
+
+    <h2>🌍 6. Why this scientific discovery reinforces BlueKioskTech’s mission</h2>
+    <p>MS microbiome research suggests that:</p>
+    <ul>
+      <li>certain bacteria may contribute to autoimmune disease</li>
+      <li>the microbiome is a central driver of health</li>
+      <li>everyday microbial exposure can have outsized effects</li>
+    </ul>
+
+    <p>This supports a core conviction at BlueKioskTech: 👉 Prevention starts with controlling everyday microbial exposure.</p>
+
+    <p><strong>VUCS</strong> is not just a machine. It’s a health barrier, a prevention tool, and a concrete way to help protect the microbiome—and overall health—at scale.</p>
+
+    <p>Because every sip of water should mean safety—not contamination.</p>
+
+    <h2>✅ Conclusion</h2>
+    <p>Identifying gut bacteria potentially involved in multiple sclerosis is a major step forward in understanding the link between microbes and autoimmune disease. It also reminds us that everyday bacteria are never insignificant.</p>
+
+    <p>In this context, solutions like <strong>VUCS by BlueKioskTech</strong> become essential to reduce daily exposure to unwanted microbes, protect the microbiome, and promote sustainable health.</p>
+  `
+},
+
+
+{
+  id: "hidden-dangers-dirty-bottles",
+  order: 2,
+  category: "hygiene",
+  date: "2025-11-13",
   image640: "assets/images/posts/Common-Harmful-Bacteria/thumb-640.png",
   imageLarge: "assets/images/posts/Common-Harmful-Bacteria/post-hero.png",
   imageAlt: "Bacteria risks in poorly cleaned reusable bottles",
@@ -468,11 +781,11 @@ const POSTS_EN = [
 
 
 
-  /* ───────────── Article #2 — The Microbiome: The Invisible World Governing Us (NEW) ───────────── */
+  /* ───────────── Article #3 — The Microbiome: The Invisible World Governing Us (NEW) ───────────── */
 
 {
   id: "comprendre-bacteries-mental-physique",
-  order: 2,
+  order: 3,
   category: "hygiene",
   date: "2025-11-03",
   thumbnail: "assets/images/posts/comprendre-bacteries/thumb-640.png",
@@ -501,9 +814,9 @@ const POSTS_EN = [
   `
 },
 
-  /* ───────────── Article #3 — Yesterday’s immunity vs today’s reality (NEW) ───────────── */
+  /* ───────────── Article #4 — Yesterday’s immunity vs today’s reality (NEW) ───────────── */
   {
-    id: "immunite-hier-vs-aujourdhui", order: 3,
+    id: "immunite-hier-vs-aujourdhui", order: 4,
     imageAlt: "Illustration : une personne arrête des virus avec la main (immunité)",
     imageAlt_en: "Concept image: person blocking viruses with hand (immunity)",
     imageLarge: "assets/images/posts/immunite-hier-vs-aujourdhui/thumb-960.png",
@@ -572,9 +885,9 @@ const POSTS_EN = [
     `
   },
 
-  /* ───────────── Article #6 — Rollout checklist (NEW) ───────────── */
+  /* ───────────── Article #7 — Rollout checklist (NEW) ───────────── */
   {
-    id: "checklist-implantation-gym", order: 6,
+    id: "checklist-implantation-gym", order: 7,
     image640: "assets/images/posts/checklist-implantation/thumb-640.png",
     image960: "assets/images/posts/checklist-implantation/thumb-960.png", 
     // HERO au-dessus du H1 (grâce à render.js)
@@ -639,12 +952,12 @@ a <strong>&lt; 2-minute</strong>, <strong>chemical-free</strong> disinfection ro
     `
   },
 
-  /* ───────────── Article #4 — Immunity & hygiene ───────────── */
+  /* ───────────── Article #5 — Immunity & hygiene ───────────── */
   {
     image: "assets/images/posts/immunite-collective-hygiene/hero.svg",
       imageLarge: "assets/images/posts/immunite-collective-hygiene/hero.svg",
        imageAlt_en: "Immune variability and our collective responsibility",
-    id: "immunite-collective-hygiene", order: 4, 
+    id: "immunite-collective-hygiene", order: 5, 
 
     title:
       "🧬 Feeling healthy isn’t enough: immunity is personal… and hygiene is collective.",
@@ -697,10 +1010,10 @@ Immunity is personal… <strong>but hygiene is universal</strong>.
     `
   },
 
-  /* ───────────── Article #5 — Bottle contamination ───────────── */
+  /* ───────────── Article #6 — Bottle contamination ───────────── */
   {
     
-    id: "hygiene-gourdes-99-2min", order: 5,
+    id: "hygiene-gourdes-99-2min", order: 6,
     image640: "assets/images/posts/hygiene-gourdes-99-2min/thumb-640.png",
     image960: "assets/images/posts/hygiene-gourdes-99-2min/thumb-960.png",
     imageAlt:    "Bactéries visibles sur une gourde réutilisable (bouchon, bec, filetage)",
@@ -767,9 +1080,9 @@ Because hygiene shouldn’t be a burden — it should be <strong>smart, collecti
     `
   },
 
-  /* ───────────── Article #7 — Standards & certifications (placeholder) ───────────── */
+  /* ───────────── Article #8 — Standards & certifications (placeholder) ───────────── */
   {
-    id: "normes-certifications", order: 7, 
+    id: "normes-certifications", order: 8, 
     title: "Standards & certifications: truly measuring 99.99% disinfection",
     description:
       "Reliability, compliance and test protocols made simple.",
