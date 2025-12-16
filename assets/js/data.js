@@ -33,7 +33,7 @@ const POSTS_FR = [
     <h2>La sclérose en plaques</h2>
 <figure id="postInlineSepVideoFR" class="post-inline">
   <video
-    src="assets/videos/Bacteria-SEP.webm"
+    src="assets/videos/Bacteria-SEP-M.webm"
     loop
     muted
     playsinline
@@ -581,7 +581,7 @@ const POSTS_EN = [
     <h2>Multiple Sclerosis (MS)</h2>
 <figure id="postInlineSepVideoEN" class="post-inline">
   <video
-    src="assets/videos/Bacteria-SEP.webm"
+    src="assets/videos/Bacteria-SEP-M.webm"
     loop
     muted
     playsinline
